@@ -1,5 +1,7 @@
 # Visibilidade Aberta
 
+[![Testes](https://github.com/felipercmb/visibilidade-aberta/actions/workflows/ci.yml/badge.svg)](https://github.com/felipercmb/visibilidade-aberta/actions/workflows/ci.yml)
+
 An open-source, local application for discovering search terms from a website, checking Google results and identifying practical accessibility and contact improvements.
 
 **Start with a domain.** Website discovery and diagnostics work without an API key. Google ranking checks are optional and require your own compatible SerpApi Free account.

@@ -1,5 +1,7 @@
 # Visibilidade Aberta
 
+[![Testes](https://github.com/felipercmb/visibilidade-aberta/actions/workflows/ci.yml/badge.svg)](https://github.com/felipercmb/visibilidade-aberta/actions/workflows/ci.yml)
+
 Descubra termos relacionados a um site, confira resultados do Google e encontre melhorias de acessibilidade e atendimento. O aplicativo roda no seu computador, com código aberto, relatórios e controle de uso guardados localmente.
 
 **Comece informando apenas um domínio.** A descoberta de termos e o diagnóstico das páginas funcionam sem chave de API. A verificação de posições no Google é opcional e exige uma chave própria do plano gratuito da SerpApi.

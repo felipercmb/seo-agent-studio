@@ -136,7 +136,6 @@ export async function criarServidor(opcoes = {}) {
 if (process.argv[1] && pathToFileURL(resolve(process.argv[1])).href === import.meta.url) {
   try {
     const servidor = await criarServidor();
-    console.log('Visibilidade Aberta disponível em ' + servidor.endereco);
     let encerrando = false;
     const encerrar = () => {
       if (encerrando) return;
@@ -145,6 +144,7 @@ if (process.argv[1] && pathToFileURL(resolve(process.argv[1])).href === import.m
     };
     process.once('SIGINT', encerrar);
     process.once('SIGTERM', encerrar);
+    console.log('Visibilidade Aberta disponível em ' + servidor.endereco);
   } catch (erro) {
     console.error(erro instanceof ErroConfiguracao ? erro.message : 'Não foi possível iniciar o servidor local. Verifique a porta, o diretório de dados e as migrações.');
     process.exitCode = 1;

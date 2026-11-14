@@ -1,0 +1,26 @@
+{
+  "name": "visibilidade-aberta",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Descubra palavras-chave e confira posições observadas no Google a partir de um site, no seu computador.",
+  "type": "module",
+  "license": "MIT",
+  "engines": {
+    "node": ">=22.13.0 <23 || >=24.0.0 <25"
+  },
+  "scripts": {
+    "start": "node server.mjs",
+    "test": "node scripts/testar.mjs",
+    "check": "node scripts/verificar-sintaxe.mjs"
+  },
+  "dependencies": {
+    "parse5": "8.1.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/felipercmb/visibilidade-aberta.git"
+  },
+  "bugs": {
+    "url": "https://github.com/felipercmb/visibilidade-aberta/issues"
+  }
+}

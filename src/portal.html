@@ -1,0 +1,953 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="referrer" content="no-referrer">
+<title>Seu site no Google · Visibilidade Aberta</title>
+<meta name="description" content="Descubra buscas relacionadas ao seu site e confira posições observadas no Google, com fonte e data. Receba também melhorias práticas para seu site, sem cadastro.">
+<style>
+:root{--ink:#182e36;--muted:#465d63;--teal:#075d60;--strong:#06494b;--paper:#fafbfa;--surface:#fff;--rule:#c9d6d3;--pale:#e2f1ea;--dark:#183d3d;--error:#8d2826;color-scheme:light;font-family:"Instrument Sans",Inter,"Helvetica Neue",Arial,sans-serif;color:var(--ink);background:var(--paper);line-height:1.5}
+*{box-sizing:border-box}
+body{margin:0}
+button,input{font:inherit}
+a{color:var(--teal);text-decoration-thickness:1px;text-underline-offset:.2em}
+a:hover{text-decoration-thickness:2px}
+button,a,summary{touch-action:manipulation}
+a:focus-visible,button:focus-visible,input:focus-visible,summary:focus-visible{outline:3px solid #b45416;outline-offset:3px}
+[hidden]{display:none!important}
+.moldura{width:min(76rem,calc(100% - clamp(2rem,9vw,8rem)));margin:auto}
+.cabecalho{background:var(--surface);border-bottom:1px solid var(--rule)}
+.cabecalho .moldura{min-height:4.6rem;display:flex;align-items:center;justify-content:space-between;gap:1rem}
+.marca{display:inline-flex;align-items:center;gap:.7rem;font-weight:690;letter-spacing:-.025em;color:var(--ink);text-decoration:none;font-size:1.14rem}
+.marca:hover{text-decoration:none}
+.simbolo{height:1.7rem;width:1.7rem;display:flex;align-items:flex-end;justify-content:center;gap:2px;padding:5px;background:var(--dark);border-radius:3px}
+.simbolo i{display:block;background:#a9e5cc;width:4px;height:45%}
+.simbolo i:nth-child(2){height:73%}.simbolo i:nth-child(3){height:100%}
+.como{font-size:.9rem}
+.entrada{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(18rem,.78fr);gap:clamp(2rem,6vw,6rem);align-items:center;padding:clamp(3rem,7.8vw,7.2rem) 0 clamp(3rem,8vw,7rem)}
+h1,h2,h3,p{margin:0}
+h1,h2,h3{line-height:1.12;text-wrap:balance}
+h1{font-size:clamp(2.9rem,5.7vw,5.2rem);font-weight:570;letter-spacing:-.064em;max-width:13ch}
+.lead{margin:1.2rem 0 1.8rem;font-size:clamp(1rem,1.4vw,1.2rem);color:var(--muted);max-width:53ch}
+label{font-weight:650;display:block;margin-bottom:.37rem}
+.campos{display:flex;max-width:43rem;gap:.45rem}
+input,button{border-radius:4px;min-height:3.13rem}
+input{min-width:0;flex:1;border:1px solid #849995;background:white;padding:.66rem .85rem;color:var(--ink)}
+input::placeholder{color:#607272}
+button{border:0;cursor:pointer;background:var(--teal);color:white;font-weight:650;padding:.63rem 1.05rem;white-space:nowrap}
+button:hover{background:var(--strong)}button:disabled{cursor:progress;opacity:.68}
+.aviso{color:var(--error);font-weight:550;max-width:64ch;margin-top:.6rem}
+.status{color:var(--muted);margin-top:.6rem}
+.status:empty{display:none}
+.guia{border:1px solid #a3bdb1;border-top:5px solid var(--dark);border-radius:4px;background:#edf6ef;padding:clamp(1.35rem,3.1vw,2.35rem);min-width:0}
+.guia h2{font-size:.94rem;font-weight:570;color:#365f52}
+.termo-demo{font-family:"Spectral",Georgia,serif;font-size:clamp(1.8rem,3.1vw,2.9rem);line-height:1.13;letter-spacing:-.035em;margin:.65rem 0 1.2rem}
+.guia ol{list-style:none;counter-reset:posicao;padding:0;margin:0}
+.guia li{display:flex;align-items:center;gap:.8rem;counter-increment:posicao;padding:.6rem 0;border-bottom:1px solid #c7dacf}
+.guia li::before{content:counter(posicao) "º";font-weight:700;width:2.1rem;color:var(--teal);font-size:1.14rem}
+.guia .info{margin:.75rem 0 1.05rem}
+.info{color:var(--muted);font-size:.875rem}
+.guia a{font-weight:640}
+.metodo{border-top:1px solid var(--rule);padding:2rem 0 3.6rem;color:var(--muted);max-width:100%}
+details summary{cursor:pointer;max-width:fit-content;color:var(--teal);font-weight:620}
+.metodo p{max-width:78ch;margin:.8rem 0}
+.rodape{border-top:1px solid var(--rule);padding:1rem 0 1.4rem;background:var(--surface);font-size:.88rem;color:var(--muted)}
+.rodape .moldura{display:flex;gap:.5rem;justify-content:space-between;flex-wrap:wrap}
+.visualmente-oculto{position:absolute;width:1px;height:1px;margin:-1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+.pular{position:absolute;top:0;left:.5rem;transform:translateY(-125%);background:white;padding:.7rem;z-index:1}
+.pular:focus{transform:translateY(0)}
+.com-relatorio .entrada{display:block;padding:1.35rem 0;border-bottom:1px solid var(--rule)}
+.com-relatorio .apresentacao,.com-relatorio .guia{display:none}
+.com-relatorio .campos{max-width:39rem}
+.relatorio{padding:clamp(2rem,5vw,4rem) 0 3rem}
+.topo-relatorio{display:flex;align-items:flex-start;gap:1.2rem;justify-content:space-between;flex-wrap:wrap}
+.topo-relatorio h1{font-size:clamp(2.05rem,4.2vw,3.8rem);max-width:100%;overflow-wrap:anywhere}
+.subtitulo{margin:.55rem 0 .9rem;max-width:78ch;color:var(--muted)}
+.secundario,.pagina a{font-weight:630;font-size:.92rem;color:var(--teal);border:1px solid #95aaa5;background:white;border-radius:4px;text-decoration:none}
+.secundario:hover,.pagina a:hover{background:#e4efe9}
+.numeros{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));margin:1.4rem 0 0;background:var(--dark);color:#fff;padding:.4rem 0;border-radius:4px}
+.numeros div{padding:1.1rem 1.5rem;border-right:1px solid #547171}.numeros div:last-child{border-right:0}
+.numeros dt{color:#cfdfdc;font-size:.85rem}.numeros dd{margin:.16rem 0 0;line-height:1.04;font-size:clamp(1.8rem,3vw,2.6rem);font-variant-numeric:tabular-nums;letter-spacing:-.045em}
+.bloco{margin-top:2.5rem}
+.bloco h2,.vazio h2{font-size:clamp(1.36rem,2.5vw,1.95rem);letter-spacing:-.037em}
+.bloco>p,.vazio p{margin:.5rem 0 1.1rem;max-width:78ch;color:var(--muted)}
+.lista-prioridades{list-style:none;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(15rem,100%),1fr));gap:.7rem;margin:0;padding:0}
+.lista-prioridades>li{padding:1rem 1.1rem;background:var(--pale);border-left:3px solid #54897d;min-width:0}
+.lista-prioridades h3{font-weight:640;font-size:1.16rem;line-height:1.25;letter-spacing:-.019em;overflow-wrap:anywhere}
+.lista-prioridades p{margin:.4rem 0;color:var(--muted);font-size:.92rem}
+.lista-prioridades small{color:var(--muted);display:block}
+.tabela{width:100%;border-collapse:collapse;table-layout:fixed;text-align:left;font-variant-numeric:tabular-nums}
+.tabela th,.tabela td{padding:.8rem .7rem;vertical-align:top;border-bottom:1px solid var(--rule);overflow-wrap:anywhere}
+.tabela thead th{color:var(--muted);font-weight:590;font-size:.87rem;background:#edf2ef}
+.tabela thead th:nth-child(1){width:33%}
+.tabela thead th:nth-child(2){width:16%}
+.tabela thead th:nth-child(3){width:20%}
+.tabela tbody th{font-size:1rem;font-weight:650}
+.tabela strong{font-weight:700}
+.tabela small{display:block;font-weight:400;margin-top:.16rem;color:var(--muted);font-size:.83rem}
+.rotulo-mobile{display:none}
+.rivais ol{list-style:none;margin:.42rem 0 .15rem;padding:0}
+.rivais li{display:flex;align-items:baseline;gap:.35rem;font-size:.91rem;margin:.22rem 0;overflow-wrap:anywhere}
+.rivais li span{display:inline-block;min-width:1.55rem;font-weight:620}
+.pagina{display:flex;align-items:center;gap:.75rem;flex-wrap:wrap;margin-top:1rem}
+.pagina a{padding:.52rem .8rem}
+.pagina span{color:var(--muted)}
+.ranking-rivais{display:flex;flex-wrap:wrap;list-style:none;gap:.5rem;padding:0}
+.ranking-rivais li{border:1px solid var(--rule);padding:.35rem .65rem;border-radius:3px;overflow-wrap:anywhere}
+.vazio{padding:1.3rem 1.5rem;border-left:4px solid var(--teal);background:var(--pale);margin:1rem 0}.vazio p:last-child{margin-bottom:0}
+.escopo{margin-top:1.35rem;max-width:84ch;font-size:.91rem;color:var(--muted)}
+#para-imprimir{display:none}
+@media(max-width:810px){.entrada{gap:2rem;grid-template-columns:minmax(0,1.2fr) minmax(15rem,.9fr)}.campos{flex-wrap:wrap}.campos input{min-width:min(13rem,100%)}}
+@media(max-width:650px){.cabecalho .moldura{min-height:3.75rem}.marca{font-size:1rem}.entrada{grid-template-columns:1fr;gap:2rem;padding:2.5rem 0}.lead{margin:1rem 0 1.3rem}.guia{padding:1.15rem}.numeros div{padding:.8rem .55rem}.numeros dt{font-size:.76rem}.numeros dd{font-size:1.65rem}.tabela,.tabela tbody{display:block}.tabela thead{position:absolute;clip-path:inset(50%);width:1px;height:1px;overflow:hidden}.tabela tr{display:grid;grid-template-columns:1fr 1fr;border-bottom:1px solid var(--rule);padding:.75rem 0;column-gap:.8rem}.tabela th,.tabela td{border:0;padding:.2rem 0}.tabela tbody th{grid-column:1/-1;font-size:1.12rem}.tabela td:last-child{grid-column:1/-1}.rotulo-mobile{display:block;color:var(--muted);font-size:.78rem}.secundario{min-height:2.6rem}.pagina{gap:.5rem}.bloco{margin-top:1.8rem}}
+@media(max-width:390px){.campos button{width:100%}.rodape .moldura{flex-direction:column}.numeros dt{overflow-wrap:anywhere}}
+@media print{
+:root{color:#000;background:white;font-size:10pt}body{background:white}.moldura{width:100%;max-width:none}
+.cabecalho,.entrada,.rodape,.metodo,.pular,.secundario,.pagina,.status,.aviso,.vazio a,.bloco>a,.nao-imprimir{display:none!important}
+.relatorio{padding:0}.bloco{margin:1rem 0 0}.numeros,.lista-prioridades>li,.vazio{background:transparent;color:#000;border:1px solid #888}.numeros dt{color:#333}
+.tabela{font-size:9pt;display:table}.tabela tbody{display:table-row-group}.tabela thead{display:table-header-group;position:static;clip-path:none;width:auto;height:auto;overflow:visible}.tabela tr{display:table-row;break-inside:avoid}.tabela th,.tabela td{display:table-cell;padding:.4rem;border-bottom:1px solid #bbb}.rotulo-mobile{display:none}.numeros div{padding:.6rem}.tabela small,.info{font-size:8pt}.lista-prioridades{display:block}.lista-prioridades>li{margin:.3rem 0;padding:.4rem .6rem}.bloco h2{break-after:avoid}
+body.imprimindo main{display:none}body.imprimindo #para-imprimir{display:block}summary{list-style:none}
+}
+
+/* Ações em uma sequência de trabalho, mantendo a identidade do portal. */
+h1{max-width:17ch;font-size:clamp(2.7rem,5.2vw,4.8rem)}
+.ajuda-busca{margin-top:.65rem;max-width:65ch}
+.guia h2{font-size:1.32rem;color:var(--ink);margin-bottom:.85rem;line-height:1.2}
+.guia li::before{content:counter(posicao);font-size:1rem;flex-shrink:0}
+.diagnostico{padding:clamp(2rem,5vw,4rem) 0 1.5rem}
+.relatorio+.diagnostico{border-top:1px solid var(--rule);padding-top:2rem}
+.topo-relatorio h2{font-size:clamp(1.65rem,3vw,2.45rem);letter-spacing:-.04em;overflow-wrap:anywhere}
+.acoes-topo{display:flex;flex-wrap:wrap;gap:.5rem;align-items:center}
+.nota-diagnostico{margin:.8rem 0 1rem;max-width:78ch;color:var(--muted)}
+.etapas{padding:0;list-style:none;margin:1.4rem 0;counter-reset:etapa;border-top:1px solid var(--rule)}
+.etapa{counter-increment:etapa;display:grid;grid-template-columns:3rem minmax(0,1fr);gap:.6rem;padding:1.4rem 0;border-bottom:1px solid var(--rule)}
+.etapa::before{content:counter(etapa);display:flex;align-items:center;justify-content:center;background:var(--dark);color:white;width:2.2rem;height:2.2rem;border-radius:50%;font-size:1rem;font-weight:650}
+.etapa h3{font-size:clamp(1.24rem,2.4vw,1.7rem);letter-spacing:-.025em;line-height:1.2;margin:.5rem 0}
+.etapa p{max-width:76ch;margin:.6rem 0}
+.etapa ol{padding-left:1.2rem;max-width:78ch;margin:.6rem 0 1rem}
+.etapa li{padding:.25rem 0}
+.etiqueta{display:inline-block;font-size:.83rem;font-weight:650;padding:.17rem .5rem;background:#e4efe9;color:#254f46;border-radius:3px}
+.etiqueta.manual{background:#eef0f4;color:#3c4e63}
+.evidencia{margin:.8rem 0;padding:.75rem 1rem;border-left:3px solid #799d91;background:#f0f5f2;max-width:80ch;overflow-wrap:anywhere}
+.evidencia p{font-size:.93rem;margin:.3rem 0}
+.evidencia a{display:inline-block;max-width:100%;overflow-wrap:anywhere}
+.evidencia code{font-size:.83rem;overflow-wrap:anywhere;white-space:normal}
+.detalhes-diag{margin:1.25rem 0}
+.detalhes-diag summary{min-height:2rem}
+.verificacoes{list-style:none;padding:0;margin:.5rem 0;max-width:80ch}
+.verificacoes li{padding:.65rem 0;border-bottom:1px solid var(--rule)}
+.verificacoes p{margin:.25rem 0}
+.verificacoes small{color:var(--muted)}
+.comparacao{border-left:3px solid var(--teal);background:var(--pale);padding:1rem 1.2rem;margin:1.3rem 0;max-width:80ch}
+.comparacao h2{font-size:1.2rem;line-height:1.25;margin-bottom:.5rem}
+.comparacao p{margin:.4rem 0}
+.comparacao ul{padding-left:1.2rem;margin:.5rem 0}
+.historico-local{display:flex;align-items:center;gap:.8rem;flex-wrap:wrap;margin:1rem 0;color:var(--muted)}
+.historico-local p{font-size:.87rem;max-width:72ch}
+.historico-local button{font-size:.87rem;min-height:2.6rem}
+.link-ranking{display:inline-block;margin:.4rem 0;min-height:1.5rem}
+.falha-diag{padding:1rem 1.2rem;background:#f3f1ec;border-left:3px solid #8a6c35;max-width:80ch;margin:1rem 0}
+.falha-diag p{margin:.45rem 0}
+@media(max-width:650px){.etapa{grid-template-columns:2.3rem minmax(0,1fr);gap:.4rem}.etapa::before{width:1.9rem;height:1.9rem}.etapa h3{margin-top:.55rem}.evidencia{padding:.6rem .75rem}.acoes-topo{width:100%}.acoes-topo button{white-space:normal}.diagnostico{padding-top:2rem}.topo-relatorio h1{font-size:2.05rem}}
+@media print{.diagnostico{padding:0}.etapas{margin:.7rem 0}.etapa{break-inside:avoid;grid-template-columns:2rem minmax(0,1fr);padding:.7rem 0}.etapa::before{color:#000;background:white;border:1px solid #888;width:1.5rem;height:1.5rem}.etapa h3{font-size:13pt}.evidencia,.comparacao,.etiqueta{background:white;color:#000}.etiqueta{border:1px solid #aaa}.historico-local,.acoes-topo,.link-ranking{display:none!important}.detalhes-diag{margin:.6rem 0}.topo-relatorio h1{font-size:23pt}.topo-relatorio h2{font-size:17pt}}
+
+
+.resumo-posicoes{margin:1rem 0;padding:.8rem 0;border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);color:var(--muted);max-width:80ch}
+.consultas-atuais{list-style:none;margin:1.4rem 0;padding:0}
+.consulta-atual{padding:1.35rem 0;border-top:1px solid var(--rule);break-inside:avoid}
+.consulta-cabecalho{display:flex;justify-content:space-between;align-items:baseline;gap:1rem;flex-wrap:wrap;margin-bottom:.6rem}
+.consulta-cabecalho h3{font-size:clamp(1.25rem,2.4vw,1.75rem);line-height:1.25;overflow-wrap:anywhere;letter-spacing:-.025em}
+.posicao-observada{font-size:1.15rem;color:var(--teal);font-weight:700}
+.consulta-atual p{margin:.45rem 0;max-width:80ch}
+.resultados-busca{list-style:none;padding:0;margin:.5rem 0;max-width:85ch}
+.resultados-busca li{display:flex;gap:.6rem;padding:.45rem 0;min-width:0}
+.resultados-busca .ordem{min-width:2rem;font-weight:650;color:var(--muted)}
+.resultados-busca small{display:block;color:var(--muted);overflow-wrap:anywhere}
+.resultados-busca a{overflow-wrap:anywhere}
+.consulta-atual details{margin:.75rem 0}
+.consulta-atual summary{min-height:1.8rem}
+.consulta-atual code{font-size:.8rem;overflow-wrap:anywhere;white-space:normal}
+.candidatos{list-style:none;padding:0;margin:.8rem 0;max-width:85ch}
+.candidatos>li{padding:.8rem 0;border-bottom:1px solid var(--rule)}
+.candidatos p{margin:.35rem 0}
+.candidatos details{margin:.3rem 0}
+.controles-relatorio{display:flex;gap:.5rem;flex-wrap:wrap}
+.controles-relatorio button{white-space:normal}
+@media print{.consulta-atual{padding:.8rem 0}.consulta-cabecalho h3{font-size:14pt}.posicao-observada{font-size:12pt}.controles-relatorio{display:none!important}.resultados-busca li{padding:.2rem 0}.resumo-posicoes{margin:.6rem 0}}
+
+
+.progresso-verificacao{margin:1rem 0;padding:1rem 1.2rem;background:var(--pale);border-left:3px solid var(--teal);max-width:85ch}
+.progresso-verificacao h2{font-size:1.15rem;line-height:1.3;margin-bottom:.45rem}
+.progresso-verificacao p{margin:.3rem 0}
+.painel-termos>summary{font-size:clamp(1.2rem,2.4vw,1.6rem);line-height:1.3;max-width:100%}
+.painel-termos>p{margin:.8rem 0;max-width:80ch;color:var(--muted)}
+.painel-termos>input{width:min(100%,34rem);display:block;margin:.4rem 0 .7rem}
+.painel-termos .pagina{margin:1rem 0}
+.candidatos .info{overflow-wrap:anywhere}
+@media print{.painel-termos>summary{font-size:16pt}.progresso-verificacao{display:none}}
+
+</style>
+</head>
+<body>
+<a class="pular" href="#busca">Ir para a consulta</a>
+<header class="cabecalho"><div class="moldura"><a class="marca" href="/"><span class="simbolo" aria-hidden="true"><i></i><i></i><i></i></span>Visibilidade Aberta</a><a href="#metodo" class="como" id="abrir-metodo">Sobre os dados</a></div></header>
+<main class="moldura">
+<section class="entrada" aria-label="Analisar um site">
+<div><div class="apresentacao"><h1>Como seu site aparece no Google?</h1><p class="lead">Descubra buscas relacionadas ao site e confira posições no Google. Veja a evidência de cada consulta e melhorias para facilitar o atendimento.</p></div>
+<form id="formulario" method="get" action="/" novalidate><label for="busca">Endereço do seu site</label><div class="campos"><input type="text" inputmode="url" autocapitalize="none" autocorrect="off" spellcheck="false" autocomplete="url" maxlength="2048" id="busca" placeholder="seusite.com.br" required aria-describedby="ajuda-busca erro"><button id="consultar" type="submit" disabled>Consultar meu site</button></div></form>
+<p class="info ajuda-busca" id="ajuda-busca">Código aberto, gratuito e sem cadastro. Informe apenas o endereço público do site.</p>
+<p class="aviso" id="erro" role="alert" hidden></p><p class="status" id="status" role="status" aria-live="polite"></p>
+</div>
+<aside class="guia"><h2>Da página à busca</h2><ol aria-label="Como funciona a consulta"><li>Identificamos termos nas páginas do site</li><li>Verificamos as buscas em várias páginas do Google</li><li>Mostramos posições, evidências e melhorias</li></ol><p class="info">Os termos selecionados são candidatos. A presença do site só é confirmada pelos resultados observados em cada busca.</p><p class="info">Executado neste computador. Para verificar posições, configure sua própria chave gratuita da SerpApi uma vez. A descoberta de termos funciona sem chave.</p></aside>
+</section>
+<noscript><p>Ative o JavaScript do navegador para consultar o domínio e abrir o relatório.</p></noscript>
+<section class="relatorio" id="resultado" aria-label="Verificação de posições no Google" hidden></section>
+<section class="diagnostico" id="diagnostico" aria-label="Melhorias para o site" hidden></section>
+<details class="metodo" id="metodo"><summary>Como analisamos e o que os dados permitem concluir</summary><p>A leitura automática examina o HTML inicial de até três páginas públicas, sem executar scripts ou enviar formulários. Cada observação informa a página, a data e a evidência disponível. Conteúdo carregado depois por JavaScript pode ficar fora da análise. Problemas que dependem de uma pessoa aparecem como conferência manual.</p><p>A ordem das ações considera barreiras de uso e a possibilidade de correção. A lista ajuda a começar; não é uma certificação de acessibilidade. Contraste, navegação e compreensão precisam também de avaliação com pessoas. <a href="https://www.w3.org/WAI/test-evaluate/" target="_blank" rel="noopener noreferrer">Orientações do W3C para avaliar acessibilidade</a>.</p><p>A descoberta lê até 12 páginas públicas e seleciona até 100 termos com evidências. Essa seleção não descobre todas as palavras para as quais o site aparece. Cada termo pode ser verificado em até cinco páginas do Google, por meio da SerpApi. A leitura avança em etapas, respeitando o limite gratuito. País, idioma, localidade, dispositivo e data aparecem no relatório, inclusive quando páginas diferentes foram observadas em horários diferentes.</p><p>A posição registrada soma o deslocamento da paginação à posição do resultado dentro da página retornada. Não é uma posição universal. Se o site não for encontrado, mostramos somente as páginas e a profundidade observadas. Isso não comprova ausência em outros resultados, buscas ou localidades. Se a fonte estiver indisponível ou a cota de consultas terminar, nenhuma posição é estimada. <a href="https://serpapi.com/search-api" target="_blank" rel="noopener noreferrer">Documentação da fonte de resultados</a>.</p><p>O site sozinho não revela lucro, vendas ou desperdício real de anúncios. Nenhuma recomendação garante posições ou receita. O diagnóstico básico pode ser usado por conta própria, sem contratar serviços.</p><p>Para comparar duas leituras, guardamos neste navegador somente o domínio, as datas, as URLs analisadas e os estados das verificações. Você pode apagar esse histórico. O progresso, as consultas e as evidências de ranking ficam em um banco SQLite na pasta data deste projeto. Não pedimos conta, e-mail ou dados dos seus clientes. A coleta acessa os sites informados; quando configurada, a consulta de posições envia os termos à SerpApi.</p></details>
+</main>
+<article class="moldura" id="para-imprimir" aria-label="Relatório para impressão"></article>
+<footer class="rodape"><div class="moldura"><span>Visibilidade Aberta</span><a href="https://github.com/felipercmb/visibilidade-aberta" target="_blank" rel="noopener noreferrer">Código aberto no GitHub · licença MIT</a></div></footer>
+<script>
+'use strict';
+const busca = document.getElementById('busca');
+const saida = document.getElementById('resultado');
+const painelDiagnostico = document.getElementById('diagnostico');
+const erro = document.getElementById('erro');
+const status = document.getElementById('status');
+const espelho = document.getElementById('para-imprimir');
+const modeloNumero = new Intl.NumberFormat('pt-BR');
+const tituloInicial = document.title;
+let pedido, impressao, atual;
+let timerContinuacao=null, continuacaoPausada=false, lotesAutomaticos=0, dominioPosicoes=null, motivoPausa="";
+let filtroTermos="", paginaTermos=1;
+let pedidoDiagnostico, diagnosticoAtual, dominioDiagnostico, comparacaoAtual, avisoHistorico = "";
+const CHAVE_HISTORICO = "visibilidade-diagnostico-v1";
+
+function elem(tag, texto, classe) {
+  const no = document.createElement(tag);
+  if (texto !== undefined && texto !== null) no.textContent = texto;
+  if (classe) no.className = classe;
+  return no;
+}
+
+function link(texto, href, externo = false) {
+  const a = elem('a', texto);
+  if (externo) {
+    let url;
+    try { url = new URL(href); } catch { return elem('span', texto); }
+    if (!['https:', 'http:'].includes(url.protocol) || url.username || url.password) return elem('span', texto);
+    a.href = url.href;
+    a.target = '_blank';
+    a.rel = 'noopener noreferrer';
+  } else {
+    a.href = href;
+  }
+  return a;
+}
+
+function endereco(site) {
+  const url = new URL('/', location.origin);
+  url.searchParams.set('site', site);
+  return url.pathname + url.search;
+}
+
+function normalizar(valor) {
+  const informacao = valor.trim();
+  if (!informacao || informacao.length > 2048 || /[\s\\\u0000-\u001f]/.test(informacao)) throw new Error('Informe um domínio completo, como empresa.com.br.');
+  const bruto = /^[a-z][a-z\d+.-]*:\/\//i.test(informacao) ? informacao : 'https://' + informacao;
+  const autoridade = /^https?:\/\/([^/?#]+)/i.exec(bruto);
+  if (!autoridade || /[@%]/.test(autoridade[1])) throw new Error('Use o domínio público do site, sem dados de acesso.');
+  let url;
+  try {
+    url = new URL(bruto);
+  } catch { throw new Error('Confira o endereço e tente novamente. Por exemplo, empresa.com.br.'); }
+  if (!['http:', 'https:'].includes(url.protocol) || url.username || url.password || url.port || !url.hostname.includes('.')) throw new Error('Use o domínio público do site, como empresa.com.br.');
+  let host = url.hostname.toLowerCase().replace(/\.$/, '');
+  if (host.startsWith('www.') && host.split('.').length > 2) host = host.slice(4);
+  if (/^\d+\.\d+\.\d+\.\d+$/.test(host) || /\.(?:localhost|local|internal|intranet|lan|home|corp|arpa|onion|invalid|test)$/.test(host)) throw new Error('Informe o domínio público do site, como empresa.com.br.');
+  return host;
+}
+
+function atualizarAndamento(mensagem = '') {
+  status.textContent = pedido && pedidoDiagnostico ? 'Identificando buscas, verificando posições e lendo as páginas. A consulta pode levar até um minuto…' :
+    pedido ? 'Verificando as buscas no Google. Isso pode levar até um minuto…' :
+    pedidoDiagnostico ? 'Lendo as páginas públicas para avaliar melhorias…' : mensagem;
+}
+
+function mostrarErro(mensagem) {
+  erro.textContent = mensagem;
+  erro.hidden = false;
+  status.textContent = '';
+}
+
+function limpar() {
+  erro.hidden = true;
+  erro.textContent = '';
+  busca.removeAttribute('aria-invalid');
+  status.textContent = '';
+}
+
+function cancelarImpressao() {
+  if (impressao) impressao.abort();
+  impressao = null;
+  document.body.classList.remove('imprimindo');
+  espelho.replaceChildren();
+}
+
+function inicio() {
+  cancelarContinuacao();
+  continuacaoPausada=true;dominioPosicoes=null;motivoPausa='';lotesAutomaticos=0;
+  if (pedido) pedido.abort();
+  pedido = null;
+  if (pedidoDiagnostico) pedidoDiagnostico.abort();
+  pedidoDiagnostico = null;
+  diagnosticoAtual = null;
+  dominioDiagnostico = null;
+  comparacaoAtual = null;
+  painelDiagnostico.replaceChildren();
+  painelDiagnostico.hidden = true;
+  cancelarImpressao();
+  limpar();
+  atual = null;
+  saida.replaceChildren();
+  saida.hidden = true;
+  saida.removeAttribute('aria-busy');
+  document.body.classList.remove('com-relatorio');
+  busca.value = '';
+  document.title = tituloInicial;
+}
+
+function dataHora(valor) {
+  if (!valor) return 'data indisponível';
+  const instante = new Date(valor);
+  return Number.isNaN(instante.getTime()) ? 'data indisponível' : new Intl.DateTimeFormat('pt-BR', {dateStyle:'short',timeStyle:'short'}).format(instante);
+}
+
+function lerHistorico() {
+  try {
+    const registros = JSON.parse(localStorage.getItem(CHAVE_HISTORICO) || '[]');
+    if (!Array.isArray(registros)) return [];
+    return registros.filter(r => r && r.versao === 1 && typeof r.dominio === 'string' && typeof r.coletadoEm === 'string' &&
+      Array.isArray(r.paginas) && r.paginas.length <= 3 && r.paginas.every(u => typeof u === 'string' && u.length <= 2048) &&
+      Array.isArray(r.verificacoes) && r.verificacoes.length <= 100 && r.verificacoes.every(v => v && typeof v.id === 'string' && typeof v.estado === 'string')).slice(-12);
+  } catch {
+    avisoHistorico = 'O navegador não permitiu usar o histórico local. A análise continua disponível.';
+    return [];
+  }
+}
+
+function resumoLocal(rel) {
+  return {versao:1, dominio:rel.dominio, coletadoEm:rel.coletadoEm, estado:rel.estado,
+    paginas:rel.paginas.map(p => p.url).sort(),
+    verificacoes:rel.verificacoes.map(v => ({id:v.id, estado:v.estado}))};
+}
+
+function guardarHistorico(rel, anteriores) {
+  if (rel.estado === 'indisponivel' || rel.cache?.reutilizado) return;
+  try {
+    localStorage.setItem(CHAVE_HISTORICO, JSON.stringify([...anteriores.filter(r => r.dominio !== rel.dominio), resumoLocal(rel)].slice(-12)));
+    avisoHistorico = '';
+  } catch { avisoHistorico = 'Não foi possível guardar esta leitura no navegador. Você ainda pode salvar o relatório em PDF.'; }
+}
+
+function compararLeituras(anterior, rel) {
+  if (!anterior) return null;
+  if (rel.cache?.reutilizado || anterior.coletadoEm === rel.coletadoEm) return {data:anterior.coletadoEm,tipo:'reutilizada',itens:[]};
+  const mesmasPaginas = JSON.stringify([...anterior.paginas].sort()) === JSON.stringify(rel.paginas.map(p => p.url).sort());
+  if (!mesmasPaginas || anterior.estado !== 'concluido' || rel.estado !== 'concluido' || rel.falhas.length) {
+    return {data:anterior.coletadoEm,tipo:'inconclusiva',itens:[]};
+  }
+  const antes = new Map(anterior.verificacoes.map(v => [v.id,v.estado]));
+  const itens = [];
+  for (const v of rel.verificacoes) {
+    if (antes.get(v.id) !== 'atencao') continue;
+    if (v.estado === 'verificado') itens.push({titulo:v.titulo,resultado:'A observação anterior não apareceu nesta leitura.'});
+    else if (v.estado === 'atencao') itens.push({titulo:v.titulo,resultado:'A observação continua presente.'});
+    else itens.push({titulo:v.titulo,resultado:'A nova leitura não permite concluir se houve correção.'});
+  }
+  for (const [id,estado] of antes) {
+    if (estado === 'atencao' && !rel.verificacoes.some(v => v.id === id)) itens.push({titulo:'Uma verificação anterior não foi repetida',resultado:'A comparação dessa observação é inconclusiva.'});
+  }
+  return {data:anterior.coletadoEm,tipo:'comparavel',itens};
+}
+
+function rotuloVerificacao(estado) {
+  return ({atencao:'Observação automática', verificado:'Verificado no HTML', manual:'Conferência manual', indisponivel:'Sem evidência suficiente'})[estado] || 'Conferência manual';
+}
+
+function evidenciaDaAcao(v, rel) {
+  const bloco = elem('div',null,'evidencia');
+  const pagina = rel.paginas.find(p => p.url === v.evidencia?.url);
+  bloco.append(elem('strong',v.estado === 'manual' ? 'Como conferir' : 'Evidência desta leitura'));
+  if (v.evidencia?.trecho) bloco.append(elem('p',v.evidencia.trecho));
+  if (v.evidencia?.url) bloco.append(link(v.evidencia.url,v.evidencia.url,true));
+  bloco.append(elem('p','Leitura de ' + dataHora(pagina?.coletadoEm || rel.coletadoEm),'info'));
+  return bloco;
+}
+
+function exibirComparacao(comparacao) {
+  if (!comparacao) return null;
+  const bloco = elem('section',null,'comparacao');
+  bloco.append(elem('h2','O que mudou desde a leitura anterior'));
+  bloco.append(elem('p','Referência guardada neste navegador: ' + dataHora(comparacao.data) + '.'));
+  if (comparacao.tipo === 'reutilizada') bloco.append(elem('p','O portal reutilizou uma leitura já disponível. Ainda não houve uma nova observação para comparar.'));
+  else if (comparacao.tipo === 'inconclusiva') bloco.append(elem('p','As páginas analisadas mudaram ou alguma leitura ficou incompleta. A comparação é inconclusiva; não confirmamos correções.'));
+  else if (!comparacao.itens.length) bloco.append(elem('p','Não havia observações automáticas de atenção na leitura anterior para comparar. As etapas manuais continuam precisando de conferência.'));
+  else {
+    const lista = elem('ul');
+    for (const item of comparacao.itens) {
+      const li = elem('li');
+      li.append(elem('strong',item.titulo + ': '), document.createTextNode(item.resultado));
+      lista.append(li);
+    }
+    bloco.append(lista,elem('p','A comparação cobre apenas as regras e páginas repetidas nas duas leituras.','info'));
+  }
+  return bloco;
+}
+
+function exibirDiagnostico(rel, imprimindo = false) {
+  const frag = document.createDocumentFragment();
+  const topo = elem('div',null,'topo-relatorio'), nomes = elem('div'), nome = elem('h2','Melhorias para o site');
+  nome.tabIndex = -1;
+  nomes.append(nome,elem('p','Melhorias para ajudar as pessoas a conhecer seu serviço e pedir atendimento.','subtitulo'));
+  topo.append(nomes);
+  if (!imprimindo) {
+    const controles = elem('div',null,'acoes-topo');
+    const atualizar = elem('button','Verificar melhorias');
+    atualizar.type = 'button';
+    atualizar.disabled = Boolean(pedidoDiagnostico);
+    atualizar.addEventListener('click',() => diagnosticar(rel.dominio,true,true));
+    const imprimirBotao = elem('button','Imprimir / salvar PDF','secundario');
+    imprimirBotao.type = 'button';
+    imprimirBotao.disabled = Boolean(pedidoDiagnostico);
+    imprimirBotao.addEventListener('click',() => imprimir(imprimirBotao));
+    controles.append(atualizar,imprimirBotao);
+    topo.append(controles);
+  }
+  frag.append(topo);
+  const paginas = rel.paginas.length;
+  frag.append(elem('p','Leitura de ' + dataHora(rel.coletadoEm) + '. ' + (paginas ? paginas + (paginas === 1 ? ' página pública analisada.' : ' páginas públicas analisadas.') : 'Nenhuma página pôde ser analisada.') + (rel.estado === 'parcial' ? ' A cobertura ficou parcial.' : ''),'info'));
+  if (rel.cache?.reutilizado) {
+    let aviso = 'Esta resposta reutiliza uma leitura recente; a data acima continua sendo a data da observação.';
+    if (rel.cache.atualizacaoPermitidaEm) aviso += ' Uma nova tentativa de leitura poderá ser feita a partir de ' + dataHora(rel.cache.atualizacaoPermitidaEm) + '.';
+    frag.append(elem('p',aviso,'nota-diagnostico'));
+  }
+  if (rel.estado === 'indisponivel') {
+    const falha = elem('div',null,'falha-diag');
+    falha.append(elem('strong','Não conseguimos ler as páginas agora.'),elem('p','Isso pode ocorrer por restrições de acesso ou indisponibilidade do site. Não significa que o site tenha um defeito. As orientações manuais abaixo continuam disponíveis.'));
+    frag.append(falha);
+  }
+  if (rel.paginas.length && !rel.verificacoes.some(v => v.estado === 'atencao')) {
+    frag.append(elem('p','As regras automáticas não apontaram observações de atenção nas páginas lidas. As tarefas abaixo são conferências com pessoas para avaliar o uso do site.','nota-diagnostico'));
+  }
+  if (rel.acoes.length) {
+    const secao = elem('section',null,'bloco');
+    secao.append(elem('h2',rel.acoes.length === 1 ? 'Uma ação para começar' : rel.acoes.length + ' ações para começar'),elem('p','Comece pelas observações abaixo. Você pode executar as orientações por conta própria ou compartilhá-las com quem cuida do site.'));
+    const lista = elem('ol',null,'etapas');
+    for (const v of rel.acoes) {
+      const item = elem('li',null,'etapa'), conteudo = elem('div');
+      conteudo.append(elem('span',rotuloVerificacao(v.estado),'etiqueta' + (v.estado === 'manual' ? ' manual' : '')),elem('h3',v.titulo));
+      if (v.orientacao) conteudo.append(elem('p',v.orientacao));
+      if (v.esforco) conteudo.append(elem('p','Esforço estimado: ' + v.esforco + '.','info'));
+      conteudo.append(evidenciaDaAcao(v,rel));
+      if (v.passos?.length) {
+        conteudo.append(elem('strong',v.estado === 'manual' ? 'Faça a conferência' : 'Como agir'));
+        const passos = elem('ol');
+        for (const passo of v.passos) passos.append(elem('li',passo));
+        conteudo.append(passos);
+      }
+      if (v.prioridade) conteudo.append(elem('p','Por que começar aqui: ' + v.prioridade,'info'));
+      item.append(conteudo);lista.append(item);
+    }
+    secao.append(lista);frag.append(secao);
+  }
+  const comparacao = exibirComparacao(comparacaoAtual);
+  if (comparacao) frag.append(comparacao);
+  const verificacoes = elem('details',null,'detalhes-diag');
+  verificacoes.open = imprimindo;
+  verificacoes.append(elem('summary','Ver todas as verificações e seus estados'));
+  const lista = elem('ul',null,'verificacoes');
+  for (const v of rel.verificacoes) {
+    const item = elem('li');
+    item.append(elem('strong',v.titulo),elem('p',rotuloVerificacao(v.estado),'info'));
+    if (v.evidencia?.trecho) item.append(elem('p',v.evidencia.trecho));
+    if (v.evidencia?.url) item.append(link('Página observada',v.evidencia.url,true));
+    lista.append(item);
+  }
+  verificacoes.append(lista);frag.append(verificacoes);
+  const limites = elem('details',null,'detalhes-diag');
+  limites.open = imprimindo || rel.estado !== 'concluido';
+  limites.append(elem('summary','Páginas, evidências e limites da leitura'));
+  const paginasLista = elem('ul',null,'verificacoes');
+  for (const pagina of rel.paginas) {
+    const item = elem('li');
+    item.append(link(pagina.url,pagina.url,true),elem('p','Coleta: ' + dataHora(pagina.coletadoEm),'info'));
+    if (pagina.sha256) item.append(elem('small','Identificador do conteúdo coletado: ' + pagina.sha256));
+    paginasLista.append(item);
+  }
+  for (const falha of rel.falhas) {
+    const item = elem('li');
+    item.append(elem('strong','Página sem análise'),elem('p',falha.url),elem('p',falha.motivo,'info'));
+    paginasLista.append(item);
+  }
+  limites.append(paginasLista);
+  for (const limite of rel.limites) limites.append(elem('p',limite,'nota-diagnostico'));
+  limites.append(elem('p','A leitura automática não certifica acessibilidade e não estima vendas, lucro ou desperdício de anúncios.','nota-diagnostico'));
+  frag.append(limites);
+  if (!imprimindo) {
+    const historico = elem('div',null,'historico-local');
+    historico.append(elem('p',avisoHistorico || 'O histórico de até 12 sites fica somente neste navegador, com datas, páginas e estados das verificações. Não guardamos o conteúdo das páginas no histórico local.'));
+    const apagar = elem('button','Apagar histórico deste navegador','secundario');
+    apagar.type = 'button';
+    apagar.addEventListener('click',() => {
+      try {
+        localStorage.removeItem(CHAVE_HISTORICO);
+        comparacaoAtual = null;
+        avisoHistorico = 'O histórico deste navegador foi apagado. A próxima leitura iniciará uma nova comparação.';
+        painelDiagnostico.replaceChildren(exibirDiagnostico(diagnosticoAtual));
+        status.textContent = 'Histórico local apagado.';
+        painelDiagnostico.querySelector('h2').focus();
+      } catch { status.textContent = 'O navegador não permitiu apagar o histórico. Use as configurações de dados do site.'; }
+    });
+    historico.append(apagar);frag.append(historico);
+    const ranking = link('Voltar à consulta','#resultado');
+    ranking.className = 'link-ranking';frag.append(ranking);
+  }
+  return frag;
+}
+
+function mostrarInicioDiagnostico(site, aguardando = true) {
+  const topo = elem('div',null,'topo-relatorio'), nomes = elem('div'), h = elem('h2','Melhorias para o site');
+  h.tabIndex = -1;
+  nomes.append(h,elem('p',aguardando ? 'Lendo as páginas públicas para encontrar melhorias possíveis.' : 'A análise das páginas não está disponível neste momento.','subtitulo'));
+  topo.append(nomes);
+  painelDiagnostico.replaceChildren(topo,elem('p',aguardando ? 'As evidências aparecem quando a leitura terminar. A verificação de posições acontece em paralelo.' : 'Você pode tentar novamente e consultar o estado da verificação no bloco acima.','info'));
+}
+
+async function diagnosticar(site, atualizar = false, foco = false) {
+  if (pedidoDiagnostico) pedidoDiagnostico.abort();
+  cancelarImpressao();
+  const mesmoSite = dominioDiagnostico === site;
+  dominioDiagnostico = site;
+  if (!mesmoSite) { diagnosticoAtual = null; comparacaoAtual = null; avisoHistorico = ''; }
+  const controle = new AbortController();
+  pedidoDiagnostico = controle;
+  document.body.classList.add('com-relatorio');
+  painelDiagnostico.hidden = false;
+  painelDiagnostico.setAttribute('aria-busy','true');
+  if (diagnosticoAtual) painelDiagnostico.replaceChildren(exibirDiagnostico(diagnosticoAtual));
+  else mostrarInicioDiagnostico(site);
+  if (foco) painelDiagnostico.querySelector('h2').focus();
+  atualizarAndamento();
+  try {
+    const resposta = await fetch('/api/diagnostico', {method:'POST',signal:controle.signal,headers:{'Content-Type':'application/json',Accept:'application/json'},body:JSON.stringify({site,atualizar})});
+    let rel;
+    try { rel = await resposta.json(); } catch { throw new Error('A leitura não pôde ser concluída. Tente novamente em instantes.'); }
+    if (!resposta.ok) throw new Error(typeof rel.erro === 'string' ? rel.erro : 'A leitura está indisponível. Tente novamente em instantes.');
+    if (rel.versao !== 1 || rel.dominio !== site || !Array.isArray(rel.paginas) || !Array.isArray(rel.verificacoes) || !Array.isArray(rel.acoes) || !Array.isArray(rel.limites) || !Array.isArray(rel.falhas)) throw new Error('A leitura chegou incompleta. Tente novamente.');
+    if (controle.signal.aborted || pedidoDiagnostico !== controle) return;
+    const anteriores = lerHistorico();
+    const anterior = anteriores.find(r => r.dominio === site);
+    comparacaoAtual = compararLeituras(anterior,rel);
+    guardarHistorico(rel,anteriores);
+    diagnosticoAtual = rel;
+    pedidoDiagnostico = null;
+    const devolverFoco = foco && painelDiagnostico.contains(document.activeElement);
+    painelDiagnostico.replaceChildren(exibirDiagnostico(rel));
+    document.title = site + ' · Visibilidade Aberta';
+    atualizarAndamento(rel.cache?.reutilizado ? 'Leitura das páginas recuperada. Confira a data no relatório.' : rel.estado === 'indisponivel' ? 'Não foi possível analisar o HTML. As conferências manuais estão disponíveis.' : 'Leitura das páginas concluída. As ações e as evidências estão disponíveis.');
+    if (devolverFoco) painelDiagnostico.querySelector('h2').focus();
+  } catch (falha) {
+    if (controle.signal.aborted || pedidoDiagnostico !== controle) return;
+    pedidoDiagnostico = null;
+    if (diagnosticoAtual) painelDiagnostico.replaceChildren(exibirDiagnostico(diagnosticoAtual));
+    else mostrarInicioDiagnostico(site, false);
+    const aviso = elem('div',null,'falha-diag');
+    aviso.setAttribute('role','alert');
+    aviso.append(elem('strong','A leitura automática não foi concluída.'),elem('p',falha instanceof TypeError ? 'Verifique sua conexão e tente novamente. Não concluímos que exista um problema no seu site.' : falha.message));
+    if (diagnosticoAtual) aviso.append(elem('p','O relatório anterior continua abaixo com a sua data original.'));
+    const tentar = elem('button','Tentar a leitura novamente','secundario');
+    tentar.type = 'button';tentar.addEventListener('click',() => diagnosticar(site,true,true));
+    aviso.append(tentar);
+    painelDiagnostico.prepend(aviso);
+    atualizarAndamento();
+  } finally {
+    if (dominioDiagnostico === site && (!pedidoDiagnostico || pedidoDiagnostico === controle)) painelDiagnostico.removeAttribute('aria-busy');
+  }
+}
+
+function validarRelatorioPosicoes(rel, site) {
+  const estados = ['verificado','parcial','sem_termos','fonte_nao_configurada','cota_esgotada','indisponivel'];
+  if (!rel || rel.versao !== 2 || rel.dominio !== site || !estados.includes(rel.estado) ||
+      !Array.isArray(rel.consultas) || !Array.isArray(rel.candidatos) || rel.candidatos.length > 100 ||
+      !Array.isArray(rel.limites) || !rel.cobertura || !rel.descoberta || !rel.progresso ||
+      typeof rel.progresso.continuar !== 'boolean') throw new Error('A resposta chegou incompleta. Tente novamente.');
+  return rel;
+}
+
+function podeContinuarPosicoes(rel, contexto) {
+  return rel?.progresso?.continuar === true && !['fonte_nao_configurada','cota_esgotada','indisponivel','sem_termos'].includes(rel.estado) &&
+    contexto.visivel === true && !contexto.pausada && contexto.lotes < 6 && contexto.dominio === rel.dominio;
+}
+
+function descricaoPosicao(consulta) {
+  if (consulta.estado === 'encontrado' && Number.isInteger(consulta.posicao) && consulta.posicao > 0) return 'Posição registrada: ' + consulta.posicao;
+  if (consulta.estado === 'nao_encontrado') return consulta.concluida ? 'Não observado nas páginas lidas' : 'Ainda não observado; leitura pendente';
+  return 'Posição não verificada';
+}
+
+function recorteDaPosicao(resultado) {
+  const partes = [];
+  if (Number.isInteger(resultado.pagina) && resultado.pagina > 0) partes.push('Página ' + resultado.pagina);
+  if (Number.isInteger(resultado.posicaoNaPagina) && resultado.posicaoNaPagina > 0) partes.push(resultado.posicaoNaPagina + 'º resultado nessa página');
+  return partes.join('; ');
+}
+
+function filtrarCandidatos(candidatos, filtro, pagina = 1, porPagina = 10) {
+  const normalizarTexto = valor => String(valor || '').normalize('NFD').replace(/\p{M}/gu,'').toLocaleLowerCase('pt-BR');
+  const termo = normalizarTexto(filtro).trim();
+  const filtrados = candidatos.filter(c => normalizarTexto(c.termo).includes(termo));
+  const paginas = Math.max(1,Math.ceil(filtrados.length / porPagina));
+  const atualPagina = Math.max(1,Math.min(paginas,Number.isInteger(pagina) ? pagina : 1));
+  return {itens:filtrados.slice((atualPagina-1)*porPagina,atualPagina*porPagina),total:filtrados.length,paginas,pagina:atualPagina};
+}
+
+function mensagemAndamento(codigo) {
+  const mensagens = {
+    fonte_naoconfig: 'Configure SERPAPI_KEY no arquivo .env e reinicie o servidor para verificar posições atuais.',
+    fonte_nao_configurada: 'Configure SERPAPI_KEY no arquivo .env e reinicie o servidor para verificar posições atuais.',
+    configuracao: 'Não foi possível validar a fonte. Confira a chave SERPAPI_KEY e se a conta usa o plano Free.',
+    cota: 'O limite gratuito desta instalação foi atingido. Tente novamente mais tarde.',
+    cota_dominio: 'Este domínio atingiu o limite de 20 páginas do Google em 24 horas. Os resultados já obtidos foram preservados.',
+    plano_incompativel: 'Esta instalação aceita somente o plano Free da SerpApi. Confira o plano da sua conta; nenhuma busca foi iniciada.',
+    controle: 'A verificação foi pausada. Tente novamente mais tarde.',
+    prazo: 'Esta etapa atingiu o tempo disponível. Você pode continuar a verificação.',
+    ocupada: 'Há outra verificação em andamento. Aguarde alguns instantes.',
+    limite: 'Esta sequência atingiu o limite de leitura. Os resultados já obtidos foram preservados.',
+    fila: 'Há buscas pendentes. A verificação pode continuar em novas etapas.',
+    concluido: 'A verificação desta seleção terminou dentro dos limites disponíveis.',
+  };
+  return typeof codigo === 'string' && Object.hasOwn(mensagens,codigo) ? mensagens[codigo] : 'Confira os resultados disponíveis e os termos que ainda aguardam verificação.';
+}
+
+function rotuloCandidato(candidato) {
+  if(typeof candidato.rotulo === 'string' && candidato.rotulo.trim()) return candidato.rotulo.trim();
+  const rotulos={marca:'Marca',servico:'Serviço',local:'Busca local',produto:'Produto',entidade:'Nome identificado no conteúdo',relacionada:'Busca relacionada do Google'};
+  return Object.hasOwn(rotulos,candidato.tipo) ? rotulos[candidato.tipo] : 'Termo relacionado';
+}
+
+function origemCandidato(evidencia) {
+  const linhas=[];
+  const fonte=typeof evidencia.fonte==='string' ? evidencia.fonte : evidencia.fonte?.nome;
+  if(typeof fonte==='string' && fonte.trim()) linhas.push('Fonte: '+fonte.trim());
+  if(typeof evidencia.termoOrigem==='string' && evidencia.termoOrigem.trim()) linhas.push('Busca que originou esta sugestão: '+evidencia.termoOrigem.trim());
+  if(typeof evidencia.fonteId==='string' && evidencia.fonteId.trim()) linhas.push('Consulta de origem na fonte: '+evidencia.fonteId.trim());
+  return linhas;
+}
+
+function avisosDescoberta(descoberta) {
+  const avisos=[];
+  if(descoberta.limitada) avisos.push('A descoberta ficou parcial; pode haver outras páginas e termos.');
+  if(descoberta.releituraIndisponivel) avisos.push('Não foi possível reler as páginas agora. Os candidatos preservados vieram da descoberta anterior e mantêm as datas originais nas evidências.');
+  return avisos;
+}
+
+function resultadosDaBusca(resultados) {
+  const lista = elem('ol',null,'resultados-busca');
+  for (const resultado of resultados || []) {
+    if (!Number.isInteger(resultado.posicao) || resultado.posicao < 1) continue;
+    const item = elem('li'), nome = elem('div');
+    item.append(elem('span',String(resultado.posicao),'ordem'));
+    nome.append(link(resultado.dominio || resultado.titulo || 'Abrir resultado',resultado.url,true));
+    if (resultado.titulo && resultado.dominio) nome.append(elem('small',resultado.titulo));
+    const recorte = recorteDaPosicao(resultado);
+    if (recorte) nome.append(elem('small',recorte));
+    if (resultado.coletadoEm) nome.append(elem('small','Observado em ' + dataHora(resultado.coletadoEm) + '. Fonte: ' + (resultado.fonte?.nome || 'não informada') + (resultado.fonte?.id ? ' — consulta ' + resultado.fonte.id : '') + '.'));
+    item.append(nome);lista.append(item);
+  }
+  return lista;
+}
+
+function avisoPosicoes(rel) {
+  const fixos = {
+    fonte_nao_configurada: 'Configure SERPAPI_KEY no arquivo .env e reinicie o servidor para verificar posições atuais. Os termos descobertos e as melhorias do site podem ser consultados normalmente.',
+    cota_esgotada: 'O limite gratuito de consultas foi atingido. A verificação foi interrompida. Os resultados já obtidos permanecem abaixo com suas datas.',
+    sem_termos: 'Não foi possível selecionar buscas com evidências suficientes nas páginas lidas. Nenhuma posição foi estimada.',
+    indisponivel: 'Não foi possível concluir a verificação de posições agora. Isso não significa que o site esteja ausente do Google.',
+  };
+  return fixos[rel.estado] || rel.aviso || '';
+}
+
+function controlesPosicoes(site) {
+  const controles = elem('div',null,'controles-relatorio');
+  if (pedido || timerContinuacao) {
+    const pausar = elem('button','Pausar verificação','secundario');pausar.type='button';
+    pausar.addEventListener('click',() => pausarPosicoes('Verificação pausada. Nenhuma nova etapa será iniciada.',true));
+    controles.append(pausar);
+  } else {
+    const continuar = elem('button',atual?.progresso?.continuar || continuacaoPausada ? 'Continuar verificação' : 'Verificar posições novamente');
+    continuar.type='button';continuar.addEventListener('click',() => iniciarPosicoes(site,true,true));
+    controles.append(continuar);
+  }
+  if (atual || diagnosticoAtual) {
+    const pdf = elem('button','Imprimir / salvar PDF','secundario');pdf.type='button';pdf.addEventListener('click',() => imprimir(pdf));controles.append(pdf);
+  }
+  return controles;
+}
+
+function evidenciaPaginas(consulta, imprimindo) {
+  const paginas = Array.isArray(consulta.paginas) ? consulta.paginas : [];
+  const bloco = elem('details');bloco.open=imprimindo;
+  bloco.append(elem('summary','Páginas do Google lidas e evidências'));
+  if (!paginas.length) bloco.append(elem('p','Não há captura de página disponível para esta tentativa.','info'));
+  for (const pagina of paginas) {
+    const item = elem('div',null,'evidencia');
+    item.append(elem('strong','Página ' + pagina.pagina + (Number.isInteger(pagina.inicio) ? ' — deslocamento ' + pagina.inicio : '')));
+    item.append(elem('p','Observada em ' + dataHora(pagina.coletadoEm) + '. Fonte: ' + (pagina.fonte?.nome || 'não informada') + '.','info'));
+    if (pagina.fonte?.id) item.append(elem('p','Consulta na fonte: ' + pagina.fonte.id,'info'));
+    if (pagina.sha256) item.append(elem('code','SHA-256: ' + pagina.sha256));
+    bloco.append(item);
+  }
+  return bloco;
+}
+
+function itemCandidato(candidato, rel, imprimindo) {
+  const item = elem('li');
+  const tipo = rotuloCandidato(candidato);
+  item.append(elem('strong',candidato.termo),elem('p',tipo,'info'));
+  const consulta = rel.consultas.find(c => c.termo === candidato.termo);
+  item.append(elem('p',consulta ? descricaoPosicao(consulta) : 'Termo descoberto; verificação ainda pendente.','info'));
+  const evidencia = candidato.evidencia;
+  if (evidencia) {
+    const prova = elem('details');prova.open=imprimindo;prova.append(elem('summary','Ver a origem deste termo'));
+    if (evidencia.trecho) prova.append(elem('p',evidencia.trecho));
+    if (evidencia.url) prova.append(link('Página de origem',evidencia.url,true));
+    for (const linha of origemCandidato(evidencia)) prova.append(elem('p',linha,'info'));
+    if (evidencia.campo) prova.append(elem('p','Campo observado: ' + evidencia.campo,'info'));
+    if (evidencia.coletadoEm) prova.append(elem('p',(evidencia.url ? 'Página lida em ' : 'Evidência observada em ') + dataHora(evidencia.coletadoEm),'info'));
+    if (evidencia.sha256) prova.append(elem('p','Identificador do conteúdo: ' + evidencia.sha256,'info'));
+    item.append(prova);
+  }
+  return item;
+}
+
+function exibirCandidatos(rel, imprimindo) {
+  const secao = elem('details',null,'bloco painel-termos');
+  secao.id='termos-descobertos';secao.open=imprimindo || !rel.cobertura.verificadas;
+  secao.append(elem('summary','Termos descobertos e suas origens (' + rel.candidatos.length + ')'),elem('p','Os candidatos vêm do conteúdo do site ou de buscas relacionadas retornadas pelo Google. Cada termo mostra sua origem. A descoberta não confirma presença no Google. Termos pendentes ainda não foram verificados.'));
+  if (imprimindo) {
+    const lista = elem('ul',null,'candidatos');
+    for (const candidato of rel.candidatos) lista.append(itemCandidato(candidato,rel,true));
+    secao.append(lista);return secao;
+  }
+  const rotulo = elem('label','Filtrar termos encontrados');rotulo.htmlFor='filtro-termos';
+  const campo=elem('input');campo.type='search';campo.id='filtro-termos';campo.value=filtroTermos;campo.placeholder='Digite parte de um termo';campo.autocomplete='off';
+  const lista=elem('ul',null,'candidatos'), resumo=elem('p',null,'info'), navegacao=elem('nav',null,'pagina');
+  navegacao.setAttribute('aria-label','Páginas dos termos descobertos');resumo.setAttribute('role','status');
+  function atualizar(focoPagina=false) {
+    const lote=filtrarCandidatos(rel.candidatos,filtroTermos,paginaTermos);paginaTermos=lote.pagina;
+    lista.replaceChildren(...lote.itens.map(c => itemCandidato(c,rel,false)));
+    resumo.textContent=lote.total ? lote.total + ' termos correspondentes. Página ' + lote.pagina + ' de ' + lote.paginas + '.' : 'Nenhum termo corresponde a este filtro.';
+    navegacao.replaceChildren();
+    if(lote.pagina>1){const anterior=elem('button','Anterior','secundario');anterior.type='button';anterior.addEventListener('click',()=>{paginaTermos--;atualizar(true);});navegacao.append(anterior);}
+    if(lote.pagina<lote.paginas){const proxima=elem('button','Próxima','secundario');proxima.type='button';proxima.addEventListener('click',()=>{paginaTermos++;atualizar(true);});navegacao.append(proxima);}
+    if(focoPagina){resumo.tabIndex=-1;resumo.focus();}
+  }
+  campo.addEventListener('input',()=>{filtroTermos=campo.value;paginaTermos=1;atualizar();});
+  secao.append(rotulo,campo,resumo,lista,navegacao);atualizar();return secao;
+}
+
+function exibirPosicoes(rel, imprimindo = false) {
+  const temVerificacoes = Number.isInteger(rel.cobertura?.verificadas) && rel.cobertura.verificadas > 0;
+  const frag = document.createDocumentFragment();
+  const topo=elem('div',null,'topo-relatorio'),nomes=elem('div'),nome=elem('h1',rel.dominio);nome.tabIndex=-1;
+  nomes.append(nome,elem('p',temVerificacoes ? 'Termos descobertos no site e resultados observados no Google.' : rel.candidatos.length ? 'Termos descobertos no site. A verificação das posições ainda está pendente.' : 'A consulta de posições no Google ainda não foi concluída.','subtitulo'));
+  topo.append(nomes);if(!imprimindo)topo.append(controlesPosicoes(rel.dominio));frag.append(topo);
+  frag.append(elem('p','Relatório atualizado em ' + dataHora(rel.geradoEm) + '. As páginas do Google podem ter sido observadas em horários diferentes.','info'));
+  if(rel.cache?.reutilizado)frag.append(elem('p','Esta resposta reutiliza dados já disponíveis. As datas das capturas abaixo continuam sendo as datas das observações.','nota-diagnostico'));
+  const descoberta=rel.descoberta;
+  const resumoDescoberta=[];
+  if(Number.isInteger(descoberta.paginasLidas))resumoDescoberta.push(descoberta.paginasLidas + ' páginas do site lidas');
+  if(Number.isInteger(descoberta.termosDescobertos))resumoDescoberta.push(descoberta.termosDescobertos + ' termos descobertos');
+  if(resumoDescoberta.length)frag.append(elem('p',resumoDescoberta.join('; ') + '. Descoberta de ' + dataHora(descoberta.coletadoEm) + '.','resumo-posicoes'));
+  for(const avisoDescoberta of avisosDescoberta(descoberta)) frag.append(elem('p',avisoDescoberta,'nota-diagnostico'));
+  frag.append(elem('p','A descoberta lê até 12 páginas públicas e seleciona até 100 termos. Cada termo pode ser verificado em até cinco páginas do Google. Os números efetivamente lidos aparecem no relatório; a seleção não cobre todas as buscas possíveis.','nota-diagnostico'));
+  const cobertura=rel.cobertura;
+  const resumo=[];
+  if(Number.isInteger(cobertura.verificadas))resumo.push(cobertura.verificadas + ' buscas com resultados verificados');
+  if(Number.isInteger(cobertura.encontradas))resumo.push(cobertura.encontradas + ' com o domínio observado');
+  if(Number.isInteger(cobertura.pendentes))resumo.push(cobertura.pendentes + ' pendentes');
+  if(Number.isInteger(cobertura.paginasConsultadas))resumo.push(cobertura.paginasConsultadas + ' páginas do Google consultadas');
+  if(resumo.length)frag.append(elem('p',resumo.join('; ') + '.','resumo-posicoes'));
+  const aviso=avisoPosicoes(rel);if(aviso){const nota=elem('div',null,rel.estado==='parcial'?'vazio':'falha-diag');nota.append(elem('p',aviso));frag.append(nota);}
+  if(!imprimindo && (pedido || timerContinuacao || motivoPausa || rel.progresso.motivo)) {
+    const progresso=elem('section',null,'progresso-verificacao');
+    progresso.append(elem('h2','Andamento da verificação'));
+    const mensagem=pedido ? 'Lendo a próxima etapa de resultados. Você pode pausar novas etapas.' : timerContinuacao ? 'A próxima etapa começará em alguns segundos enquanto esta página estiver aberta e visível.' : motivoPausa || mensagemAndamento(rel.progresso.motivo);
+    progresso.append(elem('p',mensagem));
+    if(Number.isInteger(rel.progresso.paginasNesteLote))progresso.append(elem('p',rel.progresso.paginasNesteLote + ' páginas do Google consultadas na última etapa.','info'));
+    frag.append(progresso);
+  }
+  if(rel.consultas.length){
+    const secao=elem('section',null,'bloco');secao.append(elem('h2',temVerificacoes?'Resultados das buscas verificadas':'Situação das tentativas de verificação'));
+    secao.append(elem('p','A posição registrada soma o deslocamento da paginação à posição do resultado dentro da página retornada. É uma medida deste recorte, não uma posição universal. Páginas de uma mesma busca podem ter datas diferentes.'));
+    const lista=elem('ul',null,'consultas-atuais');
+    for(const consulta of rel.consultas){
+      const item=elem('li',null,'consulta-atual'),cabecalho=elem('div',null,'consulta-cabecalho');
+      const encontrado=consulta.estado==='encontrado'&&Number.isInteger(consulta.posicao)&&consulta.posicao>0;
+      cabecalho.append(elem('h3',consulta.termo),elem('span',descricaoPosicao(consulta),encontrado?'posicao-observada':'etiqueta manual'));item.append(cabecalho);
+      if(encontrado){const recorte=recorteDaPosicao(consulta);if(recorte)item.append(elem('p',recorte,'info'));if(consulta.url)item.append(link('Página do site observada',consulta.url,true));}
+      if(consulta.estado==='nao_encontrado'){
+        const profundidade=Number.isInteger(consulta.profundidadeObservada)?' Profundidade registrada: '+consulta.profundidadeObservada+'.':'';
+        item.append(elem('p','O domínio não foi observado nas páginas lidas desta busca.'+profundidade+(consulta.concluida?' A leitura deste termo terminou dentro do limite disponível.':' A verificação deste termo ainda está incompleta.'),'info'));
+      }
+      if(consulta.motivo)item.append(elem('p',consulta.motivo,'info'));
+      if(consulta.interrompidaPor)item.append(elem('p',mensagemAndamento(consulta.interrompidaPor),'info'));
+      const contexto=consulta.contexto||{};
+      if(encontrado||consulta.estado==='nao_encontrado'){
+        item.append(elem('p','Observação de referência: '+dataHora(consulta.coletadoEm)+'. Fonte: '+(consulta.fonte?.nome||'não informada')+'. Confira as datas de cada página abaixo.','info'));
+        item.append(elem('p','País: '+(contexto.pais||'não informado')+'. Idioma: '+(contexto.idioma||'não informado')+'. Dispositivo: '+(contexto.dispositivo||'não informado')+'. Localidade: '+(contexto.localidade||'não informada')+'.','info'));
+      }
+      if(encontrado&&consulta.acima?.length){const grupo=elem('details');grupo.open=imprimindo;grupo.append(elem('summary','Sites registrados antes do seu resultado'),resultadosDaBusca(consulta.acima));item.append(grupo);}
+      else if(encontrado&&consulta.pagina===1&&consulta.posicaoNaPagina===1)item.append(elem('p','O domínio foi observado no primeiro resultado orgânico da primeira página retornada.','info'));
+      else if(encontrado)item.append(elem('p','Não há lista de resultados anteriores disponível neste recorte.','info'));
+      if(!encontrado&&consulta.resultados?.length){const grupo=elem('details');grupo.open=imprimindo;grupo.append(elem('summary','Sites encontrados nas páginas lidas'),resultadosDaBusca(consulta.resultados));item.append(grupo);}
+      item.append(evidenciaPaginas(consulta,imprimindo));lista.append(item);
+    }
+    secao.append(lista);frag.append(secao);
+  }
+  if(rel.candidatos.length)frag.append(exibirCandidatos(rel,imprimindo));
+  const limites=elem('details',null,'detalhes-diag');limites.open=imprimindo;limites.append(elem('summary','Limites desta verificação e do acesso gratuito'));
+  limites.append(elem('p','Cada domínio pode consultar até 20 páginas de resultados do Google em 24 horas. Esta instalação também tem um limite de 40 consultas por hora e 200 por mês, compartilhado entre os domínios analisados. Ao atingir um limite, a leitura para e preserva os dados já obtidos.','nota-diagnostico'));
+  limites.append(elem('p','A leitura avança em etapas de até quatro páginas do Google. Esta página pode executar até seis etapas por sequência, incluindo a descoberta inicial, e oferece pausa e continuação. Fechar ou ocultar a página interrompe o avanço automático.','nota-diagnostico'));
+  for(const limite of rel.limites)limites.append(elem('p',limite,'nota-diagnostico'));
+  limites.append(elem('p','Posições podem variar entre localidades, dispositivos e momentos. Nenhum resultado informa sozinho volume de buscas, vendas ou desperdício de anúncios.','nota-diagnostico'));frag.append(limites);
+  if(!imprimindo){const ir=link('Ver as melhorias do site','#diagnostico');ir.className='link-ranking';frag.append(ir);}return frag;
+}
+
+function redesenharPosicoes() {
+  if(!atual)return;
+  const foco=document.activeElement?.id;
+  const selecao=foco==='filtro-termos'?document.activeElement.selectionStart:null;
+  const abertos=Array.from(saida.querySelectorAll('details[id]')).filter(d=>d.open).map(d=>d.id);
+  saida.replaceChildren(exibirPosicoes(atual));
+  for(const id of abertos){const detalhe=document.getElementById(id);if(detalhe)detalhe.open=true;}
+  if(foco==='filtro-termos'){const campo=document.getElementById(foco);if(campo){campo.focus({preventScroll:true});if(Number.isInteger(selecao))campo.setSelectionRange(selecao,selecao);}}
+}
+
+function mostrarInicioPosicoes(site, aguardando = true) {
+  const topo=elem('div',null,'topo-relatorio'),h=elem('h1',site);h.tabIndex=-1;topo.append(h,controlesPosicoes(site));
+  saida.replaceChildren(topo,elem('p',aguardando?'Descobrindo termos nas páginas públicas. A verificação do Google continuará em etapas.':motivoPausa||'A verificação de posições não foi concluída. Nenhuma posição foi estimada.','subtitulo'));
+  const ir=link('Veja também as melhorias do site','#diagnostico');ir.className='link-ranking';saida.append(ir);
+}
+
+function cancelarContinuacao() {
+  if(timerContinuacao)clearTimeout(timerContinuacao);timerContinuacao=null;
+}
+
+function pausarPosicoes(motivo='Verificação pausada. Nenhuma nova etapa será iniciada.', redesenhar=true) {
+  cancelarContinuacao();continuacaoPausada=true;motivoPausa=motivo;
+  const anterior=pedido;pedido=null;if(anterior)anterior.abort();
+  if(redesenhar&&dominioPosicoes){if(atual)redesenharPosicoes();else mostrarInicioPosicoes(dominioPosicoes,false);saida.removeAttribute('aria-busy');atualizarAndamento(motivo);}
+}
+
+function agendarContinuacao(rel) {
+  cancelarContinuacao();
+  const contexto={visivel:document.visibilityState==='visible',pausada:continuacaoPausada,lotes:lotesAutomaticos,dominio:dominioPosicoes};
+  if(!podeContinuarPosicoes(rel,contexto)){
+    if(rel.progresso.continuar&&lotesAutomaticos>=6){continuacaoPausada=true;motivoPausa='Esta sequência chegou a seis etapas. Você pode continuar a verificação, respeitando os limites gratuitos.';}
+    return;
+  }
+  const espera=Math.min(60000,Math.max(3000,Number(rel.progresso.esperaMs)||3000));
+  timerContinuacao=setTimeout(()=>{
+    timerContinuacao=null;
+    if(podeContinuarPosicoes(atual,{visivel:document.visibilityState==='visible',pausada:continuacaoPausada,lotes:lotesAutomaticos,dominio:dominioPosicoes})&&atual===rel)verificarPosicoes(rel.dominio,false,true);
+  },espera);
+}
+
+function iniciarPosicoes(site,foco=false,continuar=false) {
+  cancelarContinuacao();
+  const anterior=pedido;pedido=null;if(anterior)anterior.abort();
+  if(dominioPosicoes!==site){filtroTermos='';paginaTermos=1;atual=null;}
+  dominioPosicoes=site;lotesAutomaticos=0;continuacaoPausada=false;motivoPausa='';
+  if(document.visibilityState!=='visible'){
+    continuacaoPausada=true;motivoPausa='A verificação está pausada enquanto esta página não estiver visível.';
+    saida.hidden=false;document.body.classList.add('com-relatorio');if(atual)redesenharPosicoes();else mostrarInicioPosicoes(site,false);return;
+  }
+  verificarPosicoes(site,foco,continuar);
+}
+
+async function verificarPosicoes(site,foco=false,continuar=false) {
+  cancelarContinuacao();
+  if(continuacaoPausada||dominioPosicoes!==site||document.visibilityState!=='visible')return;
+  if(pedido)pedido.abort();cancelarImpressao();
+  const controle=new AbortController();pedido=controle;lotesAutomaticos++;
+  if(atual?.dominio!==site)atual=null;
+  document.body.classList.add('com-relatorio');saida.hidden=false;saida.setAttribute('aria-busy','true');
+  if(atual)redesenharPosicoes();else mostrarInicioPosicoes(site);
+  if(foco)saida.querySelector('h1').focus();atualizarAndamento();
+  let expirou=false;
+  const temporizador=setTimeout(()=>{expirou=true;controle.abort();},90000);
+  try {
+    const corpo=continuar?{site,continuar:true}:{site};
+    const resposta=await fetch('/api/posicoes',{method:'POST',signal:controle.signal,headers:{'Content-Type':'application/json',Accept:'application/json'},body:JSON.stringify(corpo)});
+    let rel;try{rel=await resposta.json();}catch{throw new Error('A verificação está temporariamente indisponível. Tente novamente em instantes.');}
+    if(!resposta.ok)throw new Error(resposta.status===429?'O limite de consultas foi atingido. A continuação automática foi interrompida. Aguarde e tente novamente mais tarde.':typeof rel.erro==='string'?rel.erro:'A verificação está temporariamente indisponível.');
+    validarRelatorioPosicoes(rel,site);
+    if(controle.signal.aborted||pedido!==controle||dominioPosicoes!==site)return;
+    const devolverFoco=foco&&saida.contains(document.activeElement);
+    atual=rel;pedido=null;agendarContinuacao(rel);redesenharPosicoes();document.title=site+' · Visibilidade Aberta';
+    atualizarAndamento(timerContinuacao?'Etapa concluída. A próxima começará em alguns segundos.':motivoPausa||'Relatório atualizado. Confira o que foi verificado e o que permanece pendente.');
+    if(devolverFoco)saida.querySelector('h1').focus();
+  } catch(falha) {
+    if(pedido!==controle||controle.signal.aborted&&!expirou||dominioPosicoes!==site)return;
+    pedido=null;cancelarContinuacao();continuacaoPausada=true;motivoPausa='A continuação automática foi interrompida após uma falha.';
+    if(atual)redesenharPosicoes();else mostrarInicioPosicoes(site,false);
+    const aviso=elem('div',null,'falha-diag');aviso.setAttribute('role','alert');
+    aviso.append(elem('strong','Não foi possível concluir esta etapa.'),elem('p',expirou?'A consulta demorou além do esperado. Tente novamente mais tarde.':falha instanceof TypeError?'Confira sua conexão e tente novamente.':falha.message));
+    if(atual)aviso.append(elem('p','Os resultados já recebidos permanecem disponíveis com suas datas originais.'));
+    saida.append(aviso);atualizarAndamento(motivoPausa);
+  } finally {
+    clearTimeout(temporizador);if(!pedido||pedido===controle)saida.removeAttribute('aria-busy');
+  }
+}
+
+function consultar(valor,navegacao='push',foco=true) {
+  limpar();let site;
+  try{site=normalizar(valor);}catch(falha){inicio();history.replaceState(null,'','/');busca.value=valor;busca.setAttribute('aria-invalid','true');mostrarErro(falha.message);busca.focus();return;}
+  const destino=endereco(site);
+  if(navegacao==='push'&&destino!==location.pathname+location.search)history.pushState(null,'',destino);
+  else if(navegacao==='replace')history.replaceState(null,'',destino);
+  busca.value=site;
+  if(dominioDiagnostico!==site||(!diagnosticoAtual&&!pedidoDiagnostico))diagnosticar(site,false,false);
+  iniciarPosicoes(site,foco,false);
+}
+
+function imprimir(botao) {
+  if((!atual&&!diagnosticoAtual)||impressao)return;
+  const haviaAndamento=Boolean(pedido||timerContinuacao);
+  if(haviaAndamento)pausarPosicoes('Verificação pausada para gerar o relatório. Você pode continuar depois.',false);
+  impressao=new AbortController();botao.disabled=true;espelho.replaceChildren();
+  if(atual)espelho.append(exibirPosicoes(atual,true));
+  else espelho.append(elem('h1',diagnosticoAtual.dominio),elem('p','A verificação de posições não estava concluída ao gerar este relatório. Nenhuma posição foi estimada.','subtitulo'));
+  if(haviaAndamento)espelho.append(elem('p','O avanço da verificação foi pausado para gerar este relatório. Apenas as observações recebidas até este momento estão incluídas.','info'));
+  if(diagnosticoAtual)espelho.append(exibirDiagnostico(diagnosticoAtual,true));
+  else espelho.append(elem('p','O diagnóstico de melhorias não estava disponível ao gerar este relatório.','info'));
+  document.body.classList.add('imprimindo');
+  try{window.print();}finally{botao.disabled=false;}
+}
+window.addEventListener('afterprint',()=>{cancelarImpressao();if(atual)redesenharPosicoes();});
+window.addEventListener('pagehide',()=>pausarPosicoes('Verificação pausada ao sair desta página.',false));
+document.addEventListener('visibilitychange',()=>{if(document.visibilityState!=='visible'&&(pedido||timerContinuacao))pausarPosicoes('Verificação pausada porque esta página deixou de ficar visível. Use Continuar verificação ao voltar.',true);});
+
+function lerEndereco(foco=false) {
+  const site=new URLSearchParams(location.search).get('site');if(!site){inicio();return;}busca.value=site;consultar(site,'replace',foco);
+}
+document.getElementById('formulario').addEventListener('submit',e=>{e.preventDefault();consultar(busca.value,'push',true);});
+document.getElementById('abrir-metodo').addEventListener('click',()=>{document.getElementById('metodo').open=true;});
+document.getElementById('consultar').disabled=false;
+window.addEventListener('popstate',()=>lerEndereco(false));
+lerEndereco();
+</script>
+</body>
+</html>

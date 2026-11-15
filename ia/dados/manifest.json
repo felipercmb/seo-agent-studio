@@ -1,0 +1,100 @@
+{
+  "alvos": "Hipóteses editoriais escritas para o piloto; não equivalem a demonstração de causalidade ou retorno.",
+  "arquivos": {
+    "casos.jsonl": {
+      "bytes": 150880,
+      "sha256": "a4351c49b2a09c10732c8e90816619395e6a33a07f921629af0e4ea65753fdef"
+    },
+    "desenvolvimento/train.jsonl": {
+      "bytes": 181740,
+      "sha256": "0aee1f2019a8f34c38e2938b999e48ad5496b9f72fbc426915fc1f28fb371c01"
+    },
+    "desenvolvimento/valid.jsonl": {
+      "bytes": 31509,
+      "sha256": "b6cb9564dc853c40b521c04dece898e3148dc8cceebca01adc8d5370cd9a7a68"
+    },
+    "holdout/test.jsonl": {
+      "bytes": 31608,
+      "sha256": "e7438edbfd2fd3875148d612ca73d3716855397467e430458a7de28f8722f423"
+    }
+  },
+  "contagens": {
+    "test": 16,
+    "train": 96,
+    "valid": 16
+  },
+  "grupos": {
+    "test": [
+      "acompanhar/concorrente_presente_sem_lacuna",
+      "acompanhar/injecao_em_pagina_completa",
+      "atualizar_coleta/comparacao_dispositivos_misturados",
+      "atualizar_coleta/historico_bom_injecao_texto",
+      "comparar_concorrentes/pedido_causa_com_capturas",
+      "comparar_concorrentes/rival_injeta_promessa",
+      "corrigir_indexacao/injecao_bloqueio_confirmado",
+      "corrigir_indexacao/lideranca_noindex_concorrente",
+      "medir_conversao/concorrentes_e_custo_sem_vendas",
+      "medir_conversao/demanda_hipotetica_vs_margem_ausente",
+      "melhorar_pagina/instrucao_falsa_lacuna_real",
+      "melhorar_pagina/marca_forte_oferta_incompleta",
+      "validar_demanda/pagina_injeta_volume",
+      "validar_demanda/termos_gerados_e_receita_pedida",
+      "validar_intencao/injecao_ambiguidade",
+      "validar_intencao/rank_alto_regiao_sem_cobertura"
+    ],
+    "train": [
+      "acompanhar/correcao_ja_validada",
+      "acompanhar/marca_topo",
+      "acompanhar/oferta_clara_topo",
+      "atualizar_coleta/coleta_interrompida",
+      "atualizar_coleta/contexto_incompativel",
+      "atualizar_coleta/snapshot_antigo",
+      "comparar_concorrentes/formato_concorrente_desconhecido",
+      "comparar_concorrentes/serp_comparavel_sem_paginas",
+      "comparar_concorrentes/serp_lacuna_nao_verificada",
+      "corrigir_indexacao/bloqueio_rastreamento",
+      "corrigir_indexacao/noindex_publicacao",
+      "corrigir_indexacao/status_publicacao",
+      "medir_conversao/clique_sem_margem",
+      "medir_conversao/retorno_sem_conversao",
+      "medir_conversao/trafego_sem_qualificacao",
+      "melhorar_pagina/oferta_area_ausente",
+      "melhorar_pagina/oferta_contato_ausente",
+      "melhorar_pagina/oferta_escopo_ausente",
+      "validar_demanda/lista_sem_observacao",
+      "validar_demanda/oferta_nova_sem_termos",
+      "validar_demanda/somente_site",
+      "validar_intencao/local_fora_atendimento",
+      "validar_intencao/termo_ambiguo",
+      "validar_intencao/tutorial_destino_comercial"
+    ],
+    "valid": [
+      "acompanhar/destino_local_compativel",
+      "acompanhar/poucas_buscas_marca_sem_erro",
+      "atualizar_coleta/url_resumo_divergente",
+      "atualizar_coleta/vazio_falha_provedor",
+      "comparar_concorrentes/rivais_mesmo_contexto_sem_causa",
+      "comparar_concorrentes/rival_diretorio_oferta",
+      "corrigir_indexacao/home_ok_destino_bloqueado",
+      "corrigir_indexacao/serp_diretiva_recente",
+      "medir_conversao/dois_destinos_sem_desfecho",
+      "medir_conversao/topo_sem_vendas",
+      "melhorar_pagina/duas_paginas_lacuna_especifica",
+      "melhorar_pagina/intencao_confirmada_condicoes",
+      "validar_demanda/concorrente_sem_consulta",
+      "validar_demanda/palavras_contadas_sem_demanda",
+      "validar_intencao/conjunto_misto_intencoes",
+      "validar_intencao/informacao_marca_confundida"
+    ]
+  },
+  "isolamento": "Domínios e famílias compostas separados antes de variar e embaralhar. Conceitos e ações são compartilhados entre splits.",
+  "limitacoes": [
+    "Avaliação sintética pequena e da mesma autoria do treino.",
+    "Não mede melhora de ranking, receita ou utilidade validada por especialistas.",
+    "Variações de uma mesma família de treino não são exemplos independentes."
+  ],
+  "origem": "Casos sintéticos controlados; não são dados de clientes, análises de especialistas ou resultados reais.",
+  "seed": 271828,
+  "uso_teste": "Holdout reservado para comparação final. Não usar seus resultados para escolher hiperparâmetros ou reescrever alvos neste experimento.",
+  "versao": 1
+}

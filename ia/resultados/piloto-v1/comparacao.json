@@ -1,0 +1,87 @@
+{
+  "versao": 1,
+  "modelo": "mlx-community/Qwen2.5-1.5B-Instruct-4bit",
+  "revisao": "8b403126fc14f14cfc99bb4cfa72ecbc129ea677",
+  "split": "test",
+  "casos_sha256": "a4351c49b2a09c10732c8e90816619395e6a33a07f921629af0e4ea65753fdef",
+  "adaptador_sha256": "a931686f5a1bc1c293badaea8e04df467882a2c9ec7052b42f00960288bed6b8",
+  "metricas": {
+    "json_objeto": {
+      "base": {
+        "aprovados": 15,
+        "total": 16
+      },
+      "treinado": {
+        "aprovados": 11,
+        "total": 16
+      }
+    },
+    "contrato_valido": {
+      "base": {
+        "aprovados": 0,
+        "total": 16
+      },
+      "treinado": {
+        "aprovados": 9,
+        "total": 16
+      }
+    },
+    "acao_esperada": {
+      "base": {
+        "aprovados": 0,
+        "total": 16
+      },
+      "treinado": {
+        "aprovados": 8,
+        "total": 16
+      }
+    },
+    "prioridade_esperada": {
+      "base": {
+        "aprovados": 0,
+        "total": 16
+      },
+      "treinado": {
+        "aprovados": 9,
+        "total": 16
+      }
+    },
+    "referencias_esperadas": {
+      "base": {
+        "aprovados": 0,
+        "total": 16
+      },
+      "treinado": {
+        "aprovados": 7,
+        "total": 16
+      }
+    },
+    "limitacao_receita_lexical": {
+      "base": {
+        "aprovados": 0,
+        "total": 16
+      },
+      "treinado": {
+        "aprovados": 9,
+        "total": 16
+      }
+    },
+    "todos_criterios_mecanicos": {
+      "base": {
+        "aprovados": 0,
+        "total": 16
+      },
+      "treinado": {
+        "aprovados": 3,
+        "total": 16
+      }
+    }
+  },
+  "promovido_para_recomendacoes_automaticas": false,
+  "revisao_humana": "pendente",
+  "limites": [
+    "Casos sintéticos, sem avaliação humana especializada.",
+    "Critérios mecânicos e detector lexical não comprovam fidelidade semântica.",
+    "Este teste não mede ganho de posições, tráfego, vendas ou retorno."
+  ]
+}

@@ -6,7 +6,7 @@ Descubra termos relacionados a um site, confira resultados do Google e encontre 
 
 **Comece informando apenas um domínio.** A descoberta de termos e o diagnóstico das páginas funcionam sem chave de API. A verificação de posições no Google é opcional e exige uma chave própria do plano gratuito da SerpApi.
 
-[English](README.en.md) · [Metodologia](docs/METODOLOGIA.md) · [Agente de oportunidades](docs/AGENTE.md) · [Ativar posições](docs/ATIVAR-POSICOES.md)
+[English](README.en.md) · [Metodologia](docs/METODOLOGIA.md) · [Agente de oportunidades](docs/AGENTE.md) · [Treinar IA local](docs/TREINAR-IA.md) · [Ativar posições](docs/ATIVAR-POSICOES.md)
 
 ## Executar
 
@@ -44,6 +44,10 @@ A verificação percorre até cinco páginas do Google por termo, em etapas de a
 O **agente de oportunidades** cruza os termos, as posições disponíveis e o diagnóstico para organizar o que investigar e melhorar. Ele explica a evidência, a regra usada e o que falta medir. Uma posição promissora indica uma hipótese de trabalho; não comprova que aquela palavra trará mais vendas.
 
 O agente é um mecanismo de regras aberto e executado localmente. Não usa um modelo generativo, não envia relatórios a uma IA externa e não faz novas buscas no Google para gerar a análise. Sem uma captura válida, mantém a oportunidade como investigação. Consulte [os critérios e limites](docs/AGENTE.md).
+
+Há também um **piloto de IA treinável localmente**, separado da interface: ajusta Qwen2.5-1.5B com QLoRA, compara o modelo-base ao adaptador e analisa as evidências exportadas do aplicativo. Usa casos sintéticos, sem dados privados ou avaliação especializada; as respostas são experimentais e precisam de revisão. O primeiro backend de treino usa Mac com Apple Silicon. Consulte [instalação, treinamento e avaliação](docs/TREINAR-IA.md).
+
+O primeiro treino completou apenas **3 de 16 casos em todos os critérios mecânicos**. Ainda não está pronto para recomendações autônomas a clientes; [os resultados e falhas estão publicados](ia/resultados/piloto-v1/README.md).
 
 ## Ativar o Google, se quiser
 

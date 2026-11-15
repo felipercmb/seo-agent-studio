@@ -1,0 +1,87 @@
+{
+  "estado": "concluido",
+  "inicio": "2026-11-15T00:26:33.422745+00:00",
+  "modelo": "mlx-community/Qwen2.5-1.5B-Instruct-4bit",
+  "revisao": "8b403126fc14f14cfc99bb4cfa72ecbc129ea677",
+  "python": "3.14.6",
+  "plataforma": "macOS-26.5.2-arm64-arm-64bit-Mach-O",
+  "versoes": {
+    "mlx": "0.32.4",
+    "mlx-lm": "0.32.2",
+    "transformers": "5.23.0",
+    "tokenizers": "0.23.3",
+    "huggingface-hub": "2.4.0"
+  },
+  "dados": {
+    "train.jsonl": "0aee1f2019a8f34c38e2938b999e48ad5496b9f72fbc426915fc1f28fb371c01",
+    "valid.jsonl": "b6cb9564dc853c40b521c04dece898e3148dc8cceebca01adc8d5370cd9a7a68"
+  },
+  "tamanhos": {
+    "train.jsonl": {
+      "casos": 96,
+      "max_tokens": 536
+    },
+    "valid.jsonl": {
+      "casos": 16,
+      "max_tokens": 559
+    }
+  },
+  "dataset_manifest_sha256": "f26b916d824e11a70bc11dddb75693b35e329bf12d106134c8ea75e82aec3f7f",
+  "config_sha256": "ba00f8cee6ad50863fd3f2061f86964474fdf3d2278f5426ac06f0feee297216",
+  "avaliacao_humana": false,
+  "duracao_segundos": 188.57161954184994,
+  "fim": "2026-11-15T00:29:42.013925+00:00",
+  "codigo_saida": 0,
+  "adaptador_sha256": "a931686f5a1bc1c293badaea8e04df467882a2c9ec7052b42f00960288bed6b8",
+  "config": {
+    "train": true,
+    "test": false,
+    "seed": 42,
+    "fine_tune_type": "lora",
+    "optimizer": "adam",
+    "num_layers": 8,
+    "batch_size": 1,
+    "iters": 120,
+    "learning_rate": 0.0001,
+    "max_seq_length": 1536,
+    "mask_prompt": true,
+    "grad_checkpoint": true,
+    "steps_per_report": 10,
+    "steps_per_eval": 40,
+    "val_batches": -1,
+    "save_every": 120,
+    "trust_remote_code": false,
+    "report_to": null,
+    "lora_parameters": {
+      "keys": [
+        "self_attn.q_proj",
+        "self_attn.v_proj"
+      ],
+      "rank": 8,
+      "scale": 20.0,
+      "dropout": 0.0
+    }
+  },
+  "parametros_treinaveis_aproximados": 311000,
+  "familias_treino": 24,
+  "maquina": "Apple M4, 16 GiB RAM",
+  "perda_validacao_log": [
+    {
+      "passo": 1,
+      "perda": 2.419
+    },
+    {
+      "passo": 40,
+      "perda": 1.4
+    },
+    {
+      "passo": 80,
+      "perda": 1.277
+    },
+    {
+      "passo": 120,
+      "perda": 1.421
+    }
+  ],
+  "decisao": "Experimental; não aprovado para recomendações autônomas a clientes."
+}

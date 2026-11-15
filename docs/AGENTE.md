@@ -1,5 +1,7 @@
 # Agente de oportunidades
 
+Esta página descreve o motor de regras da interface. O [piloto de IA com treinamento local](TREINAR-IA.md) é um módulo experimental separado, com adaptação de pesos e avaliação próprias.
+
 O agente ajuda a escolher o próximo trabalho com os dados que o relatório já possui. Ele aproxima três perguntas: quais buscas parecem relacionadas ao site, onde há uma posição observada e o que pode ser revisado na página correspondente.
 
 **Sua saída é uma hipótese de prioridade, não uma promessa de resultado.** O site e uma captura do Google não revelam quantas pessoas procuram aquela palavra, quantas clicam, quantas viram clientes ou quanto vale cada cliente.

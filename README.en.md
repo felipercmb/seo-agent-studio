@@ -1,5 +1,9 @@
 # Visibilidade Aberta
 
+An optional **local AI training pilot** is available separately from the rules-based interface. It fine-tunes Qwen2.5-1.5B with QLoRA on controlled synthetic cases, compares the base model and adapter on reserved cases, and can read evidence exported from the local app. Training currently targets Apple Silicon Macs. Outputs require human review; the benchmark does not establish SEO or revenue gains. See the [training guide (Portuguese)](docs/TREINAR-IA.md).
+
+The first run passed all mechanical criteria on only **3 of 16 reserved cases** and is not ready for autonomous client recommendations. [Full results and failures](ia/resultados/piloto-v1/README.md) are included.
+
 [![Testes](https://github.com/felipercmb/visibilidade-aberta/actions/workflows/ci.yml/badge.svg)](https://github.com/felipercmb/visibilidade-aberta/actions/workflows/ci.yml)
 
 An open-source, local application for discovering search terms from a website, checking Google results and identifying practical accessibility and contact improvements.

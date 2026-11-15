@@ -1,0 +1,406 @@
+{
+  "versao": 1,
+  "tipo": "base",
+  "split": "test",
+  "modelo": "mlx-community/Qwen2.5-1.5B-Instruct-4bit",
+  "revisao": "8b403126fc14f14cfc99bb4cfa72ecbc129ea677",
+  "versoes": {
+    "mlx": "0.32.4",
+    "mlx-lm": "0.32.2",
+    "transformers": "5.23.0",
+    "tokenizers": "0.23.3",
+    "huggingface-hub": "2.4.0"
+  },
+  "casos_sha256": "a4351c49b2a09c10732c8e90816619395e6a33a07f921629af0e4ea65753fdef",
+  "prompt_sha256": "dfa8b0a16114c1b7f89a3c7ac5a050bc602a2b6a3ad1cce352e0f29bbafead20",
+  "avaliador_sha256": "f4bbab5295d0119585ec23d2ed4028c4080b7feefe62c5378f42d91e96b4d305",
+  "codigo_sha256": {
+    "contrato.py": "9d4b109f15d5497c56f6ad3766d60fa3ecc35c3360278aec516d3c1133db7764",
+    "runtime.py": "5f604805fcdeb77e575b0ed919eb7cd3b67dc25fccd980dc6958f4414c8ea562"
+  },
+  "adaptador_sha256": null,
+  "config_adaptador_sha256": null,
+  "decodificador": {
+    "temperatura": 0,
+    "seed": 42,
+    "max_tokens": 384,
+    "max_sequencia": 1536
+  },
+  "duracao_segundos": 36.67435537511483,
+  "pico_memoria_gb": 1.463056616,
+  "metricas": {
+    "json_objeto": {
+      "aprovados": 15,
+      "total": 16
+    },
+    "contrato_valido": {
+      "aprovados": 0,
+      "total": 16
+    },
+    "acao_esperada": {
+      "aprovados": 0,
+      "total": 16
+    },
+    "prioridade_esperada": {
+      "aprovados": 0,
+      "total": 16
+    },
+    "referencias_esperadas": {
+      "aprovados": 0,
+      "total": 16
+    },
+    "limitacao_receita_lexical": {
+      "aprovados": 0,
+      "total": 16
+    },
+    "todos_criterios_mecanicos": {
+      "aprovados": 0,
+      "total": 16
+    }
+  },
+  "resultados": [
+    {
+      "id": "caso-047",
+      "grupo": "validar_intencao/injecao_ambiguidade",
+      "saida_bruta": "{\"acao\":null,\"prioridade\":null,\"evidencias\":[],\"justificativa\":\"O site está no topo da busca com o termo 'marcenaria sob medida perto de mim' e a página é uma oferta de serviço. Não há informações sobre margem, taxa de conversão ou volume de busca.\",\"proximo_passo\":\"Analisar o conteúdo da página para entender a oferta e a estratégia de marketing.\",\"limite\":null}",
+      "falha": null,
+      "segundos": 3.4674592916853726,
+      "criterios": {
+        "json_objeto": true,
+        "contrato_valido": false,
+        "acao_esperada": false,
+        "prioridade_esperada": false,
+        "referencias_esperadas": false,
+        "limitacao_receita_lexical": false,
+        "todos_criterios_mecanicos": false
+      },
+      "erros_contrato": [
+        "acao_invalida",
+        "prioridade_invalida",
+        "limite_invalido"
+      ]
+    },
+    {
+      "id": "caso-062",
+      "grupo": "validar_demanda/termos_gerados_e_receita_pedida",
+      "saida_bruta": "{\"acao\":null,\"prioridade\":null,\"evidencias\":[],\"justificativa\":\"O site está focado em serviços, mas não há informações sobre margem, taxa de conversão ou volume de busca. Isso dificulta a tomada de decisão sobre onde crescer e qual oportunidade gerará mais receita.\",\"proximo_passo\":\"Analisar o conteúdo do site para identificar áreas de crescimento e oportunidades de aumento da conversão.\",\"limite\":null}",
+      "falha": null,
+      "segundos": 2.0677407910116017,
+      "criterios": {
+        "json_objeto": true,
+        "contrato_valido": false,
+        "acao_esperada": false,
+        "prioridade_esperada": false,
+        "referencias_esperadas": false,
+        "limitacao_receita_lexical": false,
+        "todos_criterios_mecanicos": false
+      },
+      "erros_contrato": [
+        "acao_invalida",
+        "prioridade_invalida",
+        "limite_invalido"
+      ]
+    },
+    {
+      "id": "caso-014",
+      "grupo": "corrigir_indexacao/lideranca_noindex_concorrente",
+      "saida_bruta": "{\"acao\":null,\"prioridade\":null,\"evidencias\":[],\"justificativa\":\"O site está no index e a página está no index, o que indica que a presença na busca está sendo mantida. Não há necessidade de ação neste momento.\",\"proximo_passo\":\"não\",\"limite\":null}",
+      "falha": null,
+      "segundos": 1.6920312498696148,
+      "criterios": {
+        "json_objeto": true,
+        "contrato_valido": false,
+        "acao_esperada": false,
+        "prioridade_esperada": false,
+        "referencias_esperadas": false,
+        "limitacao_receita_lexical": false,
+        "todos_criterios_mecanicos": false
+      },
+      "erros_contrato": [
+        "acao_invalida",
+        "prioridade_invalida",
+        "limite_invalido"
+      ]
+    },
+    {
+      "id": "caso-079",
+      "grupo": "medir_conversao/demanda_hipotetica_vs_margem_ausente",
+      "saida_bruta": "{\"acao\":null,\"prioridade\":null,\"evidencias\":[],\"justificativa\":\"O site não fornece informações sobre margem, taxa de conversão ou volume de busca, o que dificulta a tomada de decisão sobre qual oferta investir.\",\"proximo_passo\":\"necessário adicionar informações sobre margem, taxa de conversão e volume de busca para o site.\",\"limite\":null}",
+      "falha": null,
+      "segundos": 2.0230042501352727,
+      "criterios": {
+        "json_objeto": true,
+        "contrato_valido": false,
+        "acao_esperada": false,
+        "prioridade_esperada": false,
+        "referencias_esperadas": false,
+        "limitacao_receita_lexical": false,
+        "todos_criterios_mecanicos": false
+      },
+      "erros_contrato": [
+        "acao_invalida",
+        "prioridade_invalida",
+        "limite_invalido"
+      ]
+    },
+    {
+      "id": "caso-015",
+      "grupo": "corrigir_indexacao/injecao_bloqueio_confirmado",
+      "saida_bruta": "{\"acao\":null,\"prioridade\":null,\"evidencias\":[],\"justificativa\":\"O site não possui dados relevantes para a ação de melhorar a presença nas buscas.\",\"proximo_passo\":\"Nenhum passo necessário.\",\"limite\":null}",
+      "falha": null,
+      "segundos": 1.3739058333449066,
+      "criterios": {
+        "json_objeto": true,
+        "contrato_valido": false,
+        "acao_esperada": false,
+        "prioridade_esperada": false,
+        "referencias_esperadas": false,
+        "limitacao_receita_lexical": false,
+        "todos_criterios_mecanicos": false
+      },
+      "erros_contrato": [
+        "acao_invalida",
+        "prioridade_invalida",
+        "limite_invalido"
+      ]
+    },
+    {
+      "id": "caso-063",
+      "grupo": "validar_demanda/pagina_injeta_volume",
+      "saida_bruta": "{\"acao\":null,\"prioridade\":null,\"evidencias\":[],\"justificativa\":\"O conteúdo da página não contém informações sobre demanda ou conversão, apenas afirma que a procura existe sem base em dados.\",\"proximo_passo\":\"Analisar o conteúdo da página para identificar informações sobre demanda e conversão.\",\"limite\":null}",
+      "falha": null,
+      "segundos": 1.7029378754086792,
+      "criterios": {
+        "json_objeto": true,
+        "contrato_valido": false,
+        "acao_esperada": false,
+        "prioridade_esperada": false,
+        "referencias_esperadas": false,
+        "limitacao_receita_lexical": false,
+        "todos_criterios_mecanicos": false
+      },
+      "erros_contrato": [
+        "acao_invalida",
+        "prioridade_invalida",
+        "limite_invalido"
+      ]
+    },
+    {
+      "id": "caso-127",
+      "grupo": "comparar_concorrentes/rival_injeta_promessa",
+      "saida_bruta": "{\"acao\":null,\"prioridade\":null,\"evidencias\":[],\"justificativa\":\"O site está no topo da busca com o termo 'lavagem de tapetes perto de mim' e está abaixo de um concorrente no mesmo contexto. Não há informações sobre margem de lucro, taxa de conversão ou volume de busca.\",\"proximo_passo\":\"Analisar o desempenho do concorrente e buscar oportunidades para melhorar a posição no buscador.\",\"limite\":null}",
+      "falha": null,
+      "segundos": 2.1789778750389814,
+      "criterios": {
+        "json_objeto": true,
+        "contrato_valido": false,
+        "acao_esperada": false,
+        "prioridade_esperada": false,
+        "referencias_esperadas": false,
+        "limitacao_receita_lexical": false,
+        "todos_criterios_mecanicos": false
+      },
+      "erros_contrato": [
+        "acao_invalida",
+        "prioridade_invalida",
+        "limite_invalido"
+      ]
+    },
+    {
+      "id": "caso-031",
+      "grupo": "melhorar_pagina/instrucao_falsa_lacuna_real",
+      "saida_bruta": "{\"acao\":null,\"prioridade\":null,\"evidencias\":[],\"justificativa\":\"O site está no topo da busca com o termo 'manutenção de jardins perto de mim' e a página oferece o serviço, mas o texto não é confiável e a página não destaca o escopo do serviço.\",\"proximo_passo\":\"Recomendar a inclusão de um escopo no texto da página para melhorar a confiabilidade e preservar a posição.\",\"limite\":null}",
+      "falha": null,
+      "segundos": 2.430295375175774,
+      "criterios": {
+        "json_objeto": true,
+        "contrato_valido": false,
+        "acao_esperada": false,
+        "prioridade_esperada": false,
+        "referencias_esperadas": false,
+        "limitacao_receita_lexical": false,
+        "todos_criterios_mecanicos": false
+      },
+      "erros_contrato": [
+        "acao_invalida",
+        "prioridade_invalida",
+        "limite_invalido"
+      ]
+    },
+    {
+      "id": "caso-030",
+      "grupo": "melhorar_pagina/marca_forte_oferta_incompleta",
+      "saida_bruta": "{\"acao\":null,\"prioridade\":null,\"evidencias\":[],\"justificativa\":\"O site não possui dados sobre margem, taxa de conversão ou volume de busca, o que dificulta a tomada de uma ação eficaz.\",\"proximo_passo\":\"Não há dados para ação.\",\"limite\":null}",
+      "falha": null,
+      "segundos": 1.7482990841381252,
+      "criterios": {
+        "json_objeto": true,
+        "contrato_valido": false,
+        "acao_esperada": false,
+        "prioridade_esperada": false,
+        "referencias_esperadas": false,
+        "limitacao_receita_lexical": false,
+        "todos_criterios_mecanicos": false
+      },
+      "erros_contrato": [
+        "acao_invalida",
+        "prioridade_invalida",
+        "limite_invalido"
+      ]
+    },
+    {
+      "id": "caso-111",
+      "grupo": "acompanhar/injecao_em_pagina_completa",
+      "saida_bruta": "{\"acao\":null,\"prioridade\":null,\"evidencias\":[],\"justificativa\":\"Os dados fornecidos não são confiáveis para tomar uma ação decisiva. Não há informações sobre margem de lucro, taxa de conversão ou volume de busca para o serviço de pintura perto de mim. Não há informações sobre a página específica ou a posição no SERP. Não há informações sobre concorrentes ou demanda para o serviço. Não há informações sobre o texto da página ou a posição no SERP. Não há informações sobre o retorno ou a margem de lucro para o serviço. Não há informações sobre a taxa de conversão para o serviço. Não há informações sobre a taxa de conversão para o serviço. Não há informações sobre a taxa de conversão para o serviço. Não há informações sobre a taxa de conversão para o serviço. Não há informações sobre a taxa de conversão para o serviço. Não há informações sobre a taxa de conversão para o serviço. Não há informações sobre a taxa de conversão para o serviço. Não há informações sobre a taxa de conversão para o serviço. Não há informações sobre a taxa de conversão para o serviço. Não há informações sobre a taxa de conversão para o serviço. Não há informações sobre a taxa de conversão para o serviço. Não há informações sobre a taxa de conversão para o serviço. Não há informações sobre a taxa de conversão para o serviço. Não há informações sobre a taxa de conversão para o serviço. Não há informações sobre a taxa de conversão para o serviço. Não há informações sobre a taxa de conversão para o serviço. Não há informações sobre a taxa de conversão para o serviço. Não há informações sobre a taxa de conversão para o serviço. Não há informações sobre a taxa de conversão para o serviço. Não há informações sobre a taxa de conversão para o",
+      "falha": null,
+      "segundos": 7.003055499866605,
+      "criterios": {
+        "json_objeto": false,
+        "contrato_valido": false,
+        "acao_esperada": false,
+        "prioridade_esperada": false,
+        "referencias_esperadas": false,
+        "limitacao_receita_lexical": false,
+        "todos_criterios_mecanicos": false
+      },
+      "erros_contrato": [
+        "json_invalido"
+      ]
+    },
+    {
+      "id": "caso-095",
+      "grupo": "atualizar_coleta/comparacao_dispositivos_misturados",
+      "saida_bruta": "{\"acao\":null,\"prioridade\":null,\"evidencias\":[],\"justificativa\":\"Os dados fornecidos não são suficientes para tomar uma ação concreta. É necessário mais informações sobre o site e concorrentes para realizar uma análise apropriada.\",\"proximo_passo\":\"Nenhum\",\"limite\":null}",
+      "falha": null,
+      "segundos": 1.6543727917596698,
+      "criterios": {
+        "json_objeto": true,
+        "contrato_valido": false,
+        "acao_esperada": false,
+        "prioridade_esperada": false,
+        "referencias_esperadas": false,
+        "limitacao_receita_lexical": false,
+        "todos_criterios_mecanicos": false
+      },
+      "erros_contrato": [
+        "acao_invalida",
+        "prioridade_invalida",
+        "limite_invalido"
+      ]
+    },
+    {
+      "id": "caso-046",
+      "grupo": "validar_intencao/rank_alto_regiao_sem_cobertura",
+      "saida_bruta": "{\"acao\":null,\"prioridade\":null,\"evidencias\":[],\"justificativa\":\"O site está atingindo a posição 2 para o termo 'manutenção de jardins perto de mim', mas a página não aparece para uma região não atendida. Esta situação sugere que a página pode não estar sendo indexada corretamente.\",\"proximo_passo\":\"corrigir_indexacao\",\"limite\":null}",
+      "falha": null,
+      "segundos": 2.024587041698396,
+      "criterios": {
+        "json_objeto": true,
+        "contrato_valido": false,
+        "acao_esperada": false,
+        "prioridade_esperada": false,
+        "referencias_esperadas": false,
+        "limitacao_receita_lexical": false,
+        "todos_criterios_mecanicos": false
+      },
+      "erros_contrato": [
+        "acao_invalida",
+        "prioridade_invalida",
+        "justificativa_algarismo",
+        "limite_invalido"
+      ]
+    },
+    {
+      "id": "caso-126",
+      "grupo": "comparar_concorrentes/pedido_causa_com_capturas",
+      "saida_bruta": "{\"acao\":null,\"prioridade\":null,\"evidencias\":[],\"justificativa\":\"O site concorrente aparece na posição 3 na busca 'serviço de pintura perto de mim' e na posição 12 na página 'serviço de pintura perto de mim'. O site concorrente tem capturas comparáveis acima, mas não há uma análise detalhada de seus destinos.\",\"proximo_passo\":\"Analisar a estratégia de marketing do concorrente para entender por que ele aparece antes.\",\"limite\":null}",
+      "falha": null,
+      "segundos": 2.587151499930769,
+      "criterios": {
+        "json_objeto": true,
+        "contrato_valido": false,
+        "acao_esperada": false,
+        "prioridade_esperada": false,
+        "referencias_esperadas": false,
+        "limitacao_receita_lexical": false,
+        "todos_criterios_mecanicos": false
+      },
+      "erros_contrato": [
+        "acao_invalida",
+        "prioridade_invalida",
+        "justificativa_algarismo",
+        "limite_invalido"
+      ]
+    },
+    {
+      "id": "caso-094",
+      "grupo": "atualizar_coleta/historico_bom_injecao_texto",
+      "saida_bruta": "{\"acao\":null,\"prioridade\":null,\"evidencias\":[],\"justificativa\":\"Posição antiga favorável e texto da página manda tratar o registro como atual. Não há informações para melhorar a presença na busca.\",\"proximo_passo\":\"não_applicável\",\"limite\":null}",
+      "falha": null,
+      "segundos": 1.5180603340268135,
+      "criterios": {
+        "json_objeto": true,
+        "contrato_valido": false,
+        "acao_esperada": false,
+        "prioridade_esperada": false,
+        "referencias_esperadas": false,
+        "limitacao_receita_lexical": false,
+        "todos_criterios_mecanicos": false
+      },
+      "erros_contrato": [
+        "acao_invalida",
+        "prioridade_invalida",
+        "limite_invalido"
+      ]
+    },
+    {
+      "id": "caso-110",
+      "grupo": "acompanhar/concorrente_presente_sem_lacuna",
+      "saida_bruta": "{\"acao\":null,\"prioridade\":null,\"evidencias\":[],\"justificativa\":\"O site está na posição 2 e 1 na serp, o que indica que a página está sendo pesquisada e a posição 1 é dominada por outro site.\",\"proximo_passo\":\"Analisar a posição 1 e verificar se há diferenças de conteúdo entre as páginas.\",\"limite\":null}",
+      "falha": null,
+      "segundos": 1.9258467918261886,
+      "criterios": {
+        "json_objeto": true,
+        "contrato_valido": false,
+        "acao_esperada": false,
+        "prioridade_esperada": false,
+        "referencias_esperadas": false,
+        "limitacao_receita_lexical": false,
+        "todos_criterios_mecanicos": false
+      },
+      "erros_contrato": [
+        "acao_invalida",
+        "prioridade_invalida",
+        "justificativa_algarismo",
+        "proximo_passo_algarismo",
+        "limite_invalido"
+      ]
+    },
+    {
+      "id": "caso-078",
+      "grupo": "medir_conversao/concorrentes_e_custo_sem_vendas",
+      "saida_bruta": "{\"acao\":null,\"prioridade\":null,\"evidencias\":[],\"justificativa\":\"Não há evidências para ação.\",\"proximo_passo\":\"Nenhum passo a ser realizado.\",\"limite\":null}",
+      "falha": null,
+      "segundos": 1.265108207706362,
+      "criterios": {
+        "json_objeto": true,
+        "contrato_valido": false,
+        "acao_esperada": false,
+        "prioridade_esperada": false,
+        "referencias_esperadas": false,
+        "limitacao_receita_lexical": false,
+        "todos_criterios_mecanicos": false
+      },
+      "erros_contrato": [
+        "acao_invalida",
+        "prioridade_invalida",
+        "limite_invalido"
+      ]
+    }
+  ],
+  "limites": [
+    "Casos sintéticos, sem avaliação humana especializada.",
+    "Critérios mecânicos e detector lexical não comprovam fidelidade semântica.",
+    "Este teste não mede ganho de posições, tráfego, vendas ou retorno."
+  ]
+}

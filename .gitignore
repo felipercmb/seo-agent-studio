@@ -2,6 +2,11 @@ node_modules/
 data/
 dist/
 coverage/
+.venv*/
+__pycache__/
+*.py[cod]
+*.safetensors
+*.gguf
 .env
 .env.*
 !.env.example

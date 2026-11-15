@@ -6,7 +6,7 @@ Descubra termos relacionados a um site, confira resultados do Google e encontre 
 
 **Comece informando apenas um domínio.** A descoberta de termos e o diagnóstico das páginas funcionam sem chave de API. A verificação de posições no Google é opcional e exige uma chave própria do plano gratuito da SerpApi.
 
-[English](README.en.md) · [Metodologia](docs/METODOLOGIA.md) · [Ativar posições](docs/ATIVAR-POSICOES.md)
+[English](README.en.md) · [Metodologia](docs/METODOLOGIA.md) · [Agente de oportunidades](docs/AGENTE.md) · [Ativar posições](docs/ATIVAR-POSICOES.md)
 
 ## Executar
 
@@ -31,12 +31,19 @@ Não há etapa de build, conta de hospedagem ou servidor de banco para configura
 | Origem e evidência dos termos encontrados | Sim | Sim |
 | Até três ações de melhoria, com orientações | Sim | Sim |
 | Comparação de leituras do diagnóstico | Sim | Sim |
+| Agente local que organiza oportunidades e próximos passos | Hipóteses a investigar | Usa também as posições válidas disponíveis |
 | Verificação das posições e dos resultados anteriores ao site | Indisponível | Dentro dos limites de consulta |
 | Impressão ou PDF dos dados carregados | Sim | Sim |
 
 Os termos descobertos são **candidatos para verificação**. Não comprovam que alguém pesquise por eles ou que o site apareça no Google. Uma busca só recebe posição quando existe uma captura válida da fonte.
 
 A verificação percorre até cinco páginas do Google por termo, em etapas de até quatro páginas. Você acompanha o andamento e pode pausar ou continuar. Ocultar ou fechar a página interrompe o avanço automático; uma etapa já enviada pode terminar. Não há monitoramento agendado.
+
+## Do relatório ao próximo passo
+
+O **agente de oportunidades** cruza os termos, as posições disponíveis e o diagnóstico para organizar o que investigar e melhorar. Ele explica a evidência, a regra usada e o que falta medir. Uma posição promissora indica uma hipótese de trabalho; não comprova que aquela palavra trará mais vendas.
+
+O agente é um mecanismo de regras aberto e executado localmente. Não usa um modelo generativo, não envia relatórios a uma IA externa e não faz novas buscas no Google para gerar a análise. Sem uma captura válida, mantém a oportunidade como investigação. Consulte [os critérios e limites](docs/AGENTE.md).
 
 ## Ativar o Google, se quiser
 
@@ -74,7 +81,7 @@ O aplicativo não descobre todas as palavras de um domínio, não garante posiç
 
 Executar localmente não significa operar offline. A coleta consulta DNS externo (Google/Cloudflare) e o resolvedor do sistema, além de acessar o site informado. Com a fonte ativada, os termos e o contexto de busca são enviados à SerpApi, usando a chave para autenticação. Esses serviços podem registrar as requisições conforme suas políticas.
 
-A chave fica na configuração local e não deve ser compartilhada. O SQLite contém progresso, capturas estruturadas e controle de uso. O histórico mínimo de comparação do diagnóstico fica no navegador e pode ser apagado pela interface. Não publique `.env`, `data/` ou relatórios com informações que você não queira compartilhar.
+A chave fica na configuração local e não deve ser compartilhada. O SQLite contém progresso, capturas estruturadas, controle de uso e relatórios estruturados do diagnóstico usados pelo agente. Esses relatórios e seus trechos de evidência podem ser reutilizados por até sete dias, com nova conferência da idade ao analisar; o HTML integral não é persistido. O histórico mínimo de comparação do diagnóstico fica no navegador e pode ser apagado pela interface. Apagar esse histórico do navegador não apaga o banco local. Não publique `.env`, `data/` ou relatórios com informações que você não queira compartilhar.
 
 Para conferir o projeto:
 

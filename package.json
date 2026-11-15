@@ -1,6 +1,6 @@
 {
   "name": "visibilidade-aberta",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
   "description": "Descubra palavras-chave e confira posições observadas no Google a partir de um site, no seu computador.",
   "type": "module",

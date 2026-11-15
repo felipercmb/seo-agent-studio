@@ -26,8 +26,8 @@ a:focus-visible,button:focus-visible,input:focus-visible,summary:focus-visible{o
 .simbolo i:nth-child(2){height:73%}.simbolo i:nth-child(3){height:100%}
 .como{font-size:.9rem}
 .entrada{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(18rem,.78fr);gap:clamp(2rem,6vw,6rem);align-items:center;padding:clamp(3rem,7.8vw,7.2rem) 0 clamp(3rem,8vw,7rem)}
-h1,h2,h3,p{margin:0}
-h1,h2,h3{line-height:1.12;text-wrap:balance}
+h1,h2,h3,h4,p{margin:0}
+h1,h2,h3,h4{line-height:1.12;text-wrap:balance}
 h1{font-size:clamp(2.9rem,5.7vw,5.2rem);font-weight:570;letter-spacing:-.064em;max-width:13ch}
 .lead{margin:1.2rem 0 1.8rem;font-size:clamp(1rem,1.4vw,1.2rem);color:var(--muted);max-width:53ch}
 label{font-weight:650;display:block;margin-bottom:.37rem}
@@ -115,7 +115,7 @@ h1{max-width:17ch;font-size:clamp(2.7rem,5.2vw,4.8rem)}
 .guia h2{font-size:1.32rem;color:var(--ink);margin-bottom:.85rem;line-height:1.2}
 .guia li::before{content:counter(posicao);font-size:1rem;flex-shrink:0}
 .diagnostico{padding:clamp(2rem,5vw,4rem) 0 1.5rem}
-.relatorio+.diagnostico{border-top:1px solid var(--rule);padding-top:2rem}
+.agente+.diagnostico{border-top:1px solid var(--rule);padding-top:2rem}
 .topo-relatorio h2{font-size:clamp(1.65rem,3vw,2.45rem);letter-spacing:-.04em;overflow-wrap:anywhere}
 .acoes-topo{display:flex;flex-wrap:wrap;gap:.5rem;align-items:center}
 .nota-diagnostico{margin:.8rem 0 1rem;max-width:78ch;color:var(--muted)}
@@ -186,6 +186,32 @@ h1{max-width:17ch;font-size:clamp(2.7rem,5.2vw,4.8rem)}
 .candidatos .info{overflow-wrap:anywhere}
 @media print{.painel-termos>summary{font-size:16pt}.progresso-verificacao{display:none}}
 
+.agente{padding:2rem 0 3rem;border-top:1px solid var(--rule)}
+.agente .topo-relatorio h2{max-width:22ch}
+.agente-intro{max-width:80ch;margin:.7rem 0 1rem;color:var(--muted)}
+.agente-resumo{display:flex;gap:.55rem 1rem;flex-wrap:wrap;margin:1rem 0;padding:.8rem 0;border-block:1px solid var(--rule)}
+.agente-resumo p{font-size:.92rem}
+.agente-frentes{margin:1rem 0;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(20rem,100%),1fr));gap:.8rem;list-style:none;padding:0}
+.agente-frentes>li{padding:1rem 1.1rem;background:var(--pale);border-left:3px solid var(--teal);min-width:0}
+.agente-frentes h4{font-size:1.15rem;line-height:1.3;overflow-wrap:anywhere;margin:.5rem 0}
+.agente-frentes p{margin:.5rem 0;overflow-wrap:anywhere}
+.agente-frentes a,.agente a{overflow-wrap:anywhere}
+.agente-filtros{display:flex;flex-wrap:wrap;gap:.45rem;margin:1rem 0}
+.agente-filtros button{min-height:2.65rem;font-size:.88rem;white-space:normal}
+.agente-filtros button[aria-pressed="true"]{background:var(--teal);border-color:var(--teal);color:white}
+.oportunidades{list-style:none;padding:0;margin:1rem 0}
+.oportunidade{border-top:1px solid var(--rule);padding:1.35rem 0;overflow-wrap:anywhere;break-inside:avoid}
+.oportunidade h3{font-size:clamp(1.25rem,2.4vw,1.65rem);line-height:1.25;margin:.7rem 0}
+.oportunidade p,.oportunidade ul,.oportunidade ol{max-width:80ch;margin:.6rem 0}
+.oportunidade ul,.oportunidade ol{padding-left:1.3rem}
+.oportunidade li{margin:.45rem 0}
+.oportunidade details{margin:.9rem 0}
+.oportunidade details summary{min-height:1.8rem}
+.oportunidade .evidencia{margin:.65rem 0}
+.agente h3+ul{padding-left:1.3rem}
+.agente-carregando{margin:.7rem 0;color:var(--muted)}
+@media(max-width:650px){.agente{padding:1.6rem 0 2rem}.agente-frentes{grid-template-columns:1fr}.agente-filtros button{flex:1 1 8rem}}
+@media print{.agente{padding:1rem 0}.agente-frentes{display:block}.agente-frentes>li{background:white;border:1px solid #aaa;margin:.5rem 0;break-inside:avoid}.agente-filtros,.agente-carregando{display:none!important}.oportunidade{padding:.7rem 0}.oportunidade h3{font-size:13pt}.agente-resumo{font-size:9pt}}
 </style>
 </head>
 <body>
@@ -202,8 +228,9 @@ h1{max-width:17ch;font-size:clamp(2.7rem,5.2vw,4.8rem)}
 </section>
 <noscript><p>Ative o JavaScript do navegador para consultar o domínio e abrir o relatório.</p></noscript>
 <section class="relatorio" id="resultado" aria-label="Verificação de posições no Google" hidden></section>
+<section class="agente" id="agente" aria-label="Agente de oportunidades" hidden></section>
 <section class="diagnostico" id="diagnostico" aria-label="Melhorias para o site" hidden></section>
-<details class="metodo" id="metodo"><summary>Como analisamos e o que os dados permitem concluir</summary><p>A leitura automática examina o HTML inicial de até três páginas públicas, sem executar scripts ou enviar formulários. Cada observação informa a página, a data e a evidência disponível. Conteúdo carregado depois por JavaScript pode ficar fora da análise. Problemas que dependem de uma pessoa aparecem como conferência manual.</p><p>A ordem das ações considera barreiras de uso e a possibilidade de correção. A lista ajuda a começar; não é uma certificação de acessibilidade. Contraste, navegação e compreensão precisam também de avaliação com pessoas. <a href="https://www.w3.org/WAI/test-evaluate/" target="_blank" rel="noopener noreferrer">Orientações do W3C para avaliar acessibilidade</a>.</p><p>A descoberta lê até 12 páginas públicas e seleciona até 100 termos com evidências. Essa seleção não descobre todas as palavras para as quais o site aparece. Cada termo pode ser verificado em até cinco páginas do Google, por meio da SerpApi. A leitura avança em etapas, respeitando o limite gratuito. País, idioma, localidade, dispositivo e data aparecem no relatório, inclusive quando páginas diferentes foram observadas em horários diferentes.</p><p>A posição registrada soma o deslocamento da paginação à posição do resultado dentro da página retornada. Não é uma posição universal. Se o site não for encontrado, mostramos somente as páginas e a profundidade observadas. Isso não comprova ausência em outros resultados, buscas ou localidades. Se a fonte estiver indisponível ou a cota de consultas terminar, nenhuma posição é estimada. <a href="https://serpapi.com/search-api" target="_blank" rel="noopener noreferrer">Documentação da fonte de resultados</a>.</p><p>O site sozinho não revela lucro, vendas ou desperdício real de anúncios. Nenhuma recomendação garante posições ou receita. O diagnóstico básico pode ser usado por conta própria, sem contratar serviços.</p><p>Para comparar duas leituras, guardamos neste navegador somente o domínio, as datas, as URLs analisadas e os estados das verificações. Você pode apagar esse histórico. O progresso, as consultas e as evidências de ranking ficam em um banco SQLite na pasta data deste projeto. Não pedimos conta, e-mail ou dados dos seus clientes. A coleta acessa os sites informados; quando configurada, a consulta de posições envia os termos à SerpApi.</p></details>
+<details class="metodo" id="metodo"><summary>Como analisamos e o que os dados permitem concluir</summary><p>A leitura automática examina o HTML inicial de até três páginas públicas, sem executar scripts ou enviar formulários. Cada observação informa a página, a data e a evidência disponível. Conteúdo carregado depois por JavaScript pode ficar fora da análise. Problemas que dependem de uma pessoa aparecem como conferência manual.</p><p>A ordem das ações considera barreiras de uso e a possibilidade de correção. A lista ajuda a começar; não é uma certificação de acessibilidade. Contraste, navegação e compreensão precisam também de avaliação com pessoas. <a href="https://www.w3.org/WAI/test-evaluate/" target="_blank" rel="noopener noreferrer">Orientações do W3C para avaliar acessibilidade</a>.</p><p>A descoberta lê até 12 páginas públicas e seleciona até 100 termos com evidências. Essa seleção não descobre todas as palavras para as quais o site aparece. Cada termo pode ser verificado em até cinco páginas do Google, por meio da SerpApi. A leitura avança em etapas, respeitando o limite gratuito. País, idioma, localidade, dispositivo e data aparecem no relatório, inclusive quando páginas diferentes foram observadas em horários diferentes.</p><p>A posição registrada soma o deslocamento da paginação à posição do resultado dentro da página retornada. Não é uma posição universal. Se o site não for encontrado, mostramos somente as páginas e a profundidade observadas. Isso não comprova ausência em outros resultados, buscas ou localidades. Se a fonte estiver indisponível ou a cota de consultas terminar, nenhuma posição é estimada. <a href="https://serpapi.com/search-api" target="_blank" rel="noopener noreferrer">Documentação da fonte de resultados</a>.</p><p>O agente de oportunidades aplica regras abertas aos relatórios já coletados. Ele organiza páginas e termos para testar, desenvolver, proteger ou investigar. A intenção de busca é uma hipótese; as faixas de posição não indicam dificuldade de SEO, demanda ou retorno esperado. A análise local não faz novas consultas ao Google nem altera seu site.</p><p>O site sozinho não revela lucro, vendas ou desperdício real de anúncios. Nenhuma recomendação garante posições ou receita. O diagnóstico básico pode ser usado por conta própria, sem contratar serviços.</p><p>Para comparar duas leituras, guardamos neste navegador somente o domínio, as datas, as URLs analisadas e os estados das verificações. Você pode apagar esse histórico. O progresso, as capturas de ranking e os relatórios de diagnóstico usados pelo agente ficam em um banco SQLite na pasta data deste projeto, incluindo os trechos necessários à evidência. O agente pode reutilizar esses relatórios por até sete dias, respeitando a validade própria das posições. O HTML integral não é guardado nesse banco. Não pedimos conta, e-mail ou dados dos seus clientes. A coleta acessa os sites informados; quando configurada, a consulta de posições envia os termos à SerpApi.</p></details>
 </main>
 <article class="moldura" id="para-imprimir" aria-label="Relatório para impressão"></article>
 <footer class="rodape"><div class="moldura"><span>Visibilidade Aberta</span><a href="https://github.com/felipercmb/visibilidade-aberta" target="_blank" rel="noopener noreferrer">Código aberto no GitHub · licença MIT</a></div></footer>
@@ -212,6 +239,7 @@ h1{max-width:17ch;font-size:clamp(2.7rem,5.2vw,4.8rem)}
 const busca = document.getElementById('busca');
 const saida = document.getElementById('resultado');
 const painelDiagnostico = document.getElementById('diagnostico');
+const painelAgente = document.getElementById('agente');
 const erro = document.getElementById('erro');
 const status = document.getElementById('status');
 const espelho = document.getElementById('para-imprimir');
@@ -221,6 +249,8 @@ let pedido, impressao, atual;
 let timerContinuacao=null, continuacaoPausada=false, lotesAutomaticos=0, dominioPosicoes=null, motivoPausa="";
 let filtroTermos="", paginaTermos=1;
 let pedidoDiagnostico, diagnosticoAtual, dominioDiagnostico, comparacaoAtual, avisoHistorico = "";
+let agenteAtual=null, pedidoAgente=null, dominioAgente=null, timerAgente=null, revisaoAgente=0;
+let filtroAgente='todas', limiteAgente=5;
 const CHAVE_HISTORICO = "visibilidade-diagnostico-v1";
 
 function elem(tag, texto, classe) {
@@ -295,6 +325,7 @@ function cancelarImpressao() {
 }
 
 function inicio() {
+  reiniciarAgente();
   cancelarContinuacao();
   continuacaoPausada=true;dominioPosicoes=null;motivoPausa='';lotesAutomaticos=0;
   if (pedido) pedido.abort();
@@ -551,6 +582,7 @@ async function diagnosticar(site, atualizar = false, foco = false) {
     comparacaoAtual = compararLeituras(anterior,rel);
     guardarHistorico(rel,anteriores);
     diagnosticoAtual = rel;
+    agendarAgente(site);
     pedidoDiagnostico = null;
     const devolverFoco = foco && painelDiagnostico.contains(document.activeElement);
     painelDiagnostico.replaceChildren(exibirDiagnostico(rel));
@@ -574,6 +606,198 @@ async function diagnosticar(site, atualizar = false, foco = false) {
   } finally {
     if (dominioDiagnostico === site && (!pedidoDiagnostico || pedidoDiagnostico === controle)) painelDiagnostico.removeAttribute('aria-busy');
   }
+}
+
+
+function validarRelatorioAgente(rel, site) {
+  const texto = valor => typeof valor === 'string';
+  const lista = (valor, maximo, conferir = texto) => Array.isArray(valor) && valor.length <= maximo && valor.every(conferir);
+  const decisao = valor => ['priorizar','desenvolver','proteger','investigar'].includes(valor);
+  const pagina = valor => valor === null || texto(valor);
+  const registro = valor => valor && typeof valor === 'object' && !Array.isArray(valor);
+  if (!registro(rel) || rel.versao !== 1 || rel.metodo !== 'regras-abertas-v1' || rel.dominio !== site ||
+      !['disponivel','parcial','sem_dados'].includes(rel.estado) || !texto(rel.geradoEm) || !Number.isFinite(Date.parse(rel.geradoEm)) ||
+      !registro(rel.resumo) || !['termosAnalisados','posicoesAtuais','priorizar','desenvolver','proteger','investigar']
+        .every(k => Number.isInteger(rel.resumo[k]) && rel.resumo[k] >= 0 && rel.resumo[k] <= 100) ||
+      !lista(rel.limites,50) || !lista(rel.oportunidades,100,o => registro(o) && texto(o.id) && texto(o.termo) &&
+        pagina(o.paginaAlvo) && decisao(o.decisao) && (o.posicao === null || Number.isInteger(o.posicao) && o.posicao > 0 && o.posicao <= 100) &&
+        pagina(o.marco) && texto(o.motivo) && texto(o.potencial) && registro(o.intencao) && texto(o.intencao.rotulo) && texto(o.intencao.motivo) &&
+        lista(o.evidencias,30,e => registro(e) && texto(e.tipo) && texto(e.coletadoEm)) &&
+        lista(o.concorrentes,20,c => registro(c) && texto(c.dominio) && texto(c.url) && Number.isInteger(c.posicao) && c.posicao > 0 && texto(c.coletadoEm)) &&
+        lista(o.acoes,12,a => registro(a) && texto(a.titulo) && texto(a.descricao) && ['observacao','hipotese'].includes(a.base)) &&
+        lista(o.medir,20) && lista(o.faltam,20)) ||
+      !lista(rel.frentes,100,f => registro(f) && texto(f.id) && texto(f.titulo) && pagina(f.paginaAlvo) && decisao(f.decisao) &&
+        lista(f.termos,100) && texto(f.motivo) && texto(f.proximoPasso)) ||
+      !lista(rel.melhorias,6,m => registro(m) && texto(m.id) && texto(m.titulo) && pagina(m.paginaAlvo) && texto(m.categoria) &&
+        texto(m.orientacao) && lista(m.passos,15) && texto(m.coletadoEm) && texto(m.evidencia))) {
+    throw new Error('A análise de oportunidades chegou incompleta. Tente novamente.');
+  }
+  return rel;
+}
+
+function rotuloDecisaoAgente(decisao) {
+  const rotulos={priorizar:'Priorizar um teste',desenvolver:'Desenvolver a página',proteger:'Proteger a presença',investigar:'Investigar primeiro'};
+  return Object.hasOwn(rotulos,decisao) ? rotulos[decisao] : 'Investigar primeiro';
+}
+
+function filtrarOportunidades(oportunidades, filtro='todas', limite=5) {
+  const validos=['priorizar','desenvolver','proteger','investigar'];
+  const filtradas=validos.includes(filtro)?oportunidades.filter(o=>o.decisao===filtro):oportunidades;
+  const quantidade=Number.isInteger(limite)?Math.min(100,Math.max(5,limite)):5;
+  return {total:filtradas.length,itens:filtradas.slice(0,quantidade),temMais:filtradas.length>quantidade};
+}
+
+function cancelarAgente() {
+  revisaoAgente++;
+  if(timerAgente)clearTimeout(timerAgente);timerAgente=null;
+  const anterior=pedidoAgente;pedidoAgente=null;if(anterior)anterior.abort();
+  painelAgente.removeAttribute('aria-busy');
+}
+
+function reiniciarAgente() {
+  cancelarAgente();agenteAtual=null;dominioAgente=null;filtroAgente='todas';limiteAgente=5;
+  painelAgente.replaceChildren();painelAgente.hidden=true;
+}
+
+function prepararAgente(site) {
+  if(dominioAgente===site)return;
+  reiniciarAgente();dominioAgente=site;painelAgente.hidden=false;
+  painelAgente.replaceChildren(elem('h2','Agente de oportunidades'),elem('p','Aguardando as evidências do site para organizar o que merece atenção.','agente-intro'));
+}
+
+function agendarAgente(site) {
+  if(site!==dominioAgente)return;
+  cancelarAgente();const revisao=revisaoAgente;
+  painelAgente.hidden=false;painelAgente.setAttribute('aria-busy','true');
+  if(!agenteAtual)painelAgente.replaceChildren(elem('h2','Agente de oportunidades'),elem('p','Organizando os relatórios já coletados. Esta análise não consulta o Google novamente.','agente-intro'));
+  timerAgente=setTimeout(()=>{timerAgente=null;analisarComAgente(site,revisao);},200);
+}
+
+async function analisarComAgente(site,revisao=revisaoAgente) {
+  if(site!==dominioAgente || revisao!==revisaoAgente)return;
+  const controle=new AbortController();pedidoAgente=controle;
+  let expirou=false;
+  const temporizador=setTimeout(()=>{expirou=true;controle.abort();},15000);
+  try {
+    const resposta=await fetch('/api/agente',{method:'POST',signal:controle.signal,
+      headers:{'Content-Type':'application/json',Accept:'application/json'},body:JSON.stringify({site})});
+    const rel=await resposta.json();
+    if(!resposta.ok)throw new Error('A análise local não pôde ser concluída agora.');
+    validarRelatorioAgente(rel,site);
+    if(controle.signal.aborted || pedidoAgente!==controle || site!==dominioAgente || revisao!==revisaoAgente)return;
+    agenteAtual=rel;pedidoAgente=null;redesenharAgente();
+  } catch {
+    if(pedidoAgente!==controle || site!==dominioAgente || revisao!==revisaoAgente || controle.signal.aborted&&!expirou)return;
+    pedidoAgente=null;
+    if(agenteAtual)redesenharAgente();
+    else painelAgente.replaceChildren(elem('h2','Agente de oportunidades'));
+    const aviso=elem('div',null,'falha-diag');aviso.setAttribute('role','alert');
+    aviso.append(elem('strong','Não foi possível concluir a análise local.'),elem('p',agenteAtual?'A análise anterior permanece com sua data. As novas evidências ainda não foram incorporadas.':'Os relatórios de posições e melhorias continuam disponíveis. Nenhuma oportunidade foi inventada.'));
+    const tentar=elem('button','Tentar análise local novamente','secundario');tentar.type='button';
+    tentar.addEventListener('click',()=>agendarAgente(site));aviso.append(tentar);painelAgente.append(aviso);
+  } finally {
+    clearTimeout(temporizador);
+    if(site===dominioAgente && revisao===revisaoAgente)painelAgente.removeAttribute('aria-busy');
+  }
+}
+
+function listaAgente(titulo, itens) {
+  const bloco=elem('div');if(!itens.length)return bloco;
+  bloco.append(elem('strong',titulo));const lista=elem('ul');for(const texto of itens)lista.append(elem('li',texto));
+  bloco.append(lista);return bloco;
+}
+
+function evidenciaAgente(evidencias, imprimindo) {
+  const grupo=elem('details');grupo.open=imprimindo;grupo.append(elem('summary','Evidências usadas nesta decisão'));
+  for(const evidencia of evidencias){
+    const item=elem('div',null,'evidencia');
+    item.append(elem('strong',evidencia.tipo==='google'?'Resultado observado no Google':evidencia.tipo==='diagnostico'?'Diagnóstico da página':'Conteúdo do site'));
+    if(evidencia.trecho)item.append(elem('p',evidencia.trecho));
+    if(evidencia.url)item.append(link('Abrir página de origem',evidencia.url,true));
+    item.append(elem('p','Observado em '+dataHora(evidencia.coletadoEm)+'.','info'));
+    const fonte=typeof evidencia.fonte==='string'?evidencia.fonte:evidencia.fonte?.nome;
+    if(fonte)item.append(elem('p','Fonte: '+fonte,'info'));
+    if(evidencia.fonteId)item.append(elem('p','Consulta na fonte: '+evidencia.fonteId,'info'));
+    if(evidencia.sha256)item.append(elem('code','SHA-256: '+evidencia.sha256));
+    grupo.append(item);
+  }
+  if(!evidencias.length)grupo.append(elem('p','Não há evidência suficiente para confirmar uma posição.','info'));
+  return grupo;
+}
+
+function oportunidadeAgente(o, imprimindo) {
+  const item=elem('li',null,'oportunidade');
+  item.append(elem('span',rotuloDecisaoAgente(o.decisao),'etiqueta'+(o.decisao==='investigar'?' manual':'')),elem('h3',o.termo));
+  item.append(elem('p',o.posicao===null?'Posição não verificada':'Posição observada: '+o.posicao,o.posicao===null?'info':'posicao-observada'));
+  if(o.paginaAlvo)item.append(link('Página para revisar',o.paginaAlvo,true));
+  else item.append(elem('p','Página de destino ainda não identificada.','info'));
+  item.append(elem('p','Intenção inferida: '+o.intencao.rotulo+'. '+o.intencao.motivo,'info'),elem('p',o.motivo),elem('p',o.potencial,'nota-diagnostico'));
+  if(o.marco)item.append(elem('p','Marco para acompanhar: '+o.marco,'info'));
+  if(o.acoes.length){
+    item.append(elem('strong','O que fazer'));const lista=elem('ol');
+    for(const acao of o.acoes){const passo=elem('li');passo.append(elem('strong',acao.titulo),elem('p',acao.descricao),elem('small',acao.base==='observacao'?'Base: observação da página.':'Base: hipótese para conferir.'));lista.append(passo);}item.append(lista);
+  }
+  item.append(listaAgente('Como saber se ajudou',o.medir),listaAgente('O que ainda falta confirmar',o.faltam));
+  if(o.concorrentes.length){
+    const grupo=elem('details');grupo.open=imprimindo;grupo.append(elem('summary','Sites observados acima nesta busca'));
+    const lista=elem('ul',null,'resultados-busca');
+    for(const c of o.concorrentes){const li=elem('li'),conteudo=elem('div');
+      conteudo.append(link(c.dominio,c.url,true),elem('small','Observado em '+dataHora(c.coletadoEm)+(c.fonteId?'; consulta '+c.fonteId:'')+'.'));
+      li.append(elem('span',String(c.posicao),'ordem'),conteudo);lista.append(li);
+    }
+    grupo.append(lista,elem('p','A posição acima não explica por que esses sites aparecem antes. A comparação de conteúdo exige uma revisão própria.','info'));item.append(grupo);
+  }
+  item.append(evidenciaAgente(o.evidencias,imprimindo));return item;
+}
+
+function exibirAgente(rel, imprimindo=false) {
+  const frag=elem('section',null,'agente-conteudo'),topo=elem('div',null,'topo-relatorio'),nomes=elem('div');
+  nomes.append(elem('h2','Agente de oportunidades'),elem('p','Análise local por regras abertas. Prioridade de teste, não previsão de vendas.','agente-intro'));
+  topo.append(nomes);frag.append(topo,elem('p','Análise de '+dataHora(rel.geradoEm)+'. As datas das evidências continuam indicadas em cada decisão.','info'));
+  if(rel.estado==='sem_dados')frag.append(elem('p','Ainda não há evidências suficientes. O agente será atualizado quando a leitura do site ou das posições fornecer dados.','nota-diagnostico'));
+  else if(rel.estado==='parcial')frag.append(elem('p','A análise é parcial. Termos sem posição confirmada permanecem como hipóteses a investigar.','nota-diagnostico'));
+  const resumo=elem('div',null,'agente-resumo');
+  for(const decisao of ['priorizar','desenvolver','proteger','investigar'])resumo.append(elem('p',rotuloDecisaoAgente(decisao)+': '+rel.resumo[decisao]));
+  frag.append(resumo,elem('p',rel.resumo.termosAnalisados+' termos analisados; '+rel.resumo.posicoesAtuais+' com posição válida nesta análise.','info'));
+  if(rel.frentes.length){
+    const frentes=elem('section',null,'bloco');frentes.append(elem('h3','Frentes de trabalho por página'),elem('p','Cada frente resume o primeiro trabalho sugerido para uma página. As decisões dos outros termos podem diferir; quantidade de termos não mede demanda ou retorno.','nota-diagnostico'));
+    const lista=elem('ul',null,'agente-frentes');
+    for(const f of rel.frentes){const item=elem('li');item.append(elem('span',rotuloDecisaoAgente(f.decisao),'etiqueta'),elem('h4',f.titulo));
+      if(f.paginaAlvo)item.append(link('Abrir página',f.paginaAlvo,true));
+      item.append(elem('p',f.motivo),elem('p','Próximo passo: '+f.proximoPasso),elem('p','Termos: '+f.termos.join(' · '),'info'));lista.append(item);
+    }frentes.append(lista);frag.append(frentes);
+  }
+  if(rel.oportunidades.length){
+    const secao=elem('section',null,'bloco');secao.append(elem('h3','Decisões por busca'));
+    if(!imprimindo){const filtros=elem('div',null,'agente-filtros');filtros.setAttribute('role','group');filtros.setAttribute('aria-label','Filtrar decisões do agente');
+      for(const filtro of ['todas','priorizar','desenvolver','proteger','investigar']){const botao=elem('button',filtro==='todas'?'Todas':rotuloDecisaoAgente(filtro),'secundario');
+        botao.type='button';botao.id='agente-filtro-'+filtro;botao.setAttribute('aria-pressed',String(filtroAgente===filtro));
+        botao.addEventListener('click',()=>{filtroAgente=filtro;limiteAgente=5;redesenharAgente();document.getElementById(botao.id)?.focus();});filtros.append(botao);
+      }secao.append(filtros);
+    }
+    const lote=imprimindo?{itens:rel.oportunidades,total:rel.oportunidades.length,temMais:false}:filtrarOportunidades(rel.oportunidades,filtroAgente,limiteAgente);
+    const descricao=elem('p',lote.total?'Exibindo '+lote.itens.length+' de '+lote.total+' decisões.':'Nenhuma decisão nesta categoria.','info');descricao.setAttribute('role','status');descricao.tabIndex=-1;descricao.id=imprimindo?'agente-total-impressao':'agente-total';secao.append(descricao);
+    const lista=elem('ol',null,'oportunidades');for(const oportunidade of lote.itens)lista.append(oportunidadeAgente(oportunidade,imprimindo));secao.append(lista);
+    if(lote.temMais){const mais=elem('button','Ver mais 5 decisões','secundario');mais.type='button';mais.addEventListener('click',()=>{limiteAgente+=5;redesenharAgente();document.getElementById('agente-total')?.focus();});secao.append(mais);}
+    frag.append(secao);
+  }
+  if(rel.melhorias.length){
+    const melhorias=elem('details',null,'detalhes-diag');melhorias.open=imprimindo||!rel.oportunidades.length;melhorias.append(elem('summary','Melhorias observadas para apoiar o uso do site'));
+    melhorias.append(elem('p','Estas observações ajudam na clareza e no atendimento. Não demonstram a causa da posição no Google.','nota-diagnostico'));
+    const lista=elem('ul',null,'verificacoes');
+    for(const m of rel.melhorias){const li=elem('li');li.append(elem('strong',m.titulo),elem('p',m.orientacao));if(m.paginaAlvo)li.append(link('Página observada',m.paginaAlvo,true));
+      li.append(elem('p',m.evidencia,'info'),elem('p','Leitura de '+dataHora(m.coletadoEm)+'.','info'),listaAgente('Como agir',m.passos));lista.append(li);
+    }melhorias.append(lista);frag.append(melhorias);
+  }
+  const limites=elem('details',null,'detalhes-diag');limites.open=imprimindo;limites.append(elem('summary','Critérios e limites do agente'));
+  for(const limite of rel.limites)limites.append(elem('p',limite,'nota-diagnostico'));
+  limites.append(link('Consultar a metodologia aberta','https://github.com/felipercmb/visibilidade-aberta/blob/main/docs/AGENTE.md',true));frag.append(limites);
+  return frag;
+}
+
+function redesenharAgente() {
+  if(!agenteAtual || agenteAtual.dominio!==dominioAgente)return;
+  painelAgente.hidden=false;painelAgente.replaceChildren(exibirAgente(agenteAtual));
 }
 
 function validarRelatorioPosicoes(rel, site) {
@@ -763,6 +987,7 @@ function exibirPosicoes(rel, imprimindo = false) {
   const topo=elem('div',null,'topo-relatorio'),nomes=elem('div'),nome=elem('h1',rel.dominio);nome.tabIndex=-1;
   nomes.append(nome,elem('p',temVerificacoes ? 'Termos descobertos no site e resultados observados no Google.' : rel.candidatos.length ? 'Termos descobertos no site. A verificação das posições ainda está pendente.' : 'A consulta de posições no Google ainda não foi concluída.','subtitulo'));
   topo.append(nomes);if(!imprimindo)topo.append(controlesPosicoes(rel.dominio));frag.append(topo);
+  if(!imprimindo){const prioridades=link('Ver plano de oportunidades','#agente');prioridades.className='link-ranking';frag.append(prioridades);}
   frag.append(elem('p','Relatório atualizado em ' + dataHora(rel.geradoEm) + '. As páginas do Google podem ter sido observadas em horários diferentes.','info'));
   if(rel.cache?.reutilizado)frag.append(elem('p','Esta resposta reutiliza dados já disponíveis. As datas das capturas abaixo continuam sendo as datas das observações.','nota-diagnostico'));
   const descoberta=rel.descoberta;
@@ -896,7 +1121,7 @@ async function verificarPosicoes(site,foco=false,continuar=false) {
     validarRelatorioPosicoes(rel,site);
     if(controle.signal.aborted||pedido!==controle||dominioPosicoes!==site)return;
     const devolverFoco=foco&&saida.contains(document.activeElement);
-    atual=rel;pedido=null;agendarContinuacao(rel);redesenharPosicoes();document.title=site+' · Visibilidade Aberta';
+    atual=rel;pedido=null;agendarAgente(site);agendarContinuacao(rel);redesenharPosicoes();document.title=site+' · Visibilidade Aberta';
     atualizarAndamento(timerContinuacao?'Etapa concluída. A próxima começará em alguns segundos.':motivoPausa||'Relatório atualizado. Confira o que foi verificado e o que permanece pendente.');
     if(devolverFoco)saida.querySelector('h1').focus();
   } catch(falha) {
@@ -915,6 +1140,7 @@ async function verificarPosicoes(site,foco=false,continuar=false) {
 function consultar(valor,navegacao='push',foco=true) {
   limpar();let site;
   try{site=normalizar(valor);}catch(falha){inicio();history.replaceState(null,'','/');busca.value=valor;busca.setAttribute('aria-invalid','true');mostrarErro(falha.message);busca.focus();return;}
+  prepararAgente(site);
   const destino=endereco(site);
   if(navegacao==='push'&&destino!==location.pathname+location.search)history.pushState(null,'',destino);
   else if(navegacao==='replace')history.replaceState(null,'',destino);
@@ -927,17 +1153,20 @@ function imprimir(botao) {
   if((!atual&&!diagnosticoAtual)||impressao)return;
   const haviaAndamento=Boolean(pedido||timerContinuacao);
   if(haviaAndamento)pausarPosicoes('Verificação pausada para gerar o relatório. Você pode continuar depois.',false);
+  cancelarAgente();
   impressao=new AbortController();botao.disabled=true;espelho.replaceChildren();
   if(atual)espelho.append(exibirPosicoes(atual,true));
   else espelho.append(elem('h1',diagnosticoAtual.dominio),elem('p','A verificação de posições não estava concluída ao gerar este relatório. Nenhuma posição foi estimada.','subtitulo'));
   if(haviaAndamento)espelho.append(elem('p','O avanço da verificação foi pausado para gerar este relatório. Apenas as observações recebidas até este momento estão incluídas.','info'));
+  if(agenteAtual && agenteAtual.dominio===(atual?.dominio||diagnosticoAtual?.dominio))espelho.append(exibirAgente(agenteAtual,true));
+  else espelho.append(elem('p','A análise de oportunidades não estava disponível ao gerar este relatório. Nenhuma nova consulta foi iniciada para impressão.','info'));
   if(diagnosticoAtual)espelho.append(exibirDiagnostico(diagnosticoAtual,true));
   else espelho.append(elem('p','O diagnóstico de melhorias não estava disponível ao gerar este relatório.','info'));
   document.body.classList.add('imprimindo');
   try{window.print();}finally{botao.disabled=false;}
 }
 window.addEventListener('afterprint',()=>{cancelarImpressao();if(atual)redesenharPosicoes();});
-window.addEventListener('pagehide',()=>pausarPosicoes('Verificação pausada ao sair desta página.',false));
+window.addEventListener('pagehide',()=>{cancelarAgente();pausarPosicoes('Verificação pausada ao sair desta página.',false);});
 document.addEventListener('visibilitychange',()=>{if(document.visibilityState!=='visible'&&(pedido||timerContinuacao))pausarPosicoes('Verificação pausada porque esta página deixou de ficar visível. Use Continuar verificação ao voltar.',true);});
 
 function lerEndereco(foco=false) {

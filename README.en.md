@@ -6,7 +6,7 @@ An open-source, local application for discovering search terms from a website, c
 
 **Start with a domain.** Website discovery and diagnostics work without an API key. Google ranking checks are optional and require your own compatible SerpApi Free account.
 
-[Português](README.md) · [Methodology, in Portuguese](docs/METODOLOGIA.md) · [Enable ranking checks](docs/ATIVAR-POSICOES.md)
+[Português](README.md) · [Methodology, in Portuguese](docs/METODOLOGIA.md) · [Opportunity agent](docs/AGENTE.md) · [Enable ranking checks](docs/ATIVAR-POSICOES.md)
 
 ## Run locally
 
@@ -22,6 +22,12 @@ npm start
 Open [http://localhost:8794](http://localhost:8794). Stop the server with `Ctrl+C`.
 
 No build or cloud account is needed. The server binds to `127.0.0.1`; SQLite and its migrations are initialized automatically at `data/visibilidade.sqlite`.
+
+## Turn observations into next steps
+
+The opportunity agent combines discovered terms, available rankings and page diagnostics to organize what to investigate and improve. It explains its evidence, decision rules and missing measurements. A promising observed position is a hypothesis to test, not proof that a keyword will produce more sales.
+
+The agent runs locally with open, deterministic rules. It does not use a generative model, send reports to an external AI service or make new Google requests to generate its analysis. Without valid ranking evidence, it keeps the opportunity in investigation. See the [criteria and limitations](docs/AGENTE.md), in Portuguese.
 
 ## Optional Google results
 
@@ -40,6 +46,8 @@ Copy-Item .env.example .env
 `PORT` defaults to `8794`. `DATA_DIR` defaults to the project's `data` directory; relative paths are resolved from the project root. Keep `.env` and the database private.
 
 Local execution is not offline. Collection uses external DNS services (Google/Cloudflare), the system resolver and requests to the target website. When enabled, SerpApi receives the search terms, context and authentication key. Those services may log requests under their own policies.
+
+SQLite also stores the structured diagnostic reports and evidence excerpts used by the agent, reusable for up to seven days with freshness checked at analysis time. Full HTML is not persisted. The browser keeps a separate, minimal diagnostic comparison history; clearing that browser history does not remove the local database.
 
 Visitors do not need an account. The person running the application needs a provider account for Google checks. The default code refuses paid plans and extra credits; it does not switch to a paid fallback.
 

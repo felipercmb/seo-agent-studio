@@ -94,6 +94,33 @@ test('primeira consulta só descobre; continuar explícito executa até quatro p
   assert.ok(!JSON.stringify(segundo).includes(CHAVE));assert.ok(!JSON.stringify(segundo).includes('<html'));
 });
 
+test('agente usa a captura paginada validada pelo conector e não chama a fonte ao recomendar',async t=>{
+  const a=ambiente(t,{termos:['Orçamento de consultoria ambiental'],fonte:{continuar:true,
+    resultados:({inicio})=>Array.from({length:10},(_,i)=>
+      'https://'+(inicio===10&&i===2?'cliente.com.br':'rival'+(inicio+i)+'.com.br')+'/oferta')}});
+  let worker=criarWorker('<title>Teste</title>',a.opcoes);
+  const post=(path,body)=>worker.fetch(request(body,{},path),a.env);
+  await post('/api/posicoes',{site:'cliente.com.br'});
+  a.avancar(3001);
+  const rank=await (await post('/api/posicoes',{site:'cliente.com.br',continuar:true})).json();
+  assert.equal(rank.consultas[0].posicao,13);
+  const chamadas=a.provedor.chamadas.length,creditos=a.creditos(),coletas=a.coletas();
+  const plano=await (await post('/api/agente',{site:'cliente.com.br'})).json();
+  assert.equal(plano.resumo.posicoesAtuais,1);
+  assert.equal(plano.oportunidades[0].posicao,13);
+  assert.equal(plano.oportunidades[0].decisao,'priorizar');
+  assert.equal(plano.oportunidades[0].paginaAlvo,'https://cliente.com.br/oferta');
+  assert.equal(plano.oportunidades[0].concorrentes.length,5);
+  assert.equal(plano.oportunidades[0].evidencias.filter(e=>e.tipo==='google').length,2);
+  assert.ok(!JSON.stringify(plano).includes(CHAVE));
+  worker=criarWorker('<title>Teste</title>',a.opcoes);
+  assert.deepEqual(await (await post('/api/agente',{site:'cliente.com.br'})).json(),plano);
+  a.avancar(HORA);
+  const antigo=await (await post('/api/agente',{site:'cliente.com.br'})).json();
+  assert.equal(antigo.oportunidades[0].posicao,null);assert.equal(antigo.oportunidades[0].decisao,'investigar');
+  assert.deepEqual([a.provedor.chamadas.length,a.creditos(),a.coletas()],[chamadas,creditos,coletas]);
+});
+
 test('abrir novamente ou repetir antes de três segundos não inicia outro lote',async t=>{
   const a=ambiente(t,{termos:TERMOS});await a.inicial();await a.lote();
   const outra=criarPosicoesAtuais(a.opcoes);await a.inicial('cliente.com.br',outra);

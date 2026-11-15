@@ -2,6 +2,7 @@ import {ErroConsulta} from "./consulta.mjs";
 import {criarDiagnostico, ErroDiagnostico} from "./diagnostico.mjs";
 import {criarCapturas} from './capturas.mjs';
 import {criarPosicoesAtuais} from './posicoes-atuais.mjs';
+import {criarAgente} from './agente-servico.mjs';
 
 const politica = [
   "default-src 'none'", "script-src 'unsafe-inline'", "style-src 'unsafe-inline'",
@@ -55,10 +56,11 @@ export function criarWorker(html, opcoes = {}) {
   const coletar = criarCapturas(opcoes);
   const diagnosticar = criarDiagnostico({...opcoes, coletar});
   const posicoes = criarPosicoesAtuais({...opcoes, coletar: criarCapturas({...opcoes, objetivo: 'descoberta'})});
+  const agente = criarAgente({agora: opcoes.agora});
   return {
     async fetch(request, env = {}) {
       const url = new URL(request.url), metodo = request.method;
-      if (['/api/diagnostico', '/api/posicoes'].includes(url.pathname)) {
+      if (['/api/diagnostico', '/api/posicoes', '/api/agente'].includes(url.pathname)) {
         if (metodo !== 'POST') return resposta('Use o formulário para analisar o site.', 'text/plain', 405, metodo, {Allow: 'POST'});
         const origem = request.headers.get('Origin');
         if ((origem && origem !== url.origin) || request.headers.get('Sec-Fetch-Site') === 'cross-site') {
@@ -67,7 +69,13 @@ export function criarWorker(html, opcoes = {}) {
         try {
           if (url.search) throw new ErroConsulta('Envie o endereço pelo formulário.');
           const entrada = await lerCorpo(request);
-          const relatorio = url.pathname === '/api/posicoes' ? await posicoes(entrada, env) : await diagnosticar(entrada, request);
+          let relatorio;
+          if (url.pathname === '/api/agente') relatorio = await agente.executar(entrada, env);
+          else {
+            const ranking = url.pathname === '/api/posicoes';
+            relatorio = ranking ? await posicoes(entrada, env) : await diagnosticar(entrada, request);
+            await agente.registrar(ranking ? 'posicoes' : 'diagnostico', relatorio, env);
+          }
           return resposta(JSON.stringify(relatorio), 'application/json', 200, metodo);
         } catch (erro) {
           const invalido = erro instanceof ErroConsulta;

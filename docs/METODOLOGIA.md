@@ -77,7 +77,7 @@ Uma captura só é tratada como atual durante uma hora. Quando uma página de um
 
 O progresso é reutilizado por até sete dias no SQLite local. A descoberta pode ser relida após seu prazo próprio, separadamente da validade das posições. Expiração de uso não significa eliminação segura imediata do arquivo em disco.
 
-Os dados estruturados e trechos necessários à evidência podem ficar no banco. O HTML integral é usado temporariamente na coleta e não compõe o relatório persistido. A chave da fonte permanece na configuração do operador.
+Os dados estruturados e trechos necessários à evidência podem ficar no banco. Isso inclui os relatórios de posições e do diagnóstico que alimentam o agente, reutilizáveis por até sete dias, com nova validação da idade a cada análise. O HTML integral é usado temporariamente na coleta e não compõe o relatório persistido. A chave da fonte permanece na configuração do operador.
 
 ## 6. Consumo gratuito
 
@@ -101,7 +101,7 @@ A análise de páginas entrega até três ações, ordenadas por regras de utili
 
 A leitura do HTML pode identificar, por exemplo, atributos de idioma, títulos ou controles sem identificação reconhecível. Ela não confirma sozinha contraste visual, funcionamento completo de formulários, compreensão de conteúdo ou acessibilidade de uma aplicação executada no navegador.
 
-A comparação entre leituras só trata uma observação anterior como não encontrada novamente quando a mesma regra foi verificada em um conjunto equivalente de páginas, com leituras completas. Cobertura parcial, regra ausente ou mudança de páginas tornam a comparação inconclusiva. A referência mínima fica no navegador.
+A comparação entre leituras só trata uma observação anterior como não encontrada novamente quando a mesma regra foi verificada em um conjunto equivalente de páginas, com leituras completas. Cobertura parcial, regra ausente ou mudança de páginas tornam a comparação inconclusiva. A referência mínima dessa comparação fica no navegador. Separadamente, o relatório estruturado do diagnóstico é guardado no SQLite para o agente; apagar o histórico do navegador não remove esse registro do banco.
 
 Essa triagem não é uma certificação de acessibilidade. O [W3C explica a necessidade de avaliação humana](https://www.w3.org/WAI/test-evaluate/).
 
@@ -110,5 +110,13 @@ Essa triagem não é uma certificação de acessibilidade. O [W3C explica a nece
 O aplicativo não calcula vendas, lucro, retorno de anúncios, desperdício de orçamento ou impacto social comprovado. Essas conclusões exigem outros dados e um método de avaliação próprio.
 
 Os testes automatizados usam cenários controlados de extração, validação, limites e falhas. Eles não constituem um benchmark de cobertura do Google ou uma validação pública de posições reais desta versão.
+
+## 9. Agente de oportunidades
+
+O agente organiza as evidências recebidas em sugestões de trabalho usando regras locais e abertas. Ele não realiza novas coletas nem usa um modelo generativo. Os critérios, motivos e lacunas permanecem visíveis para revisão, conforme [a documentação do agente](AGENTE.md).
+
+A prioridade sugerida é uma escolha de investigação e melhoria, não uma estimativa de tráfego, conversão ou retorno. As faixas usadas pelo produto não são fatores de classificação divulgados pelo Google. Uma intenção comercial inferida do texto também não comprova procura, margem ou adequação do serviço.
+
+Um site observado acima do domínio é referência para comparação humana naquele recorte. A posição, o título ou o endereço isolados não demonstram por que ele aparece antes. O agente não transforma uma observação de acessibilidade, um campo ausente ou uma diferença entre páginas em causa comprovada do ranking.
 
 Referências: [resultados orgânicos da SerpApi](https://serpapi.com/organic-results), [paginação da SerpApi](https://serpapi.com/pagination) e [avaliação de acessibilidade do W3C](https://www.w3.org/WAI/test-evaluate/).

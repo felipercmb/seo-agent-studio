@@ -1,0 +1,43 @@
+{
+  "arquivos": {
+    "casos-test.jsonl": {
+      "bytes": 12458,
+      "sha256": "d9d083b6ae71a36e5cf1fd8c7794617c2e559e10dfe92229b11e16954ae2f4e9"
+    },
+    "casos-train.jsonl": {
+      "bytes": 150144,
+      "sha256": "2f4f27a226c873d298b948c2e0fb36f5431338670c9ba1450c96cfb6fcfe0a8d"
+    },
+    "casos-valid.jsonl": {
+      "bytes": 8234,
+      "sha256": "da025318c41d82c61c2e946c8cad7a3186496ca3d9dfc5b13fa74910388cb663"
+    },
+    "desenvolvimento/train.jsonl": {
+      "bytes": 272976,
+      "sha256": "81c40f771902f2bbc306970ae3aca160e17d34948cf9701a689c32bc43eea637"
+    },
+    "desenvolvimento/valid.jsonl": {
+      "bytes": 15062,
+      "sha256": "a4f52991555060bb25c52f2638acdf15976361a1590433166e17e366a920ad96"
+    },
+    "holdout/test.jsonl": {
+      "bytes": 22772,
+      "sha256": "c43f3cda067e18c3f0fa056a81c8d030208c95382f9403df207376ea2ccfc565"
+    }
+  },
+  "contagens": {
+    "test": 18,
+    "train": 216,
+    "valid": 12
+  },
+  "familias": {
+    "test": 9,
+    "train": 18,
+    "valid": 6
+  },
+  "limitacao": "Mesma autoria e vocabulário nos três splits; prioridade não é uma previsão de retorno.",
+  "origem": "Pares sintéticos locais, sem dados de clientes ou revisão especializada.",
+  "seed": 314159,
+  "separacao": "Famílias de cenários separadas por split; cada par tem uma versão espelhada no mesmo split.",
+  "versao": 1
+}

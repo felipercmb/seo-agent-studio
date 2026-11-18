@@ -1,0 +1,14 @@
+import assert from 'node:assert/strict';
+import {test} from 'node:test';
+import {extrairContextoPublico} from '../src/modulos/contexto-publico.mjs';
+import {inferirPerfil} from '../src/modulos/perfil.mjs';
+const dominio='exemplo.com.br',coletadoEm='2026-11-16T02:00:00Z';
+function publicos(texto,social=false){const html='<title>Software de gestão</title>'+(social?'<p>Somos uma organização sem fins lucrativos.</p>':'')+'<p>'+texto+'</p>';const contextoPublico=extrairContextoPublico({dominio,coletadoEm,paginas:[{url:'https://exemplo.com.br/',html,status:200,coletadoEm}]});return inferirPerfil({dominio,contextoPublico}).entendimento.publicos;}
+test('indisponibilidade explícita não promove o grupo excluído a cliente',()=>{assert.ok(!publicos('Indisponível para profissionais MEI.').some(p=>p.texto.includes('profissionais')));assert.ok(!publicos('Não disponível para pequenas empresas.').some(p=>p.texto.includes('empresas')));});
+test('negação de atendimento bloqueia o objeto declarado',()=>{assert.ok(!publicos('Não atendemos empresas de alimentos.').some(p=>p.texto.includes('empresas')));});
+test('afirmação posterior em outra cláusula permanece com evidência própria',()=>{const p=publicos('Indisponível para profissionais autônomos; disponível para pequenas empresas.');assert.ok(!p.some(p=>p.texto.includes('profissionais')));assert.ok(p.some(p=>p.texto==='pequenas empresas'&&p.evidencias[0].trecho==='disponível para pequenas empresas.'));});
+test('afirmação anterior e posterior do mesmo grupo não são apagadas por outra cláusula',()=>{for(const texto of ['Disponível para profissionais liberais. Indisponível para profissionais liberais.','Indisponível para profissionais liberais. Disponível para profissionais liberais.'])assert.ok(publicos(texto).some(p=>p.texto==='profissionais liberais'&&p.evidencias[0].trecho==='Disponível para profissionais liberais.'));});
+test('contraste mas delimita a disponibilidade de outro grupo',()=>{const p=publicos('Indisponível para profissionais autônomos, mas disponível para pequenas empresas.');assert.ok(!p.some(p=>p.texto.includes('profissionais')));assert.ok(p.some(p=>p.texto==='pequenas empresas'));});
+test('negação de cadastro obrigatório não equivale a indisponibilidade',()=>{assert.ok(publicos('Não exigimos cadastro para profissionais liberais.').some(p=>p.texto==='profissionais liberais'));});
+test('indisponibilidade declarada depois do grupo continua escopada',()=>{assert.ok(!publicos('Para profissionais liberais, o serviço está indisponível.').some(p=>p.texto==='profissionais liberais'));});
+test('beneficiários excluídos não são afirmados; outra cláusula positiva permanece',()=>{const p=publicos('Indisponível para crianças. Atendemos famílias.',true);assert.ok(!p.some(p=>p.texto==='crianças'));assert.ok(p.some(p=>p.texto==='famílias'));});

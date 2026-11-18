@@ -1,0 +1,64 @@
+import {readFile,writeFile,mkdir,lstat,rm} from 'node:fs/promises';
+import {createHash,randomUUID} from 'node:crypto';
+import {resolve,join,dirname} from 'node:path';
+import {pathToFileURL} from 'node:url';
+import {normalizarSite} from '../src/consulta.mjs';
+
+const hash=v=>createHash('sha256').update(v).digest('hex');
+const lista=v=>Array.isArray(v)?v:[];
+const sigilo=/(?:api[_ -]?key|access[_ -]?token|refresh[_ -]?token|client[_ -]?secret|authorization|bearer|password|senha)\s*[:= ]\s*\S+|\b(?:token|secret)\s*[:=]\s*\S+|\bsk-[a-zA-Z0-9_-]{16,}|\bAKIA[A-Z0-9]{16}\b/i;
+const financeiro=/(?:R\$|US\$|BRL|USD|EUR|[$€£])\s*[\d.,]+|\b(?:contribui[çc][aã]o|receita|faturamento|lucro|gasto|or[çc]amento|margem|ticket|cpa|cpc|roas|taxa de fechamento)\b[^.;]{0,35}\d/i;
+function texto(v,max=1200){const s=typeof v==='string'?v.replace(/[\p{Cc}\p{Cf}]/gu,' ').replace(/\s+/g,' ').trim().slice(0,max):'';return sigilo.test(s)||financeiro.test(s)?'[Trecho omitido por conter possível informação financeira ou credencial.]':s;}
+function url(v,dominio){try{const u=new URL(v);if(u.protocol!=='https:'||u.username||u.password||u.port||u.search||u.hash||normalizarSite(u.href)!==dominio)return null;return u.href;}catch{return null;}}
+function fonte(e,dominio){const u=url(e?.url,dominio);if(!u||! /^[a-f0-9]{64}$/.test(e?.sha256||'')||typeof e?.coletadoEm!=='string'||!Number.isFinite(Date.parse(e.coletadoEm)))return null;
+ return{url:u,campo:texto(e.campo,100)||null,trecho:texto(e.trecho,600),coletadoEm:e.coletadoEm,sha256:e.sha256,
+ natureza:e.tipo==='diagnostico'||e.verificacaoId?'observacao_derivada_do_HTML':'trecho_publicado'};}
+const fontes=(es,dominio)=>[...new Map(lista(es).map(e=>fonte(e,dominio)).filter(e=>e&&e.trecho).map(e=>[JSON.stringify(e),e])).values()].slice(0,20);
+function tarefa(t,dominio){return{idRevisao:'tarefa-'+randomUUID(),titulo:texto(t.titulo,300),acao:texto(t.acao,1600),base:t.base==='observacao'?'observacao':'hipotese',
+ pagina:url(t.paginaAlvo?.url,dominio),passos:lista(t.passos).slice(0,8).map(p=>texto(p,1400)),entregavel:texto(t.entregavel,1200),
+ criterioSucesso:texto(t.criterioSucesso,1600),modelo:lista(t.modeloEntregavel?.campos).slice(0,12).filter(c=>c&&typeof c==='object').map(c=>({campo:texto(c.rotulo,200),valor:typeof c.valorSugerido==='string'?texto(c.valorSugerido,600):null,
+ origem:c.origem==='trecho_publicado'?'trecho_publicado':c.origem==='declaracao_usuario'?'declaracao_do_usuario':'a_confirmar'})),
+ fontes:fontes([...lista(t.evidencias),...lista(t.evidenciasNegocio)],dominio),
+ parecer:{u1Objeto:null,u2Fonte:null,u3AcaoEspecifica:null,u4Verificacao:null,comentarios:null}};}
+const h=v=>String(v??'').replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"','&quot;').replaceAll("'",'&#39;');
+function html(dados){
+ const itens=(titulo,es,formatar)=>'<h3>'+h(titulo)+'</h3><p>Origem: hipótese da leitura pública, pendente de confirmação pela organização.</p>'+(es.length?'<ul>'+es.map(e=>'<li>'+h(formatar(e))+'</li>').join('')+'</ul>':'<p>Nenhum item proposto neste recorte da leitura.</p>');
+ const renderFonte=f=>'<p>'+h(f.natureza)+': '+h(f.trecho)+'<br><small>'+h(f.url)+' · '+h(f.campo)+' · '+h(f.coletadoEm)+' · SHA-256 '+h(f.sha256)+'</small></p>';
+ const renderTarefa=t=>'<section><h4>'+h(t.titulo)+'</h4><p>Identificador da revisão desta tarefa: '+h(t.idRevisao)+'</p><p>'+h(t.acao)+'</p><p><strong>Base:</strong> '+h(t.base)+'</p><ol>'+t.passos.map(p=>'<li>'+h(p)+'</li>').join('')+'</ol><p><strong>Entrega:</strong> '+h(t.entregavel)+'</p><p><strong>Critério:</strong> '+h(t.criterioSucesso)+'</p><dl>'+t.modelo.map(m=>'<dt>'+h(m.campo)+' ('+h(m.origem)+')</dt><dd>'+h(m.valor??'A confirmar')+'</dd>').join('')+'</dl><h5>Fontes</h5>'+t.fontes.map(renderFonte).join('')+'<p><strong>Parecer da tarefa a registrar no JSON:</strong> U1 objeto; U2 fonte; U3 ação específica; U4 verificação; comentários. Todos os campos estão vazios.</p></section>';
+ return'<!doctype html><html lang="pt-BR"><meta charset="utf-8"><meta name="viewport" content="width=device-width"><meta http-equiv="Content-Security-Policy" content="default-src \'none\'; style-src \'unsafe-inline\'; base-uri \'none\'; form-action \'none\'"><title>Revisão humana local</title><style>body{font:17px/1.55 system-ui;max-width:960px;margin:auto;padding:28px;color:#172128}article{border-top:2px solid #345;padding-top:20px;margin-top:36px}section{padding:14px;border:1px solid #bbc;margin:14px 0}small{overflow-wrap:anywhere}li{margin:8px 0}pre{white-space:pre-wrap}a{color:#064f80}</style><h1>Revisão humana local pendente</h1><p>Esta página é somente leitura. Registre o parecer da organização e de cada tarefa em <strong>revisao.json</strong>. Nenhuma nota foi preenchida, nenhum parecer foi realizado e não há consentimento automático de treino.</p>'+dados.casos.map(c=>'<article><h2>'+h(c.dominio)+'</h2><p>Identificador desta revisão: '+h(c.idRevisao)+'</p><p><strong>Páginas capturadas:</strong> '+(c.cobertura.paginasCapturadas===null?'desconhecida':h(c.cobertura.paginasCapturadas))+'. A quantidade descreve o recorte capturado, não o tamanho completo do site.</p><p>'+h(c.perfil.resumo)+'</p><p>Atuação proposta: '+h(c.perfil.papel)+'; finalidade proposta: '+h(c.perfil.finalidade)+'. São hipóteses a conferir no conteúdo público.</p>'+(c.perfil.proposito?'<p>Propósito proposto: '+h(c.perfil.proposito)+'</p>':'')+itens('Ofertas propostas',c.perfil.ofertas,e=>e.nome+(e.url?' — '+e.url:''))+itens('Atividades propostas',c.perfil.atividades,e=>e.tipo+': '+e.nome+(e.url?' — '+e.url:''))+itens('Públicos propostos',c.perfil.publicos,e=>e.tipo+': '+e.descricao)+'<h3>Consultas propostas</h3><ul>'+c.consultas.map(q=>'<li>'+h(q)+'</li>').join('')+'</ul><h3>Tarefas exibidas para revisão</h3>'+c.tarefas.map(renderTarefa).join('')+(c.tarefas.length?'':'<p>Esta execução não produziu tarefas. Confira a cobertura informada e avalie se a abstenção é adequada.</p>')+'<h3>Fontes do perfil</h3>'+c.fontes.map(renderFonte).join('')+'</article>').join('')+'</html>';
+}
+
+/** Seleciona somente quatro casos de validação já autorizados. Não chama rede,
+ * executa decisões/modelos, copia HTML original ou produz pareceres humanos. */
+export async function prepararRevisaoNegocio({avaliacao,saida}={}){
+ if(typeof avaliacao!=='string'||typeof saida!=='string'||!avaliacao.trim()||!saida.trim())throw Error('Informe avaliação local e saída nova.');
+ const arquivo=resolve(avaliacao),destino=resolve(saida),s=await lstat(arquivo);if(!s.isFile()||s.size>32*1024*1024)throw Error('Use JSON local regular de até 32 MiB.');
+ const raw=await readFile(arquivo),entrada=JSON.parse(raw.toString('utf8')),casos=lista(entrada.resultados);
+ if(casos.length!==4||casos.some(c=>c.split!=='validation')||new Set(casos.map(c=>c.dominio)).size!==4)throw Error('Esta etapa aceita exatamente quatro organizações de validação, sem seleção parcial ou outros conjuntos.');
+ const dados={versao:2,revisaoHumanaRealizada:false,revisorPseudonimo:null,concluidoEm:null,consentimentoTreino:{autorizado:false,observacao:null},
+ referenciaEvidencias:typeof entrada.relogioReferencia==='string'?entrada.relogioReferencia:null,
+ instrucoes:['Confira o entendimento, a pertinência das consultas e a utilidade das tarefas com suas fontes.','Separe trecho publicado, observação derivada do HTML e hipótese. A coleta não executa a página renderizada.','Registre dúvidas e correções; mantenha desconhecidos os resultados comerciais e os dados de busca sem fonte.','O parecer não atualiza pesos nem autoriza uso para treino automaticamente.'],casos:[]};
+ for(const c of casos){const dominio=normalizarSite(c.dominio);if(dominio!==c.dominio||! /^[a-f0-9]{64}$/.test(c.capturaSha256||''))throw Error('Domínio ou captura de origem inválidos.');
+  const p=c.rascunho?.perfil;if(!p||!c.condicional?.oportunidades)throw Error('Falta perfil público proposto ou plano executado.');
+  const es=[...lista(c.contextoPublico?.evidencias),...lista(p.ofertas).flatMap(o=>lista(o.evidencias))];
+  dados.casos.push({idRevisao:'revisao-'+randomUUID(),dominio,capturaSha256:c.capturaSha256,
+   cobertura:{paginasCapturadas:Number.isSafeInteger(c.paginasCapturadas)&&c.paginasCapturadas>=0?c.paginasCapturadas:null},
+   perfil:{origem:'hipotese_da_leitura_publica',nome:texto(p.nome,150),resumo:texto(p.resumo,1600),papel:texto(p.entendimento?.papel,60),finalidade:texto(p.entendimento?.finalidade?.tipo,60),
+    proposito:texto(p.entendimento?.proposito?.texto,600)||null,
+    ofertas:lista(p.ofertas).slice(0,8).map(o=>({nome:texto(o.nome,150),url:url(o.url,dominio)})),
+    publicos:lista(p.entendimento?.publicos).slice(0,8).map(a=>({tipo:texto(a.tipo,50),descricao:texto(a.texto,500)})),
+    atividades:lista(p.entendimento?.atuacoes).slice(0,8).map(a=>({tipo:texto(a.tipo,50),nome:texto(a.nome,150),url:url(a.url,dominio)}))},
+   consultas:lista(c.condicional?.palavras?.candidatos).slice(0,5).map(q=>texto(q.termo,160)),
+   tarefas:lista(c.condicional.oportunidades.planoDeAcao).slice(0,3).map(t=>tarefa(t,dominio)),fontes:fontes(es,dominio),
+   parecer:{entendimentoCorreto:null,consultasPertinentes:null,tarefasEspecificas:null,fontesSustentamRecomendacao:null,verificacaoExecutavel:null,observacoes:null,correcoesPropostas:null}});
+ }
+ const bytes=Buffer.from(JSON.stringify(dados,null,2)+'\n'),pagina=Buffer.from(html(dados));
+ const leia=Buffer.from('# Revisão humana local pendente\n\nAbra leitura.html para ler o material sem scripts nem recursos externos, e edite revisao.json para registrar o parecer. As notas da organização e de cada tarefa estão vazias. Use um pseudônimo, sem dados pessoais.\n\nForam incluídas as quatro organizações da entrada, até cinco consultas e as três primeiras tarefas de cada execução. Uma captura sem páginas pode resultar em nenhuma tarefa; isso também deve ser revisto. O perfil é uma proposta extraída do site. As tarefas vieram de uma confirmação técnica simulada para testar o fluxo, sem confirmação pela empresa.\n\nNão há gabaritos, pontuações automáticas, identidades dos casos de avaliação, dados financeiros estruturados ou credenciais neste roteiro. Possíveis valores monetários ou credenciais em textos são omitidos, com aviso explícito; o hash identifica a fonte original local. Nenhum HTML original foi copiado ou executado.\n\nPara cada caso, confira as fontes e registre se o entendimento, as consultas e as ações são adequados. Em cada tarefa, preencha somente após revisão os campos u1Objeto (vínculo com a atividade), u2Fonte (suporte da evidência), u3AcaoEspecifica (ação adaptada ao caso), u4Verificacao (como conferir o resultado) e comentarios. Use true ou false somente após a revisão de cada critério; mantenha null quando ainda não houver conclusão. Comentários são texto livre e não devem conter dados pessoais ou financeiros privados. Páginas capturadas igual a zero é diferente de quantidade desconhecida. Anote o trecho que sustenta a correção e se a tarefa pode ser executada e verificada. Quando faltar evidência, mantenha a conclusão em aberto. Nenhuma revisão humana foi produzida automaticamente.\n\nEste pacote não envia dados, não treina modelos, não publica conteúdos e não autoriza uso do parecer para treino. O consentimento permanece falso; qualquer uso posterior exige decisão explícita separada.\n');
+ const manifesto={versao:2,geradoEm:new Date().toISOString(),origemSha256:hash(raw),revisaoHumanaRealizada:false,casos:4,consultas:dados.casos.reduce((n,c)=>n+c.consultas.length,0),tarefas:dados.casos.reduce((n,c)=>n+c.tarefas.length,0),
+  arquivos:{'revisao.json':{sha256:hash(bytes),bytes:bytes.length},'leitura.html':{sha256:hash(pagina),bytes:pagina.length},'LEIA-ME.md':{sha256:hash(leia),bytes:leia.length}}};
+ let criado=false;try{await mkdir(dirname(destino),{recursive:true,mode:0o700});await mkdir(destino,{mode:0o700});criado=true;
+  for(const[n,b]of[['revisao.json',bytes],['leitura.html',pagina],['LEIA-ME.md',leia],['manifesto.json',Buffer.from(JSON.stringify(manifesto,null,2)+'\n')]])await writeFile(join(destino,n),b,{flag:'wx',mode:0o600});
+  return{versao:2,saida:destino,casos:4,consultas:manifesto.consultas,tarefas:manifesto.tarefas,revisaoHumanaRealizada:false,origemSha256:manifesto.origemSha256};
+ }catch(e){if(criado)await rm(destino,{recursive:true,force:true});throw e;}
+}
+if(process.argv[1]&&pathToFileURL(resolve(process.argv[1])).href===import.meta.url){try{const op={};for(let i=2;i<process.argv.length;i+=2){const k=process.argv[i]?.replace(/^--/,'');if(!['avaliacao','saida'].includes(k)||!process.argv[i+1]||Object.hasOwn(op,k))throw Error('Opções inválidas.');op[k]=process.argv[i+1];}console.log(JSON.stringify(await prepararRevisaoNegocio(op),null,2));}catch{console.error('Não foi possível preparar a revisão. Use --avaliacao JSON_LOCAL --saida DIRETORIO_NOVO, contendo somente quatro validações conhecidas.');process.exitCode=1;}}

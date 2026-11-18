@@ -15,6 +15,112 @@ test('preserva sinais significativos e descarta chamadas de vídeo e títulos ge
   assert.ok(!r.candidatos.some(c => /^(Veja|Assista|Perguntas frequentes)/.test(c.termo)));
 });
 
+test('descarta contadores e comandos evidentes sem suprimir buscas numéricas plausíveis', () => {
+  const r=descobrir([pagina('<h1>+ 0 apps disponíveis</h1><h2>+6 milhões</h2><h2>Baixe nosso app</h2>'+
+    '<h2>Assine um plano e tenha sua loja</h2><h2>Curso de C++</h2><h2>Seguro de automóvel 24 horas</h2>')]);
+  const termos=r.candidatos.map(c=>c.termo);
+  assert.ok(!termos.some(t=>/disponíveis|milhões|Baixe|Assine/.test(t)));
+  assert.ok(termos.includes('Curso de C++'));assert.ok(termos.includes('Seguro de automóvel 24 horas'));
+});
+
+test('não transforma chamadas genéricas de cadastro ou redes sociais em serviços',()=>{
+  const r=descobrir([pagina('<h1>Cadastre-se</h1><h2>Siga-nos nas Redes Sociais</h2>'+
+    '<h2>Dúvidas frequentes</h2><h2>Links úteis</h2><h2>PRODUTOS RELACIONADOS</h2><h2>Ver tudo</h2>'+
+    '<h2>Página inicial</h2><h2>Tradução do site</h2><h2>Opções de acessibilidade</h2>'+
+    '<h2>Caso você tenha dúvidas envie um e-mail para</h2><a href="/produtos/corpo">Corpo Leia mais</a><h2>Cadastro de empresas em São Paulo</h2>'+
+    '<h2>Como se cadastrar no portal</h2><h2>Gestão de redes sociais</h2>')]);
+  const termos=r.candidatos.map(c=>c.termo);
+  assert.ok(!termos.some(t=>/^(Cadastre-se|Siga-nos|Dúvidas frequentes|Links úteis|PRODUTOS RELACIONADOS|Ver tudo|Página inicial|Tradução do site|Opções de acessibilidade|Caso você tenha dúvidas|Corpo Leia mais)/.test(t)));
+  assert.ok(termos.includes('Cadastro de empresas em São Paulo'));
+  assert.ok(termos.includes('Como se cadastrar no portal'));
+  assert.ok(termos.includes('Gestão de redes sociais'));
+});
+
+test('mantém termos de atendimento, mas consulta ofertas antes deles',()=>{
+  const r=descobrir([pagina('<h1>Consultoria de privacidade de dados</h1><h2>Data Privacy enquiries</h2><h2>Customer Support</h2><h2>Para acessar a apólice ou certificado do seguro</h2>'),
+    pagina('<h1>Cursos de segurança da informação</h1>','/cursos')]);
+  const termos=r.candidatos.map(c=>[c.termo,c.tipo]);
+  const atendimento=termos.filter(([,tipo])=>tipo==='atendimento');
+  assert.deepEqual(new Set(atendimento.map(([termo])=>termo)),new Set(['Data Privacy enquiries','Customer Support','Para acessar a apólice ou certificado do seguro']));
+  assert.ok(termos.findIndex(([t])=>t==='Consultoria de privacidade de dados')<termos.findIndex(([,tipo])=>tipo==='atendimento'));
+  assert.ok(termos.findIndex(([t])=>t==='Cursos de segurança da informação')<termos.findIndex(([,tipo])=>tipo==='atendimento'));
+});
+
+test('preserva slogans institucionais sem apresentá-los como serviços prioritários',()=>{
+  const dados={'@context':'https://schema.org','@type':'Organization',name:'Suzano'};
+  const r=descobrir([pagina('<title>Suzano: nós plantamos o futuro</title>'+schema(dados)+
+    '<h1>A maior empresa de tecnologia do Brasil</h1><h2>Mais de 7 mil empresas de serviços utilizam sistemas</h2><h2>Sistemas para instituições financeiras</h2>')]);
+  const termos=r.candidatos.map(c=>[c.termo,c.tipo]);
+  assert.deepEqual(termos.find(([t])=>t==='Suzano: nós plantamos o futuro')?.[1],'institucional');
+  assert.deepEqual(termos.find(([t])=>t==='A maior empresa de tecnologia do Brasil')?.[1],'institucional');
+  assert.deepEqual(termos.find(([t])=>t==='Mais de 7 mil empresas de serviços utilizam sistemas')?.[1],'institucional');
+  assert.equal(termos.find(([t])=>t==='Suzano')?.[1],'marca');
+  assert.ok(termos.findIndex(([t])=>t==='Sistemas para instituições financeiras')<termos.findIndex(([,tipo])=>tipo==='institucional'));
+});
+
+test('cabeçalho ambíguo fica como tema, enquanto oferta explícita tem prioridade',()=>{
+  const r=descobrir([pagina('<title>Reforma tributária em contagem regressiva</title>'+
+    '<h1>Sistemas para instituições financeiras</h1><h2>Logística reversa</h2>'),
+    pagina('<h1>Recuperação profissional especializada</h1>','/servicos/restauracao')]);
+  const termos=r.candidatos.map(c=>[c.termo,c.tipo]);
+  assert.equal(termos.find(([t])=>t==='Reforma tributária em contagem regressiva')?.[1],'tema');
+  assert.equal(termos.find(([t])=>t==='Sistemas para instituições financeiras')?.[1],'servico');
+  assert.equal(termos.find(([t])=>t==='Logística reversa')?.[1],'servico');
+  assert.equal(termos.find(([t])=>t==='Recuperação profissional especializada')?.[1],'servico');
+  assert.ok(termos.findIndex(([t])=>t==='Sistemas para instituições financeiras')<termos.findIndex(([,tipo])=>tipo==='tema'));
+});
+
+test('categoria de produtos contendo área de serviço não vira oferta de serviços',()=>{
+  const r=descobrir([pagina('<h1>Móveis para Áreas de Serviço</h1>','/categoria/moveis-para-areas-de-servico')]);
+  const c=r.candidatos.find(x=>x.termo==='Móveis para Áreas de Serviço');
+  assert.equal(c.tipo,'tema');assert.equal(c.evidencia.campo,'h1');
+});
+
+test('coleções, promoções e eventos não viram serviços ou produtos individuais',()=>{
+  const r=descobrir([pagina('<title>Produtos com até 70%OFF</title><h1>Top Produtos Star Wars</h1>'+
+    '<h2>Desenvolvimento Institucional e RH</h2><h3>II Encontro de Gestão de Pessoas e Administração</h3>'+
+    '<h2>Consultoria de desenvolvimento de produtos</h2>'),
+    pagina('<title>Produtos de cuidado corporal NIVEA</title><h1>Produtos NIVEA</h1>','/produtos/corpo'),
+    pagina(schema({'@context':'https://schema.org','@type':'Product',name:'NIVEA LUMINOUS630 Skin Glow Sérum 30 ml'}),'/produtos/serum')]);
+  for (const t of ['Produtos com até 70%OFF','Top Produtos Star Wars','Desenvolvimento Institucional e RH',
+    'II Encontro de Gestão de Pessoas e Administração','Produtos de cuidado corporal NIVEA','Produtos NIVEA'])
+    assert.equal(r.candidatos.find(c=>c.termo===t)?.tipo,'tema',t);
+  assert.equal(r.candidatos.find(c=>c.termo==='Consultoria de desenvolvimento de produtos')?.tipo,'servico');
+  assert.equal(r.candidatos.find(c=>c.termo==='NIVEA LUMINOUS630 Skin Glow Sérum 30 ml')?.tipo,'produto');
+});
+
+test('slug de notícia iniciado por serviços não é confundido com diretório de serviços',()=>{
+  const r=descobrir([pagina('<title>Vapt Vupt Rotativo atende em quatro municípios em novembro</title>',
+    '/servicos-publicos-da-vapt-vupt-unidade-rotativa-chega-a-quatro-municipios/'),
+    pagina('<h1>Recuperação profissional especializada</h1>','/servicos/restauracao')]);
+  assert.equal(r.candidatos.find(c=>c.termo==='Vapt Vupt Rotativo atende em quatro municípios em novembro')?.tipo,'tema');
+  assert.equal(r.candidatos.find(c=>c.termo==='Recuperação profissional especializada')?.tipo,'servico');
+});
+
+test('âncora de produto ambígua fica como tema, mas nome estruturado é preservado',()=>{
+  const r=descobrir([pagina('<a href="/produtos/corre">corre</a><a href="/produtos/promocao">50% OFF no verão</a><a href="/produtos/camisa">Camisa de algodão</a>'+
+    schema({'@context':'https://schema.org','@type':'Product',name:'Tênis'}))]);
+  assert.equal(r.candidatos.find(c=>c.termo==='corre')?.tipo,'tema');
+  assert.equal(r.candidatos.find(c=>c.termo==='50% OFF no verão')?.tipo,'tema');
+  assert.equal(r.candidatos.find(c=>c.termo==='Camisa de algodão')?.tipo,'produto');
+  assert.equal(r.candidatos.find(c=>c.termo==='Tênis')?.tipo,'produto');
+});
+
+test('sem página lida explica bloqueios conhecidos sem refletir mensagens externas',()=>{
+  const a=descobrir([],{falhas:[{motivo:'Não foi possível confirmar a permissão de leitura em robots.txt.'}]});
+  assert.ok(a.limites.some(l=>/permissão de leitura em robots\.txt/.test(l)));
+  const b=descobrir([],{falhas:[{motivo:'A página não liberou o conteúdo para esta consulta (HTTP 403).'}]});
+  assert.ok(b.limites.some(l=>/HTTP 403/.test(l)));
+  const c=descobrir([],{falhas:[{motivo:'token privado que não deve aparecer'}]});
+  assert.doesNotMatch(JSON.stringify(c),/token privado/);
+});
+
+test('parâmetro de prévia none não desativa descoberta em âncoras',()=>{
+  const r=descobrir([pagina('<meta name="robots" content="max-image-preview: none">'+
+    '<a href="/servicos/revisao">Revisão de motores</a>')]);
+  assert.ok(r.candidatos.some(c=>c.termo==='Revisão de motores'));
+});
+
 test('extrai frases publicadas e preserva evidência de cada candidato sem inventar volume', () => {
   const r = descobrir([pagina('<title>Conserto de motores | Oficina Boa</title><h1>Conserto de motores</h1><h2>Troca de óleo</h2><h2>Revisão automotiva</h2><h2>Alinhamento e balanceamento</h2><h2>Contato</h2>')]);
   assert.equal(r.candidatos.length, 5);
@@ -255,4 +361,17 @@ test('páginas além do limite, falhas ou cobertura parcial do coletor são expl
   assert.equal(descobrir([pagina('<h1>Conserto de motores</h1>')], {cobertura: {limitada: true}}).cobertura.limitada, true);
   assert.equal(descobrir([], {falhas: [{url:'https://oficinaboa.com.br/'}]}).cobertura.limitada, true);
   assert.equal(descobrir(null).cobertura.paginasLidas, 0);
+});
+
+test('título dentro de um link de evento não gera produtos, datas ou uma oferta Venda Geral', () => {
+  const r=descobrir([pagina('<title>Agenda cultural</title><a href="/event/show-da-cidade">'+
+    '<div><h3>Show da Cidade | Recife | 14/12/2026 | Venda Geral</h3></div></a>'+
+    '<h2>Produção de Eventos</h2><a href="https://fora.com/event/externo"><h3>Consultoria para eventos</h3></a>')]);
+  const c=r.candidatos.find(c=>c.termo==='Show da Cidade');
+  assert.equal(c.tipo,'tema');
+  assert.equal(c.rotulo,'Evento listado no site');
+  assert.match(c.evidencia.trecho,/Venda Geral$/);
+  assert.ok(r.candidatos.some(c=>c.termo==='Produção de Eventos'&&c.tipo==='servico'));
+  assert.ok(r.candidatos.some(c=>c.termo==='Consultoria para eventos'&&c.tipo==='servico'));
+  assert.ok(!r.candidatos.some(c=>['Venda Geral','Recife','14/12/2026'].includes(c.termo)));
 });

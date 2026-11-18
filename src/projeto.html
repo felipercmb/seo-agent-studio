@@ -1,0 +1,971 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="referrer" content="no-referrer">
+<title>Do negócio às oportunidades · Visibilidade Aberta</title>
+<meta name="description" content="Entenda seu negócio, revise as palavras e acompanhe oportunidades com evidências, no seu computador.">
+<style>
+:root{--ink:#182e36;--muted:#465d63;--teal:#075d60;--dark:#183d3d;--paper:#fafbfa;--white:#fff;--rule:#c9d6d3;--pale:#e2f1ea;--error:#8d2826;font-family:"Instrument Sans","Helvetica Neue",Arial,sans-serif;color:var(--ink);background:var(--paper);line-height:1.55;color-scheme:light}
+*{box-sizing:border-box}body{margin:0}a{color:var(--teal);text-underline-offset:.2em}button,input,textarea,select{font:inherit}button,input,textarea,select{border-radius:4px}button{cursor:pointer;background:var(--teal);color:white;border:1px solid var(--teal);padding:.65rem 1rem;font-weight:650;min-height:44px}button:hover{background:#06494b}button:disabled{cursor:not-allowed;opacity:.6}a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible,summary:focus-visible,select:focus-visible{outline:3px solid #ae6b00;outline-offset:3px}input,textarea,select{background:white;color:var(--ink);border:1px solid #839c95;padding:.65rem .75rem;width:100%;min-height:44px}textarea{resize:vertical;min-height:100px}h1,h2,h3,p{margin:0}h1,h2,h3{line-height:1.14;text-wrap:balance;letter-spacing:-.035em}h1{font-size:clamp(2.55rem,5.4vw,4.5rem);font-weight:570;max-width:15ch}h2{font-size:clamp(1.65rem,3vw,2.4rem);font-weight:600}h3{font-size:1.2rem;line-height:1.3}p{max-width:76ch}small{font-size:.86rem}.wrap{max-width:1200px;width:calc(100% - 3rem);margin:auto}.top{border-bottom:1px solid var(--rule);background:var(--white)}.top .wrap{display:flex;align-items:center;justify-content:space-between;gap:1rem;min-height:78px;flex-wrap:wrap;padding-block:.7rem}.brand{font-size:1.15rem;font-weight:700;text-decoration:none;color:var(--dark)}.top nav{display:flex;gap:1.2rem;flex-wrap:wrap;font-size:.9rem}.skip{position:absolute;top:.4rem;left:.5rem;transform:translateY(-150%);z-index:5;padding:.7rem;background:white}.skip:focus{transform:translateY(0)}.intro{display:grid;grid-template-columns:1.25fr 1fr;gap:4rem;padding:4rem 0 3rem;align-items:center}.lead{color:var(--muted);font-size:1.12rem;margin:1rem 0 1.6rem;max-width:58ch}.promise{padding:1.5rem 1.7rem;background:var(--pale);border-left:4px solid var(--teal)}.promise h2{font-size:1.2rem;margin-bottom:.7rem}.promise p+p{margin-top:.7rem}.site-form label{font-weight:650;display:block;margin-bottom:.45rem}.site-line{display:flex;gap:.5rem}.site-line input{min-width:0;flex:1}.site-line button{white-space:nowrap}.utility{display:flex;align-items:center;flex-wrap:wrap;gap:.6rem;margin-top:.75rem}.quiet{background:white;color:var(--teal);border-color:#8da69e}.quiet:hover{background:#edf4ef}.subtle{color:var(--muted);font-size:.9rem}.status{margin-top:.7rem;color:var(--muted)}.error{margin-top:.7rem;color:var(--error);font-weight:600}.status:empty,.error:empty{display:none}[hidden]{display:none!important}.project-head{padding:2.2rem 0 1.5rem;border-bottom:1px solid var(--rule);display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap;align-items:start}.project-head h1{font-size:clamp(2rem,4vw,3.4rem);max-width:100%;overflow-wrap:anywhere}.project-head p{margin-top:.4rem;color:var(--muted)}.project-actions{display:flex;gap:.5rem;flex-wrap:wrap}.steps{list-style:none;padding:0;margin:1.6rem 0 0;display:grid;grid-template-columns:repeat(5,1fr);gap:.5rem}.steps li{padding:.8rem .9rem;border-top:3px solid #9cb8ac;background:#edf3ef;min-width:0}.steps a{display:block;font-weight:650;font-size:.92rem}.steps small{display:block;color:var(--muted);margin-top:.3rem}.steps .step-state{font-weight:650;color:var(--teal)}.section{padding:2.6rem 0;border-bottom:1px solid var(--rule);scroll-margin-top:1rem}.section-head{display:grid;grid-template-columns:3rem 1fr;gap:.7rem;margin-bottom:1.2rem}.section-number{display:flex;align-items:center;justify-content:center;border:1px solid var(--teal);color:var(--teal);border-radius:50%;width:2.4rem;height:2.4rem;font-weight:700}.section-head p{color:var(--muted);margin-top:.5rem}.section-body{margin-left:3.7rem}.notice{background:var(--pale);border-left:3px solid #54897d;padding:1rem 1.2rem;margin:.9rem 0;color:var(--ink)}.notice p+p{margin-top:.5rem}.notice.warn{background:#f6f2e7;border-color:#9c782d}.fields{display:grid;grid-template-columns:1fr 1fr;gap:1rem 1.2rem}.field label{display:block;font-weight:600;margin-bottom:.3rem}.field small{display:block;color:var(--muted);margin-top:.3rem}.field.full{grid-column:1/-1}.offers{display:grid;gap:.8rem;margin:1rem 0}.offer{border:1px solid var(--rule);border-left:3px solid #7b9e90;background:white;padding:1rem 1.1rem}.offer-top{display:flex;justify-content:space-between;gap:1rem;align-items:center;margin-bottom:.8rem}.offer-top button{font-size:.85rem;min-height:36px;padding:.25rem .6rem}.offer .fields{gap:.8rem}.offer .field label{font-size:.92rem}.evidence{margin-top:.65rem;color:var(--muted);overflow-wrap:anywhere;font-size:.87rem}.evidence p{margin:.3rem 0}.evidence a{overflow-wrap:anywhere}.confirm{display:flex;align-items:flex-start;gap:.65rem;margin:1.3rem 0 1rem;max-width:75ch;font-weight:550}.confirm input{width:20px;min-height:20px;height:20px;flex-shrink:0;margin:.2rem 0 0}.confirm small{display:block;font-weight:400;color:var(--muted)}.inline-actions{display:flex;gap:.6rem;align-items:center;flex-wrap:wrap}.count{font-variant-numeric:tabular-nums;color:var(--muted);margin-bottom:.8rem}.table-wrap{overflow-x:auto}table{width:100%;border-collapse:collapse;text-align:left;font-variant-numeric:tabular-nums}th,td{padding:.85rem .7rem;border-bottom:1px solid var(--rule);vertical-align:top;overflow-wrap:anywhere}thead th{background:#edf3ef;font-size:.86rem;font-weight:600;color:var(--muted)}tbody th{font-size:.98rem;font-weight:600;width:38%}td{font-size:.91rem}td small,th small{display:block;font-weight:400;margin-top:.3rem;color:var(--muted)}.tag{display:inline-block;background:#e9efeb;color:#33574b;padding:.1rem .4rem;font-size:.81rem;border-radius:3px;margin-right:.3rem}.tag.hypothesis{background:#f4edda;color:#765516}.details{margin:.8rem 0}.details summary{cursor:pointer;color:var(--teal);font-weight:600}.details ul{padding-left:1.2rem;max-width:80ch}.details li{margin:.35rem 0}.search-result{padding:1.2rem 0;border-bottom:1px solid var(--rule)}.search-result h3{margin-bottom:.5rem}.search-result p{margin:.35rem 0}.rank{color:var(--teal);font-weight:700}.competitors{padding-left:1.2rem;margin:.5rem 0}.competitors li{margin:.3rem 0}.recommendations{padding:0;list-style:none;margin:1rem 0}.recommendation{padding:1.3rem 1.4rem;border-left:3px solid #7c9e90;background:#f0f5f2;margin:.7rem 0}.recommendation h3{margin:.35rem 0 .65rem}.recommendation p{margin:.4rem 0}.recommendation dl{margin:.8rem 0;display:grid;grid-template-columns:8.5rem 1fr;gap:.5rem 1rem;font-size:.93rem}.recommendation dt{font-weight:650}.recommendation dd{margin:0;max-width:72ch;overflow-wrap:anywhere}.recommendation ul{padding-left:1.1rem;margin:0}.history{padding:0;list-style:none}.history li{padding:.8rem 0;border-bottom:1px solid var(--rule)}.history p{margin:.3rem 0;color:var(--muted);font-size:.9rem}.danger{color:var(--error);border-color:#bd928e;background:white}.danger:hover{background:#faeeee}.erase{margin-top:1.6rem}.footer{padding:1.5rem 0 2rem;color:var(--muted);font-size:.88rem}.footer .wrap{display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap}.loaded .intro{display:block;padding:1.3rem 0}.loaded .intro-copy,.loaded .promise{display:none}.loaded .site-form{max-width:760px}.loading{cursor:progress}.loading #report{opacity:.8}.empty{padding:1rem 0;color:var(--muted)}
+@media(max-width:850px){.intro{gap:2rem;grid-template-columns:1.2fr 1fr}.steps{grid-template-columns:repeat(3,1fr)}.section-body{margin-left:0}.project-actions{width:100%}}
+@media(max-width:600px){.wrap{width:calc(100% - 2rem)}.top .wrap{min-height:66px}.intro{display:block;padding:2.2rem 0}.promise{margin-top:1.8rem}.site-line{flex-wrap:wrap}.site-line input{flex-basis:100%}.site-line button{width:100%}.steps{grid-template-columns:1fr 1fr}.steps li:last-child{grid-column:1/-1}.fields{grid-template-columns:1fr}.field.full{grid-column:auto}.section{padding:1.8rem 0}.section-head{grid-template-columns:2.4rem 1fr;gap:.5rem}.section-number{width:2rem;height:2rem}.recommendation{padding:1rem}.recommendation dl{display:block}.recommendation dt{margin:.8rem 0 .2rem}.offer{padding:.85rem}.project-head h1{font-size:2rem}.table-wrap{margin:0 -.2rem}th,td{padding:.7rem .4rem}.project-actions button{flex:1}.site-form .utility button{width:100%}}
+@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
+.filters{display:grid;grid-template-columns:1.3fr 1fr;gap:.7rem;margin:.8rem 0}.filters label{display:block;font-size:.88rem;font-weight:600}.filters input,.filters select{margin-top:.25rem}.terms-detail{margin-top:1.2rem}.terms-detail>summary{padding:.8rem 0;border-top:1px solid var(--rule)}.recommendation h4{font-size:1rem;margin:1rem 0 .4rem}.offers{margin-bottom:1.1rem}.offer-details{border:1px solid var(--rule);border-radius:4px;background:white;padding:.1rem 1rem}.offer-details>summary{min-height:44px;padding:.6rem 0;color:var(--teal);font-weight:650;cursor:pointer;overflow-wrap:anywhere}.offer-details .offer{margin:0;padding:.8rem 0;border:0}.offer-details .offer legend{font-size:.9rem;color:var(--muted)}@media(max-width:600px){.filters{grid-template-columns:1fr}}
+@media print{.top,.intro,.skip,.project-actions,.inline-actions,.erase,.utility,button,.footer,#perfil-form input,#perfil-form textarea,#perfil-form .confirm{display:none!important}.wrap{width:100%}.section{break-before:auto}.recommendation,.search-result{break-inside:avoid}.steps{display:none}.notice,.recommendation{background:white}.section-body{margin:0}}
+h5{font-size:1rem;margin:1.1rem 0 .35rem}
+.recommendation dd>small{display:block;margin-top:.2rem;color:var(--muted)}
+.google-local{overflow-wrap:anywhere}.google-local input[type=file]{max-width:100%;min-width:0}.google-local p{max-width:76ch}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Ir para a análise</a>
+<header class="top"><div class="wrap"><a class="brand" href="/">Visibilidade Aberta</a><nav aria-label="Navegação"><a href="/">Diagnóstico do site</a><a id="como-link" href="#como-funciona">Como funciona</a></nav></div></header>
+<main class="wrap" id="main">
+<section class="intro" aria-label="Começar uma análise">
+<div><div class="intro-copy"><h1>Oportunidades que fazem sentido para o seu negócio.</h1><p class="lead">Comece pelo site. Revise o que você oferece e descubra quais buscas merecem sua atenção, com a origem de cada conclusão.</p></div>
+<form class="site-form" id="site-form"><label for="site">Qual é o site do negócio?</label><div class="site-line"><input id="site" name="site" type="text" autocomplete="url" inputmode="url" spellcheck="false" maxlength="2048" required placeholder="exemplo.com.br" aria-describedby="site-help"><button type="submit" id="iniciar">Ler site e começar</button></div><div class="utility"><button class="quiet" type="button" id="abrir">Abrir análise salva</button><small class="subtle" id="site-help">Sem cadastro. Perfil e histórico ficam neste computador.</small></div></form>
+<p class="status" id="status" role="status" aria-live="polite"></p><p class="error" id="erro" role="alert"></p></div>
+<aside class="promise" id="como-funciona"><h2>Primeiro o negócio. Depois os números.</h2><p>Você pode corrigir o entendimento do site antes de escolher as oportunidades.</p><p>Posições precisam de uma fonte configurada. Sem ela, a análise continua com o que foi observado no site, sem inventar rankings ou procura.</p><p class="subtle">A leitura é parcial e informa sua cobertura. Nenhuma recomendação garante vendas ou posição no Google.</p></aside>
+</section>
+<div id="report" hidden aria-busy="false"></div>
+</main>
+<footer class="footer"><div class="wrap"><p>Método aberto. Evidências consultáveis. Decisões suas.</p><a href="https://github.com/felipercmb/visibilidade-aberta" rel="noreferrer noopener" target="_blank">Código e documentação</a></div></footer>
+<script>
+'use strict';
+const $ = id => document.getElementById(id);
+let projetoAtual = null, executando = false, alterado = false, pedidoAtual = 0, controlador = null;
+let consultaEntendimentoTimer=null;
+const rascunhosTarefas=new Map();
+let linhasOfertas = [], linhasAtuacoes = [], contadorCampos = 0;
+
+function node(tag, texto, classe) {
+  const item = document.createElement(tag);
+  if (texto != null) item.textContent = String(texto);
+  if (classe) item.className = classe;
+  return item;
+}
+function linkSeguro(valor, texto) {
+  try {
+    const url = new URL(valor);
+    if (!['http:', 'https:'].includes(url.protocol) || url.username || url.password) return node('span', texto || 'Endereço indisponível');
+    const a = node('a', texto || url.hostname + url.pathname);
+    a.href = url.href; a.target = '_blank'; a.rel = 'noreferrer noopener';
+    return a;
+  } catch { return node('span', texto || 'Endereço indisponível'); }
+}
+function data(valor) {
+  const instante = new Date(valor);
+  return valor && Number.isFinite(instante.getTime()) ? instante.toLocaleString('pt-BR') : 'Data não informada';
+}
+function lista(valor) { return Array.isArray(valor) ? valor : []; }
+function rotulo(valor) {
+  const nomes = {rascunho:'Revisar',confirmado:'Confirmado',pronto:'Pronto',concluido:'Concluído',disponivel:'Disponível',parcial:'Parcial',indisponivel:'Indisponível',aguardando:'Aguardando',aguardando_confirmacao:'Confirme o perfil',pendente:'Pendente',sem_dados:'Sem dados',sem_termos:'Sem termos',fonte_nao_configurada:'Fonte não configurada',cota_esgotada:'Cota esgotada',revisao_necessaria:'Revise o perfil',nao_consultada:'Ainda não consultada',desatualizada:'Nova medição necessária',iniciar:'Leitura inicial',reler_site:'Nova leitura do site',salvar_perfil:'Perfil salvo',registrar_google_local:'Captura local importada',medir:'Lote de posições',analisar:'Prioridades atualizadas',investigar:'Investigar',melhorar:'Melhorar',acompanhar:'Acompanhar',adiar:'Adiar',comercial:'Possível intenção comercial',informacional:'Informacional',navegacional:'Navegacional',indefinida:'Intenção a confirmar'};
+  const extras = {concluida:'Concluída',em_andamento:'Em andamento',descartada:'Descartada',sem_tarefas:'Sem tarefas registradas',registrar_tarefa:'Registro de tarefa',experimentar_entendimento:'Entendimento em execução',consultar_entendimento:'Entendimento recebido',disponibiliza:'Disponibiliza a oferta',executa:'Executa a atividade',vende:'Vende o produto',intermedeia:'Intermedeia a contratação',elegibilidade:'Requisitos de acesso',limite:'Limite',preco:'Preço',prazo:'Prazo',exclusao:'Exclusão',canal:'Canal de atendimento',outro:'Outra condição',experimentar_ia:'Experimento de IA local',historica:'Resposta histórica',experimental:'Experimental',servicos:'Prestação de serviços',produtos:'Venda de produtos',misto:'Produtos e serviços',intermediacao:'Intermediação',indefinido:'Ainda não definido',confirmar_negocio:'Confirmar o negócio',validar_oferta:'Validar oferta',conferir_intencao:'Conferir intenção',validar_economia:'Validar premissas comerciais',validar_demanda:'Investigar a procura',validar_pagina:'Conferir a página',medir_posicao:'Medir a presença',revisar_pagina:'Revisar a página',acompanhar_contatos:'Acompanhar contatos'};
+  return Object.hasOwn(nomes, valor) ? nomes[valor] : Object.hasOwn(extras,valor) ? extras[valor] : String(valor || 'Aguardando').replaceAll('_', ' ');
+}
+function notas(titulo, valores) {
+  const d = node('details', null, 'details'); d.append(node('summary', titulo));
+  const ul = node('ul'); lista(valores).forEach(texto => ul.append(node('li', texto))); d.append(ul); return d;
+}
+function evidencia(item) {
+  const div = node('div', null, 'evidence');
+  if (!item || typeof item !== 'object') return div;
+  if(item.tipo==='diagnostico')div.append(node('p','Achado derivado do HTML inicial; não é um trecho literal do negócio.','subtle'));
+  else if(item.tipo==='interface_publica'||item.natureza==='rotulo_literal')div.append(node('p','Rótulo observado na interface do HTML inicial. A ação não foi executada.','subtle'));
+  else if(item.tipo==='negocio_publicado'||item.natureza==='trecho_literal')div.append(node('p','Trecho publicado no site, sujeito à conferência.','subtle'));
+  if (item.trecho) div.append(node('p', item.trecho));
+  if (item.fonte) div.append(node('p', 'Fonte: ' + (typeof item.fonte === 'string' ? item.fonte : item.fonte.nome || 'Fonte registrada') + (item.fonteId ? ' — ' + item.fonteId : '')));
+  if (item.tipo === 'demanda') {
+    div.append(node('p', item.termo + ': ' + (Number.isFinite(item.buscasMensais) ? item.buscasMensais.toLocaleString('pt-BR') + ' buscas mensais estimadas.' : 'Estimativa indisponível.')));
+    div.append(node('p', 'Período: ' + item.periodoInicio + ' a ' + item.periodoFim + '. ' + [item.pais,item.idioma].filter(Boolean).join(' / ')));
+  }
+  if(item.tipo==='demanda_compartilhada'){div.append(node('p','Estimativa compartilhada entre: '+lista(item.termos).join(' / ')),node('p','Média mensal do conjunto: '+(Number.isFinite(item.buscasMensaisCompartilhadas)?item.buscasMensaisCompartilhadas.toLocaleString('pt-BR'):'indisponível')+'. Não é o volume individual desta busca.'),node('p','Período: '+item.periodoInicio+' a '+item.periodoFim+'.'));}
+  if (item.url) div.append(linkSeguro(item.url));
+  if (item.coletadoEm) div.append(node('p', 'Leitura: ' + data(item.coletadoEm)));
+  if (item.campo) div.append(node('p', 'Origem na página: ' + item.campo));
+  if (item.sha256) div.append(node('p', 'Identificador da evidência: ' + item.sha256));
+  return div;
+}
+function secao(numero, id, titulo, texto) {
+  const section = node('section', null, 'section'); section.id = id;
+  const head = node('div', null, 'section-head'), div = node('div');
+  head.append(node('span', numero, 'section-number')); div.append(node('h2', titulo));
+  if (texto) div.append(node('p', texto)); head.append(div); section.append(head);
+  const body = node('div', null, 'section-body'); section.append(body); return {section, body};
+}
+function validarProjeto(r) {
+  if (!r || r.versao !== 1 || typeof r.dominio !== 'string' || !Number.isInteger(r.revisao) || r.revisao < 1 ||
+      !r.perfil || !['rascunho','confirmado'].includes(r.perfil.estado) || !Array.isArray(r.perfil.ofertas) || r.perfil.ofertas.length > 8 ||
+      !Array.isArray(r.palavras?.candidatos) || r.palavras.candidatos.length > 100 || !Array.isArray(r.historico) ||
+      !Array.isArray(r.modulos) || !Array.isArray(r.oportunidades?.itens)) throw new Error('A análise recebida está incompleta. Abra a análise salva para tentar novamente.');
+  return r;
+}
+function numeroOpcional(valor, campo, limite, minimo=0) {
+  const texto = String(valor ?? '').trim();
+  if (!texto) return null;
+  const n = Number(texto.replace(',', '.'));
+  if (!Number.isFinite(n) || n < minimo || n > limite) throw new Error('Confira o campo ' + campo + '.');
+  return n;
+}
+function montarOferta(linha) {
+  const nome = linha.nome.value.trim();
+  if (!nome) throw new Error('Preencha o nome de cada oferta ou remova a oferta vazia.');
+  const percentual = numeroOpcional(linha.taxa.value, 'contatos que viram venda', 100);
+  const oferta={...(linha.id ? {id:linha.id} : {}), nome, url:linha.url.value.trim(), economia:{
+    contribuicaoPorVenda:numeroOpcional(linha.contribuicao.value, 'contribuição por venda', 1e9, -1e9),
+    taxaFechamento:percentual === null ? null : percentual / 100,
+  },...(linha.centralidadeAlterada?{centralidade:linha.centralidade.value}:{})};
+  if(linha.jornada)oferta.jornada=Object.fromEntries(Object.entries(linha.jornada).map(([k,v])=>[k,v.value.trim()]));
+  if(linha.entrega&&(linha.entregaAlterada||linha.entregaAnterior))oferta.entrega=Object.fromEntries(Object.entries(linha.entrega).map(([k,v])=>[k,v.value]));
+  if(linha.removerPremissas)oferta.premissasEconomicas=null;
+  else if(linha.premissas){
+    const p=linha.premissas,usando=linha.contribuicao.value.trim()||linha.taxa.value.trim()||Object.entries(p).some(([k,x])=>k!=='origem'&&x.value.trim());
+    if(usando){
+      const valor=numeroOpcional(linha.contribuicao.value,'contribuição por venda',1e9,-1e9);
+      const n=numeroOpcional(p.contatos.value,'contatos qualificados',1e9),k=numeroOpcional(p.fechamentos.value,'contatos que fecharam',1e9);
+      const aquisicao=numeroOpcional(p.aquisicao.value,'custo de aquisição',1e9),fixos=numeroOpcional(p.fixos.value,'custos fixos',1e9);
+      const custo=(ponto,minimo,maximo,escopo,nome)=>{const min=numeroOpcional(minimo.value,nome+' mínimo',1e9),max=numeroOpcional(maximo.value,nome+' máximo',1e9);return min!==null||max!==null?{escopo,total:{tipo:'intervalo',minimo:min,maximo:max}}:ponto===null?null:{escopo,total:{tipo:'valor',valor:ponto}};};
+      const minC=numeroOpcional(p.minContrib.value,'contribuição mínima',1e9,-1e9),maxC=numeroOpcional(p.maxContrib.value,'contribuição máxima',1e9,-1e9),minT=numeroOpcional(p.minTaxa.value,'fechamento mínimo',100),maxT=numeroOpcional(p.maxTaxa.value,'fechamento máximo',100);
+      oferta.premissasEconomicas={versao:1,moeda:'BRL',origem:p.referencia.value.trim()?{tipo:p.origem.value,referencia:p.referencia.value.trim()}:null,
+        periodo:p.inicio.value||p.fim.value?{inicio:p.inicio.value,fim:p.fim.value}:null,
+        coorte:p.populacao.value.trim()||p.criterio.value.trim()?{descricao:p.populacao.value.trim(),criterioQualificacao:p.criterio.value.trim()}:null,
+        contribuicaoPorVenda:minC!==null||maxC!==null?{tipo:'intervalo',minimo:minC,maximo:maxC}:valor===null?null:{tipo:'valor',valor},
+        fechamento:n!==null||k!==null?{tipo:'contagem',contatosQualificados:n,fechamentos:k}:minT!==null||maxT!==null?{tipo:'intervalo',minimo:minT===null?null:minT/100,maximo:maxT===null?null:maxT/100}:percentual===null?null:{tipo:'valor',valor:percentual/100},
+        custosAquisicao:custo(aquisicao,p.minAquisicao,p.maxAquisicao,'total_periodo_coorte','Aquisição'),
+        custosFixos:custo(fixos,p.minFixos,p.maxFixos,'total_periodo_empresa','Custos fixos')};
+    }else if(linha.premissasOriginais)oferta.premissasEconomicas=null;
+  }
+  return oferta;
+}
+function montarAtuacao(linha) {
+  const nome=linha.nome.value.trim();
+  if(!nome)throw new Error('Preencha o nome de cada atividade ou remova a atividade vazia.');
+  return {tipo:linha.tipo.value,nome,url:linha.url.value.trim() || null};
+}
+function exibirEntendimentoNegocio(entendimento) {
+  const div=node('div');
+  const e=entendimento || {};
+  if(e.finalidade){const finalidades={comercial:'Comercial',social:'Atuação social, apoio ou participação',indefinida:'Ainda não definida'};
+    div.append(node('p','Finalidade: '+(finalidades[e.finalidade.tipo] || finalidades.indefinida)+(e.finalidade.natureza==='declaracao_usuario'?' (informada por você).':' (hipótese da leitura pública).')));}
+  if(e.proposito?.texto){div.append(node('blockquote',e.proposito.texto));if(lista(e.proposito.evidencias).length){const d=node('details',null,'details');d.append(node('summary','Fonte do propósito proposto'));e.proposito.evidencias.slice(0,3).forEach(f=>d.append(evidencia(f)));div.append(d);}}
+  if(lista(e.publicos).length){const d=node('details',null,'details');d.append(node('summary','Públicos mencionados nas fontes'),node('p','Os vínculos abaixo são hipóteses da leitura. Mencionar um público não identifica quem decide, paga ou se torna cliente.','subtle'));const tipos={cliente:'Possível comprador ou contratante',beneficiario:'Público possivelmente beneficiado',participante:'Possível participante',apoiador:'Possível apoiador'};
+    for(const p of e.publicos){d.append(node('p',(tipos[p.tipo] || 'Público')+': '+p.texto));for(const fonte of lista(p.evidencias))d.append(evidencia(fonte));}div.append(d);}
+  if(lista(e.territorios).length){const d=node('details',null,'details');d.append(node('summary','Territórios citados na atuação'),node('p','Os lugares mencionados não identificam um público humano nem confirmam a região de atendimento comercial.','subtle'));
+    for(const t of e.territorios.slice(0,6)){if(typeof t?.texto!=='string')continue;d.append(node('p',t.texto));for(const fonte of lista(t.evidencias).slice(0,3))d.append(evidencia(fonte));}div.append(d);}
+  if(e.qualidade){const d=node('details',null,'details');d.append(node('summary','Qualidade da leitura pública: '+({insuficiente:'insuficiente',hipotese:'interpretação a revisar',conflitante:'sinais conflitantes'}[e.qualidade.estado] || 'a revisar')));
+    for(const motivo of lista(e.qualidade.motivos))d.append(node('p',motivo));div.append(d);}
+  if(lista(e.conflitos).length)div.append(notas('Pontos que precisam de esclarecimento',e.conflitos.map(c=>c.motivo)));
+  if(lista(e.condicoesPorAtividade?.itens).length){
+    const d=node('details',null,'details');d.append(node('summary','Requisitos separados por atividade'),node('p','Uma dispensa ou destinação publicada para uma atividade não vale automaticamente para as outras. Confira o contexto e as modalidades.','subtle'));
+    for(const x of e.condicoesPorAtividade.itens.slice(0,12)){d.append(node('p',x.fraseLiteral),node('p',x.pergunta,'subtle'),evidencia(x.fonte));}
+    for(const c of lista(e.condicoesPorAtividade.comparacoes)){d.append(node('p',c.proposta));for(const caso of lista(c.casosFicticios))d.append(node('p','Caso para conferir: “'+caso.atividade+'”. '+caso.verificar,'subtle'));}div.append(d);
+  }
+  if(lista(e.atribuicoesNominais?.itens).length){
+    const d=node('details',null,'details');d.append(node('summary','Atividades e responsabilidades atribuídas na publicação'),node('p','Confira o marcador e as partes na fonte. Isso não confirma execução real, obrigação jurídica ou o papel de todas as modalidades.','subtle'));
+    for(const x of e.atribuicoesNominais.itens.slice(0,12)){d.append(node('p',x.fraseLiteral),node('p','Objeto: '+x.objeto.texto+'. Parte citada: '+x.ator.texto+'. Marcador: '+x.marcador.texto+'.','subtle'),node('p',x.pergunta));if(x.estado==='contexto_documental_pendente')d.append(node('p','Há contexto documental ou relato de terceiro a conferir.','subtle'));d.append(evidencia(x.fonte));}div.append(d);
+  }
+  if(lista(e.relacoes).length){const d=node('details',null,'details');d.append(node('summary','Como as partes se relacionam na atuação publicada'),node('p','Estas relações são hipóteses apoiadas nas declarações do site. Não confirmam responsabilidade jurídica, pagamento ou comissão.','subtle'));
+    for(const r of e.relacoes.slice(0,6)){if(typeof r.texto!=='string')continue;d.append(node('p',r.texto));if(r.objeto)d.append(node('p','Objeto referido: '+r.objeto,'subtle'));if(lista(r.atores).length)d.append(node('p','Partes mencionadas: '+r.atores.slice(0,6).join('; ')+'.','subtle'));for(const fonte of lista(r.evidencias).slice(0,3))d.append(evidencia(fonte));}div.append(d);}
+  return div;
+}
+function exibirInteracoesPublicas(contexto) {
+  const div=node('div'),itens=lista(contexto?.interacoesPublicas).slice(0,48).filter(e=>['campo','botao','link'].includes(e?.tipo)&&e.modo==='nao_preenchido'&&typeof e.rotulo==='string');
+  if(!itens.length)return div;
+  const d=node('details',null,'details');d.append(node('summary','Caminhos que o site apresenta ao visitante'),node('p','São rótulos públicos de campos, botões e links no HTML inicial. Nenhum campo foi preenchido nem ação foi executada; isso não comprova uma venda ou conversão.','subtle'));
+  const grupos=new Map();for(const e of itens){const k=e.url+'|'+(e.grupoId||'pagina');if(!grupos.has(k))grupos.set(k,[]);grupos.get(k).push(e);}
+  for(const grupo of grupos.values()){const box=node('div',null,'evidence');box.append(linkSeguro(grupo[0].url));const ul=node('ul');for(const e of grupo)ul.append(node('li',({campo:'Campo',botao:'Botão',link:'Link'}[e.tipo])+': '+e.rotulo));box.append(ul);if(grupo[0].coletadoEm)box.append(node('small','Leitura: '+data(grupo[0].coletadoEm)));if(grupo[0].sha256)box.append(node('small','Identificador da página: '+grupo[0].sha256));d.append(box);}
+  if(contexto?.coberturaInteracoes?.limitada)d.append(node('p','A lista está limitada ao recorte coletado. Ausência de um rótulo não comprova ausência no site.','subtle'));
+  div.append(d);return div;
+}
+function exibirPropostaDaLeitura(proposta){
+  const div=node('div');if(!proposta?.perfil)return div;
+  const p=proposta.perfil;div.append(node('h3','Sugestões para comparar com o seu perfil'),node('p',proposta.limite || 'Estas sugestões são hipóteses da leitura salva. Seu perfil foi preservado.','notice'),node('p','Data da fonte: '+data(proposta.coletadoEm)+'. A interpretação foi refeita; a coleta não foi renovada.','subtle'));
+  if(p.resumo)div.append(node('p',p.resumo));if(p.entendimento)div.append(node('p','Forma de atuação proposta: '+rotulo(p.entendimento.papel)+'.'),exibirEntendimentoNegocio(p.entendimento));
+  const nomes=[...lista(p.ofertas).map(o=>({nome:o.nome,evidencias:o.evidencias})),...lista(p.entendimento?.atuacoes).filter(a=>a.tipo!=='oferta')];
+  if(nomes.length){const ul=node('ul');for(const a of nomes.slice(0,16)){const li=node('li',a.nome);if(lista(a.evidencias).length){const d=node('details',null,'details');d.append(node('summary','Fonte desta sugestão'));a.evidencias.slice(0,3).forEach(e=>d.append(evidencia(e)));li.append(d);}ul.append(li);}div.append(ul);}else div.append(node('p','O recorte salvo não sustentou novas ofertas ou atividades.','subtle'));
+  div.append(node('p','Compare os nomes e as fontes com os campos acima. Nenhuma sugestão foi aplicada automaticamente.','subtle'));return div;
+}
+function exibirMapaInvestigacao(mapa) {
+  const div=node('div');if(!mapa||mapa.versao!==1)return div;
+  div.append(node('h3','Como as buscas se ligam ao negócio'),node('p','Comece pela oferta, pelo público e pelo objetivo. As expressões abaixo são uma seleção para investigar; a intenção é uma hipótese e esta lista não recomenda verba.','subtle'));
+  for(const oferta of lista(mapa.porOferta)){
+    const box=node('article',null,'search-result');box.append(node('h4',oferta.nome));
+    if(oferta.entrega)box.append(node('p','Tipo informado: '+rotulo(oferta.entrega.tipoOferta)+'. Papel nesta oferta: '+rotulo(oferta.entrega.papelOrganizacao)+'. Esse papel não define quem realiza a rotina do cliente.','subtle'));
+    if(oferta.objetivo)box.append(node('p','Objetivo declarado: '+oferta.objetivo));
+    if(oferta.comprador)box.append(node('p','Quem solicita, segundo o perfil: '+oferta.comprador,'subtle'));
+    if(oferta.pagina)box.append(node('p','Página vinculada no perfil: '),linkSeguro(oferta.pagina.url,oferta.pagina.url),node('p','O vínculo declarado não confirma o conteúdo nem sua adequação à busca.','subtle'));
+    else box.append(node('p','Ainda falta vincular uma página da oferta.','subtle'));
+    const buscas=lista(oferta.primeirasBuscas);
+    if(buscas.length){const ol=node('ol');for(const b of buscas){const li=node('li');li.append(node('strong',b.termo),node('p',b.questao));
+      const observado=b.observado||{},estado=observado.estado==='encontrado'?'Posição observada '+observado.posicao+' em '+data(observado.coletadoEm)+'.':observado.estado==='nao_encontrado_no_recorte'?'Não observado no recorte consultado; posição exata desconhecida.':'Posição ainda não medida.';
+      li.append(node('small',(b.origem==='site'?'Expressão publicada. ':'Sugestão a validar. ')+rotulo(b.intencao)+' — hipótese de intenção. '+estado));ol.append(li);}box.append(ol);}
+    else box.append(node('p','Nenhuma expressão desta seleção ficou vinculada à oferta. Isso não demonstra ausência de procura.','empty'));
+    if(oferta.outrasBuscas)box.append(node('p',oferta.outrasBuscas+' outras expressões desta oferta continuam na lista completa abaixo.','subtle'));
+    box.append(node('p',oferta.proximoPasso),node('small',oferta.limite));div.append(box);
+  }
+  for(const [grupo,titulo,explicacao] of [[mapa.semVinculo,'Expressões sem ligação com uma oferta','Precisam de contexto antes de entrar no foco de aquisição. Um termo amplo não é automaticamente inútil.'],[mapa.outrasAtividades,'Buscas sobre participação e apoio','São ligadas a outras atividades; sua utilidade não depende de uma venda.']]){
+    if(!grupo?.quantidade)continue;const d=node('details',null,'details');d.append(node('summary',titulo+' ('+grupo.quantidade+')'),node('p',explicacao));
+    const ul=node('ul');for(const b of lista(grupo.primeirasBuscas))ul.append(node('li',b.termo+' — '+b.questao));d.append(ul);div.append(d);
+  }
+  if(lista(mapa.limites).length)div.append(notas('Como usar este mapa',mapa.limites));return div;
+}
+function exibirPalavras(palavras) {
+  const div = node('div'), candidatos = lista(palavras?.candidatos);
+  div.append(node('p', candidatos.length + ' palavras e frases candidatas. Não representam todas as pesquisas do Google.', 'count'));
+  if(Number.isInteger(palavras?.cobertura?.rotulosSemObjetoDescartados)&&palavras.cobertura.rotulosSemObjetoDescartados>0)div.append(node('p',palavras.cobertura.rotulosSemObjetoDescartados+' rótulo(s) genérico(s) de idioma ou navegação ficaram fora desta fila de pesquisa. As páginas de origem continuam na descoberta salva.','subtle'));
+  if (!candidatos.length) div.append(node('p', 'Não houve conteúdo suficiente. Revise as ofertas ou atividades para gerar sugestões coerentes com a atuação.', 'empty'));
+  else {
+    const wrap = node('div', null, 'table-wrap'), tabela = node('table'), caption = node('caption', 'Buscas propostas, intenção e origem');
+    caption.className = 'subtle'; tabela.append(caption);
+    const thead = node('thead'), tr = node('tr');
+    ['Busca candidata','Origem e intenção','Por que entrou'].forEach(t => { const th=node('th',t); th.scope='col';tr.append(th); }); thead.append(tr); tabela.append(thead);
+    const filtros=node('div',null,'filters'),buscaLabel=node('label','Filtrar buscas'),busca=node('input'),origemLabel=node('label','Mostrar'),origemFiltro=node('select');busca.type='search';buscaLabel.append(busca);origemLabel.append(origemFiltro);
+    for(const [valor,texto] of [['todas','Todas as buscas'],['oferta','Ligadas a uma oferta'],['atividade','Ligadas a programa ou participação'],['site','Encontradas no site'],['hipotese','Sugestões a validar']]){const op=node('option',texto);op.value=valor;origemFiltro.append(op);}origemFiltro.value='todas';filtros.append(buscaLabel,origemLabel);div.append(filtros);
+    const tbody = node('tbody');let todas=false;
+    const normal=t=>String(t || '').normalize('NFD').replace(/\p{M}/gu,'').toLocaleLowerCase('pt-BR');
+    const atualizar=()=>{let visiveis=0,elegiveis=0;for(const [i,linha] of Array.from(tbody.children).entries()){const c=candidatos[i],compativel=normal(c.termo).includes(normal(busca.value)) && (origemFiltro.value==='todas' || origemFiltro.value==='oferta' && c.ofertaId || origemFiltro.value==='atividade' && c.atuacaoId || c.origem===origemFiltro.value);if(compativel)elegiveis++;linha.hidden=!compativel || !todas && visiveis>=20;if(!linha.hidden)visiveis++;}resultadoFiltro.textContent=visiveis+' de '+elegiveis+' buscas neste filtro.';};
+    candidatos.forEach((c,i) => {
+      const linha = node('tr'); if(i>=20)linha.hidden=true;
+      const termo = node('th', c.termo);termo.scope='row';
+      const origem = node('td'), motivo = node('td', c.motivo || 'Revise a relação com o negócio.');
+      origem.append(node('span', c.origem === 'site' ? 'Encontrada no site' : 'Sugestão a validar', c.origem === 'site' ? 'tag' : 'tag hypothesis'));
+      origem.append(node('small', rotulo(c.intencao)));
+      if(c.evidencia){const d=node('details',null,'details');d.append(node('summary','Ver evidência'),evidencia(c.evidencia));motivo.append(d);}
+      linha.append(termo,origem,motivo);tbody.append(linha);
+    });
+    const resultadoFiltro=node('p','', 'count');resultadoFiltro.setAttribute('role','status');busca.addEventListener('input',atualizar);origemFiltro.addEventListener('change',atualizar);
+    tabela.append(tbody);wrap.append(tabela);div.append(resultadoFiltro,wrap);
+    if(candidatos.length>20){const b=node('button','Mostrar todas as '+candidatos.length+' buscas','quiet');b.type='button';b.addEventListener('click',()=>{todas=true;atualizar();b.hidden=true;});div.append(b);}atualizar();
+  }
+  if(lista(palavras?.limites).length)div.append(notas('Cobertura e limites da descoberta',palavras.limites));
+  return div;
+}
+function exibirPosicoes(posicoes) {
+  const div=node('div');
+  if(!posicoes){div.append(node('p','As posições e os concorrentes ainda não foram medidos.','empty'));return div;}
+  const aviso=node('div',null,'notice');aviso.append(node('strong',rotulo(posicoes.estado)),node('p',posicoes.aviso || 'Confira a data e o recorte de cada observação.'));div.append(aviso);
+  const cobertura=posicoes.cobertura || {};
+  div.append(node('p',(cobertura.verificadas ?? 0)+' buscas com páginas observadas; '+(cobertura.pendentes ?? 0)+' ainda pendentes.','count'));
+  for(const q of lista(posicoes.consultas)) {
+    const box=node('article',null,'search-result');box.append(node('h3',q.termo));
+    if(q.estado==='encontrado' && Number.isInteger(q.posicao) && q.posicao>0){box.append(node('p','Posição observada: '+q.posicao,'rank'));if(q.url)box.append(linkSeguro(q.url,'Página encontrada no resultado'));}
+    else box.append(node('p',q.estado==='nao_encontrado'?'Site não encontrado no recorte consultado. Posição exata desconhecida.':'Posição indisponível.','rank'));
+    const paginas=lista(q.paginas);
+    box.append(node('p','Observação: '+data(q.coletadoEm)+'. '+paginas.length+' página(s) de resultados; '+(q.profundidadeObservada ?? 0)+' resultados observados.','subtle'));
+    const contexto=q.contexto || {};
+    const descr=[contexto.pais || contexto.gl,contexto.idioma || contexto.hl,contexto.localidade || contexto.localizacao || contexto.location,contexto.dispositivo || contexto.device].filter(Boolean);
+    box.append(node('p','Contexto: '+(descr.join(' / ') || 'não informado')+'. A posição pode variar por local, horário e dispositivo.','subtle'));
+    if(q.fonte)box.append(node('p','Fonte: '+(typeof q.fonte==='string'?q.fonte:[q.fonte.nome || q.fonte.provedor || 'Captura',q.fonte.id].filter(Boolean).join(' — ')),'subtle'));
+    const rivais=q.estado==='encontrado'?lista(q.acima):lista(q.resultados).slice(0,10);
+    if(rivais.length){const d=node('details',null,'details');d.append(node('summary',q.estado==='encontrado'?'Sites observados à frente':'Outros resultados observados; não confirmam quem está à frente do site'));const ol=node('ol',null,'competitors');for(const rival of rivais){const li=node('li');li.append(node('span',Number.isInteger(rival.posicao)?'Posição '+rival.posicao+': ':''),linkSeguro(rival.url,rival.dominio || rival.titulo || rival.url));if(rival.coletadoEm)li.append(node('small',' — '+data(rival.coletadoEm)));ol.append(li);}d.append(ol);box.append(d);}
+    if(q.motivo)box.append(node('p',q.motivo,'subtle'));
+    if(q.interrompidaPor)box.append(node('p','Verificação interrompida: '+rotulo(q.interrompidaPor)+'.','subtle'));
+    if(paginas.length){const d=node('details',null,'details');d.append(node('summary','Evidências das páginas consultadas'));for(const p of paginas){const e=node('div',null,'evidence');e.append(node('p','Página '+(p.pagina ?? '?')+' — '+data(p.coletadoEm)));if(p.sha256)e.append(node('p','Identificador da captura: '+p.sha256));d.append(e);}box.append(d);}
+    div.append(box);
+  }
+  if(lista(posicoes.limites).length)div.append(notas('Limites da medição',posicoes.limites));return div;
+}
+function exibirGoogleLocal(r){
+  const div=node('div'),capturas=lista(r.googleLocal?.capturas);
+  if(!r.capacidades?.googleLocal?.disponivel&&!capturas.length)return div;
+  const painel=node('details',null,'details google-local');painel.id='capturas-google-local';painel.append(node('summary','Capturas do seu navegador'));
+  painel.append(node('p','Analise resultados que você abriu na aba Web do Google. O arquivo fica neste computador; este módulo não envia pesquisas nem usa cota de API. A ordem é a dos links reconhecidos na página capturada.','subtle'));
+  const guia=node('a','Como instalar a extensão local');guia.href='/google-local';guia.target='_blank';guia.rel='noopener noreferrer';painel.append(guia);
+  if(r.capacidades?.googleLocal?.conexaoDireta){
+    const area=node('div',null,'field'),label=node('label','Código temporário para a extensão'),codigo=node('input');codigo.id='codigo-conexao-google';codigo.type='text';codigo.readOnly=true;codigo.autocomplete='off';codigo.spellcheck=false;label.htmlFor=codigo.id;const aviso=node('p','Gere um código e cole na extensão para enviar capturas diretamente a este projeto. O código dura dez minutos e permite até 20 novas capturas.','subtle');
+    const gerar=botao('Conectar extensão a este projeto',async()=>{
+      if(executando||alterado){$('erro').textContent='Salve o perfil antes de conectar a extensão.';return;}
+      gerar.disabled=true;codigo.value='';
+      try{const res=await fetch('/api/google-local/conexao',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({site:projetoAtual.dominio,revisao:projetoAtual.revisao}),credentials:'same-origin',cache:'no-store'});const j=await res.json();if(!res.ok)throw Error(j.erro||'Não foi possível conectar.');codigo.value=j.codigoLocal;aviso.textContent='Cole este código na extensão e confira o domínio '+j.dominio+'. Válido até '+data(j.expiraEm)+'. Gerar outro código revoga o anterior.';codigo.focus();codigo.select();}
+      catch(e){$('erro').textContent=e.message||'Não foi possível criar a conexão local.';}finally{gerar.disabled=false;}
+    });gerar.id='conectar-extensao-google';const atualizar=botao('Atualizar capturas recebidas',()=>enviar('consultar'));atualizar.id='atualizar-capturas-google';area.append(gerar,label,codigo,aviso,atualizar);painel.append(area);
+  }
+  const termos=lista(r.palavras?.candidatos);
+  if(termos.length){
+    const campo=node('div',null,'field'),rot=node('label','Escolher uma busca candidata'),s=node('select');s.id='google-local-termo';rot.htmlFor=s.id;
+    const nomesEstado={links_reconhecidos:'captura recente',dominios_exibidos:'domínios exibidos; destinos desconhecidos',historica:'captura histórica',requer_conferencia:'conferir captura'};
+    for(const t of termos){const estado=lista(r.googleLocal?.fila).find(f=>f.termo===t.termo)?.estado;const o=node('option',t.termo+(nomesEstado[estado]?' — '+nomesEstado[estado]:''));o.value=t.termo;s.append(o);}
+    s.value=termos[0].termo;
+    const a=node('a','Abrir esta busca na aba Web do Google');a.target='_blank';a.rel='noopener noreferrer';
+    const atualizar=()=>{const u=new URL('https://www.google.com/search');for(const[k,v]of Object.entries({q:s.value,udm:'14',hl:'pt-BR',gl:'br',pws:'0'}))u.searchParams.set(k,v);a.href=u.href;};
+    s.addEventListener('change',atualizar);atualizar();campo.append(rot,s,a);painel.append(campo);
+  }
+  if(r.capacidades?.googleLocal?.disponivel){
+    const label=node('label','Arquivo de captura (.json)'),input=node('input');input.type='file';input.accept='.json,application/json';input.id='arquivo-google-local';label.htmlFor=input.id;
+    const importar=botao('Importar captura desta página',async()=>{
+      if(alterado){$('erro').textContent='Salve o perfil ou descarte as alterações antes de importar.';return;}
+      const file=input.files?.[0];if(!file){$('erro').textContent='Escolha o arquivo gerado pela extensão.';return;}
+      if(file.size>60000){$('erro').textContent='O arquivo excedeu 60.000 bytes. Nenhum conteúdo foi cortado.';return;}
+      try{const captura=JSON.parse(await file.text());await enviar('registrar_google_local',{revisao:projetoAtual.revisao,captura});}
+      catch{$('erro').textContent='O arquivo não contém uma captura JSON válida.';}
+    });importar.id='importar-google-local';painel.append(label,input,importar);
+  }
+  if(!capturas.length)painel.append(node('p','Nenhuma captura local importada. Abra uma busca, use a extensão e selecione o arquivo aqui.','empty'));
+  const sequencias=lista(r.googleLocal?.sequencias);
+  if(sequencias.length){
+    const resumo=node('details',null,'details');resumo.id='sequencias-google-local';resumo.append(node('summary','Páginas capturadas e próximos passos'),node('p','Agrupadas pela consulta e pelos parâmetros solicitados em até 15 minutos. A localização efetiva continua desconhecida.','subtle'));
+    for(const s of sequencias.slice(0,12)){
+      const box=node('article',null,'search-result');box.append(node('h3',s.termo),node('p',s.paginasCapturadas+' páginas distintas capturadas; '+s.paginasEncadeadas+' ligadas desde a primeira página. '+(s.recente?'Capturas recentes.':'Há capturas históricas.'),'subtle'));
+      const ctx=s.contextoSolicitado||{};box.append(node('p','Dispositivo: '+(ctx.dispositivo||'desconhecido')+'. País solicitado: '+(ctx.paisSolicitado||'desconhecido')+'.','subtle'));
+      if(lista(s.encontros).length)for(const e of s.encontros)box.append(node('p','Site observado como '+e.ordemNaPagina+'º link reconhecido na página com início solicitado '+e.inicioSolicitado+(e.naSequenciaDesdePrimeira?'.':' — página avulsa, sem sequência desde a primeira.')+' A posição absoluta permanece desconhecida.'));
+      for(const e of lista(s.encontrosDominiosExibidos))box.append(node('p','Domínio exibido no '+e.ordemBloco+'º bloco web da página com início solicitado '+e.inicioSolicitado+(e.naSequenciaDesdePrimeira?'.':' — página avulsa, sem sequência desde a primeira.')+' O destino do link e a posição absoluta permanecem desconhecidos.'));
+      if(!lista(s.encontros).length&&!lista(s.encontrosDominiosExibidos).length)box.append(node('p',s.estado==='requer_conferencia'?'As capturas precisam de conferência antes de concluir uma observação.':s.estado==='alvo_nao_identificado_nas_observacoes'?'O alvo não foi identificado nos links ou domínios exibidos reconhecidos. Blocos desconhecidos continuam sem conclusão.':'O site não foi observado nos links reconhecidos deste recorte.'));
+      if(s.proximaAcao==='capturar_primeira_pagina'){
+        const a=node('a','Abrir a primeira página desta busca');const host=['google.com','www.google.com','google.com.br','www.google.com.br'].includes(ctx.origemGoogle)?ctx.origemGoogle:'www.google.com';const u=new URL('https://'+host+'/search');for(const[k,v]of Object.entries({q:s.termo,udm:'14',start:'0',hl:ctx.idiomaSolicitado,gl:ctx.paisSolicitado,pws:ctx.pwsSolicitado,uule:ctx.uuleSolicitado}))if(v!==null&&v!==undefined)u.searchParams.set(k,v);a.href=u.href;a.target='_blank';a.rel='noopener noreferrer';box.append(a);
+      }
+      for(const l of lista(s.lacunas))box.append(linkSeguro(l.url,'Abrir a próxima página ainda sem captura'));
+      if(lista(s.paginasForaDaSequencia).length)box.append(node('p','Há '+s.paginasForaDaSequencia.length+' páginas avulsas. Capture as páginas indicadas nos links seguintes para registrar a continuidade.','subtle'));
+      if(lista(s.conflitos).length)box.append(node('p','Há capturas conflitantes com o mesmo horário. Confira os arquivos antes de comparar.','notice warn'));
+      if(lista(s.repeticoes).length)box.append(node('p','Foram preservadas '+s.repeticoes.length+' capturas anteriores da mesma página; o resumo usa a mais recente.','subtle'));
+      if(lista(s.linksEmMaisDeUmaPagina).length)box.append(node('p','Há links repetidos em páginas diferentes. As ordens não são somadas.','subtle'));
+      if(s.termino==='sem_proxima_identificada')box.append(node('p','Nenhuma próxima página foi identificada no último trecho; isso não confirma o fim dos resultados.','subtle'));
+      resumo.append(box);
+    }
+    painel.append(resumo);
+  }
+  const estados={dominios_exibidos:'Domínios exibidos; destinos desconhecidos',capturada:'Links web reconhecidos',parcial:'Reconhecimento parcial',interrompida:'Verificação ou bloqueio',consentimento:'Página de consentimento',modo_nao_suportado:'Use a aba Web',contexto_nao_suportado:'Idioma explícito necessário',reinterpretacao_necessaria:'Reimporte para interpretar novamente',consulta_alterada:'Consulta alterada',layout_nao_reconhecido:'Layout não reconhecido',sem_resultados_explicitos:'Mensagem de nenhum resultado'};
+  for(const c of [...capturas].reverse()){
+    const box=node('article',null,'search-result');box.append(node('h3',c.termo),node('p',estados[c.estado]||'Captura local','tag'),node('p','Captura declarada de '+data(c.coletadoEm)+'. '+(c.estado==='reinterpretacao_necessaria'?'Interpretação pendente de revisão.':c.atual?'Recente no momento desta análise.':'Histórica; não confirma o estado atual.')+' Origem e horário não autenticados pelo Google.','subtle'));
+    box.id='captura-'+c.capturaId;
+    const vinculada=lista(r.oportunidades?.tarefasGoogleLocal).find(t=>t.observacaoGoogle?.capturaId===c.capturaId);
+    if(vinculada)box.append(abrirDetalhe(vinculada.id,'Abrir tarefa desta captura'));
+    box.append(node('p','Início solicitado na URL: '+c.inicioSolicitado+'. URLs externas identificadas: '+(Number.isInteger(c.totalLinksReconhecidos)?c.totalLinksReconhecidos:'não disponível')+'. Domínios exibidos sem destino: '+lista(c.dominiosExibidos).length+'.','subtle'));
+    if(Number.isInteger(c.ordemDominioExibido))box.append(node('p','Seu domínio foi exibido no '+c.ordemDominioExibido+'º bloco web reconhecido nesta página. O destino do link não foi identificado.','rank'));
+    if(c.ordemNaPagina!==null)box.append(node('p','Seu site é o '+c.ordemNaPagina+'º link web reconhecido nesta página.','rank'));
+    else if(Number.isInteger(c.ordemDominioExibido))box.append(node('p','A observação do domínio não confirma a URL de destino nem a posição absoluta.','subtle'));
+    else box.append(node('p',['capturada','parcial'].includes(c.estado)&&c.totalLinksReconhecidos>0?'Seu site não foi identificado entre os links reconhecidos. A posição exata é desconhecida.':'A captura ainda não permite identificar uma ordem válida de links. A posição exata é desconhecida.','subtle'));
+    if(!c.termoNaSelecao)box.append(node('p','Esta expressão não está na seleção atual do perfil.','subtle'));
+    const ctx=c.contexto||{};box.append(node('p','Dispositivo: '+(ctx.dispositivo||'desconhecido')+'. Localidade efetiva desconhecida; personalização desconhecida.','subtle'));
+    if(c.motivo)box.append(node('p',c.motivo,'subtle'));
+    if(lista(c.dominiosExibidos).length){
+      const d=node('details',null,'details');d.append(node('summary','Domínios exibidos nos blocos desta página'),node('p','A identificação vem da citação visível. Não confirma a URL de destino, posição absoluta ou concorrência comercial.','subtle'));
+      const ol=node('ol');for(const x of lista(c.dominiosExibidos)){const li=node('li');li.value=x.ordemBloco;li.append(node('span','Bloco '+x.ordemBloco+': '+x.dominioExibido+' — '+x.titulo),node('p','Citação: '+x.citacaoLiteral,'subtle'));ol.append(li);}d.append(ol);box.append(d);
+      if(c.blocosSemIdentificacao)box.append(node('p',c.blocosSemIdentificacao+(c.blocosSemIdentificacao===1?' bloco ficou sem identificação. A contagem conserva esse espaço.':' blocos ficaram sem identificação. A contagem conserva esses espaços.'),'subtle'));
+    }
+    const listaResultados=c.ordemNaPagina!==null?lista(c.concorrentesAntes):lista(c.outrosResultados);
+    if(listaResultados.length){const d=node('details',null,'details');d.append(node('summary',c.ordemNaPagina!==null?'Links observados antes do site nesta página':'Outros links; não confirmam quem está antes do site'));const ol=node('ol');for(const resultado of listaResultados){const li=node('li');li.append(node('span','Ordem '+resultado.ordemNaPagina+': '),linkSeguro(resultado.url,resultado.titulo||resultado.dominio));ol.append(li);}d.append(ol);box.append(d);}
+    if(c.proximaPagina)box.append(linkSeguro(c.proximaPagina,'Abrir a próxima página indicada nesta captura'));
+    const evid=node('details',null,'details');evid.append(node('summary','Identidade e limites da captura'),node('p','Identificador local: '+c.capturaId),node('p','SHA-256 do trecho: '+c.sha256Trecho));for(const limite of lista(c.limites))evid.append(node('p',limite,'subtle'));box.append(evid);painel.append(box);
+  }
+  div.append(painel);return div;
+}
+
+function exibirPerguntasPublicadas(contexto){
+  const div=node('div'),itens=lista(contexto?.perguntasPublicadas);if(!itens.length)return div;
+  const painel=node('details',null,'details');painel.id='perguntas-publicadas';painel.append(node('summary','Respostas já declaradas pelo site ('+itens.length+')'),node('p','Estas respostas constam nos dados estruturados das páginas lidas. Confira se estão visíveis e a qual serviço se aplicam. Elas não confirmam quem executa a atividade.','subtle'));
+  for(const f of itens.slice(0,12)){const box=node('article',null,'evidence');box.append(node('h3',f.pergunta),evidencia(f));painel.append(box);}
+  if(itens.length>12)painel.append(node('p','Exibindo 12 respostas; as demais permanecem nos dados completos.','subtle'));div.append(painel);return div;
+}
+
+function exibirPendenciasDeOferta(prioridades){
+  const div=node('div'),pendencias=lista(prioridades?.pendenciasDeOferta).filter(p=>p?.natureza==='pendencia_de_atribuicao'&&p.recomendacaoComercial===false);
+  const origens=lista(prioridades?.pendenciasDeOrigem).filter(f=>f?.recomendacaoComercial===false&&f.atribuicao?.estado==='relato_ou_resultado_de_terceiro');
+  if(origens.length){const d=node('details',null,'details');d.append(node('summary','Relatos de clientes preservados para revisão ('+origens.length+')'),node('p','O contexto indica um relato ou resultado de cliente. Ele não comprova que a empresa analisada execute a mesma atividade.','subtle'));for(const f of origens.slice(0,12)){const box=node('article',null,'evidence');box.append(node('p','Contexto publicado: '+f.atribuicao.marcador),evidencia(f));d.append(box);}div.append(d);}
+  if(!pendencias.length)return div;
+  const painel=node('details',null,'details');painel.append(node('summary','Publicações com escopo a revisar ('+pendencias.length+')'),node('p','Confira a qual atividade cada trecho se refere. Estas publicações aguardam vínculo com a oferta; não sustentam uma recomendação de edição.','subtle'));
+  for(const p of pendencias.slice(0,12)){
+    const box=node('article',null,'evidence');box.append(node('h3',p.ofertaNome||'Oferta a revisar'),node('p',p.motivo||'O vínculo entre a publicação e esta oferta precisa de revisão.'));
+    const fontes=lista(p.fontesRecusadas);for(const f of fontes.slice(0,4))box.append(evidencia(f));
+    if(fontes.length>4)box.append(node('p','Quatro trechos apresentados aqui; o JSON do projeto preserva os demais.','subtle'));
+    painel.append(box);
+  }
+  div.append(painel);return div;
+}
+function exibirOportunidades(oportunidades,demanda) {
+  const div=node('div');
+  const refinado=oportunidades?.regrasPrioridades>=2;
+  const d=node('div',null,'notice');
+  const possuiDemanda=['disponivel','parcial'].includes(demanda?.estado);
+  d.append(node('strong',possuiDemanda?'Demanda estimada '+(demanda.estado==='parcial'?'parcialmente disponível':'disponível'):'Demanda ainda não confirmada'));
+  d.append(node('p',possuiDemanda?'Estimativas históricas ajudam a investigar a procura; não medem a intenção de compra nem o retorno do negócio.':'Sem dados de procura, as prioridades consideram o perfil e as evidências disponíveis. Ausência de dado não significa ausência de buscas.'));div.append(d);
+  if(possuiDemanda)d.append(node('p','Volumes de variantes podem ser compartilhados e não são somados. Nas estimativas do Google Ads, os dispositivos são agregados.','subtle'));
+  if(demanda?.fonte)d.append(node('p','Fonte: '+(typeof demanda.fonte==='string'?demanda.fonte:demanda.fonte.nome || 'Fornecedor configurado')+'. Coleta: '+data(demanda.coletadoEm)+'.'));
+  if(possuiDemanda)d.append(node('p','Período: '+(demanda.periodoInicio || 'não informado')+' a '+(demanda.periodoFim || 'não informado')+'. Recorte: '+[demanda.pais,demanda.idioma].filter(Boolean).join(' / ')+'.'));
+  if(lista(demanda?.grupos).length){const grupos=node('details',null,'details');grupos.append(node('summary','Estimativas compartilhadas entre variantes'));for(const grupo of demanda.grupos){const p=node('p',Number.isFinite(grupo.buscasMensais)?'Média mensal do conjunto de variantes: '+grupo.buscasMensais.toLocaleString('pt-BR')+'.':'Média do conjunto indisponível.');grupos.append(p,node('p',lista(grupo.termos).join(' / ')),node('p',grupo.aviso || 'Não atribua esta média a cada termo nem some as variantes.','subtle'));}div.append(grupos);}
+  if(oportunidades?.estado==='aguardando_confirmacao'){div.append(node('p','O próximo passo é revisar e confirmar o perfil. Depois disso, as recomendações são reunidas por oferta, respeitando o que você atende e quer evitar.','notice'));return div;}
+  if(lista(oportunidades?.planoPrioritario).length)div.append(exibirPlanoDeAcao(oportunidades.planoPrioritario,{prioritario:true}));else if(!refinado&&lista(oportunidades?.planoDeAcao).length)div.append(exibirPlanoDeAcao(oportunidades.planoDeAcao));
+  else if(refinado)div.append(node('p','As evidências ainda não sustentam uma prioridade executável. Revise a leitura e as partes do negócio.','empty'));
+  const idsEmFoco=new Set(lista(oportunidades?.planoPrioritario).map(t=>t.id));
+  const tarefasGoogle=lista(oportunidades?.tarefasGoogleLocal).filter(t=>!idsEmFoco.has(t.id));
+  if(tarefasGoogle.length){
+    const buscas=node('details',null,'details');
+    buscas.append(node('summary','Outras ações a partir das buscas capturadas'),
+      exibirPlanoDeAcao(tarefasGoogle,{prioritario:true,titulo:null}));
+    div.append(buscas);
+  }
+  if(!refinado&&lista(oportunidades?.frentes).length){const frentes=node('details',null,'details');frentes.append(node('summary','Ver oportunidades por oferta ('+oportunidades.frentes.length+')'),exibirFrentes(oportunidades.frentes));div.append(frentes);}
+  const itens=lista(oportunidades?.itens);
+  if(!itens.length && !lista(oportunidades?.planoDeAcao).length)div.append(node('p','Revise as ofertas ou atividades e a cobertura da leitura para receber um plano relacionado ao negócio.','empty'));
+  const ol=node('ol',null,'recommendations');
+  for(const [i,item] of itens.entries()){
+    const li=node('li',null,'recommendation');if(i>=10)li.hidden=true;
+    li.append(node('span',refinado?'Busca candidata':rotulo(item.prioridade),'tag'),node('h3',item.termo));if(!refinado)li.append(node('p',item.motivo));
+    const dl=node('dl');
+    const add=(nome,valor)=>{dl.append(node('dt',nome));const dd=node('dd');if(Array.isArray(valor)){const ul=node('ul');valor.forEach(v=>ul.append(node('li',v)));dd.append(ul);}else dd.append(node('span',valor || 'Ainda não informado.'));dl.append(dd);};
+    const observado=item.observado || {};
+    add('O que sabemos',typeof observado==='string'?observado:[Number.isInteger(observado.posicao)?'Posição observada '+observado.posicao+'.':observado.estado==='nao_encontrado_no_recorte'?'Não encontrado no recorte; posição exata desconhecida.':item.capturaGoogleLocal?'Há um recorte do navegador. Posição absoluta desconhecida.':'Posição não medida.',Number.isFinite(observado.buscasMensais)?'Estimativa histórica: '+observado.buscasMensais.toLocaleString('pt-BR')+' buscas mensais.':observado.demandaEstado==='estimativa_compartilhada'?'Há estimativa compartilhada com variantes; o volume individual é desconhecido.':'Volume de buscas indisponível.'].join(' '));
+    if(item.capturaGoogleLocal){
+      dl.append(node('dt','Observação no navegador'));
+      const dd=node('dd');
+      dd.append(node('span',(item.capturaGoogleLocal.atual?'Recente':'Histórica')+' · '+data(item.capturaGoogleLocal.coletadoEm)+'. '),
+        abrirDetalhe('captura-'+item.capturaGoogleLocal.capturaId,'Ver captura'));
+      if(item.capturaGoogleLocal.tarefaId)dd.append(node('span',' · '),abrirDetalhe(item.capturaGoogleLocal.tarefaId,'Ver tarefa'));
+      dl.append(dd);
+    }
+    if(!refinado){add('Próximo passo',item.acao);add('Como verificar',item.comoValidar);}if(lista(item.faltam).length)add('Ainda falta',item.faltam);
+    if(item.paginaAlvo?.url){const dd=node('dd');dd.append(linkSeguro(item.paginaAlvo.url),node('small',item.paginaAlvo.origem==='declarada'?'Página informada por você.':'Página observada na evidência.'));dl.append(node('dt','Página a conferir'),dd);}
+    if(item.valorPorContato?.premissasRevisadas && Number.isFinite(item.valorPorContato.valor))add('Cenário por contato',item.valorPorContato.valor.toLocaleString('pt-BR',{style:'currency',currency:'BRL'})+' de contribuição no cenário declarado para esta oferta. Antes dos custos de aquisição e das despesas fixas. Não é uma previsão de receita.');
+    if(!refinado)add('Confiança',item.confianca==='media'?'Média, limitada às evidências indicadas.':'Baixa; valide as hipóteses antes de investir.');li.append(dl);
+    if(lista(item.evidencias).length){const detalhe=node('details',null,'details');detalhe.append(node('summary','Ver evidências'));for(const e of item.evidencias)detalhe.append(typeof e==='string'?node('p',e):evidencia(e));li.append(detalhe);}ol.append(li);
+  }
+  const porPalavra=node('details',null,'details terms-detail');porPalavra.append(node('summary',(refinado?'Observações por busca (':'Análise de cada busca (')+itens.length+')'),ol);if(refinado)porPalavra.append(node('p','Posições, procura e origem da página são informações separadas. As ações atuais estão no plano por oferta acima.','subtle'));div.append(porPalavra);
+  if(itens.length>10){const b=node('button','Mostrar todas as '+itens.length+' oportunidades','quiet');b.type='button';b.addEventListener('click',()=>{for(const li of ol.children)li.hidden=false;b.hidden=true;});porPalavra.append(b);}
+  if(lista(oportunidades?.limites).length)div.append(notas('Como interpretar as prioridades',oportunidades.limites));
+  if(lista(demanda?.limites).length)div.append(notas('Limites dos dados de procura',demanda.limites));return div;
+}
+function abrirDetalhe(id,rotulo) {
+  const a=node('a',rotulo);
+  a.href='#'+id;
+  a.addEventListener('click',()=>{
+    for(let pai=$(id)?.parentElement;pai;pai=pai.parentElement)if(pai.tagName==='DETAILS')pai.open=true;
+  });
+  return a;
+}
+function observacaoDaTarefa(observacao) {
+  const box=node('div',null,'evidence');
+  const contexto=observacao.contextoSolicitado;
+  box.append(node('strong',observacao.atual?'Captura recente do navegador':'Captura histórica do navegador'),
+    node('p',data(observacao.coletadoEm)+' · '+contexto.dispositivo+' · '+(contexto.localidadeDeclarada||'Localidade não informada')+
+      '. País e idioma solicitados '+(contexto.paisSolicitado||'desconhecido')+' / '+(contexto.idiomaSolicitado||'desconhecido')+'.'));
+  const alvo=observacao.alvo;
+  const trecho=alvo?'Seu site foi identificado no bloco '+alvo.ordemBloco+
+    (alvo.url?'.':' pelo domínio exibido. Destino desconhecido.'):'Site não identificado neste trecho.';
+  const cobertura=observacao.totalBlocos+' blocos reconhecidos. '+observacao.blocosSemIdentificacao+' sem identificação.';
+  box.append(node('p',trecho+' '+cobertura+' '+(observacao.encadeada?'Página ligada à primeira.':'Página avulsa.')));
+  if(observacao.lacunas)box.append(node('p','Ainda falta capturar a próxima página indicada.'));
+  if(observacao.proximaPaginaPendente)box.append(linkSeguro(observacao.proximaPaginaPendente,'Abrir próxima página indicada'));
+  const anteriores=lista(observacao.anteriores);
+  if(anteriores.length){
+    const ul=node('ul');
+    for(const anterior of anteriores){
+      const li=node('li');
+      li.append(anterior.url?linkSeguro(anterior.url,anterior.dominio):node('span',anterior.dominio+' · destino desconhecido'));
+      ul.append(li);
+    }
+    box.append(node('p','Domínios identificados antes na mesma página'),ul);
+  }
+  const anterior=observacao.comparacaoAnterior;
+  if(anterior){
+    const situacao=(ordem,total)=>ordem?'bloco '+ordem+' de '+total:'domínio sem identificação entre '+total+' blocos';
+    box.append(node('p','Captura de '+data(anterior.coletadoEm)+': '+situacao(anterior.ordemAnterior,anterior.blocosAnteriores)+'. '+
+      'Captura mais recente: '+situacao(anterior.ordemMaisRecente,anterior.blocosMaisRecentes)+'.'),
+      node('p',anterior.ordemComparavelNoRecorte?
+        'A ordem se refere aos blocos reconhecidos nas páginas capturadas.':
+        'A cobertura ou a identificação difere entre os recortes. A ordem fica como conferência pendente.','subtle'),
+      abrirDetalhe('captura-'+anterior.capturaId,'Ver captura anterior'));
+  }
+  box.append(abrirDetalhe('captura-'+observacao.capturaId,'Ver captura desta tarefa'));
+  return box;
+}
+function exibirPlanoDeAcao(tarefas,{prioritario=false,titulo='Seu próximo plano de trabalho'}={}) {
+  const div=node('div');
+  if(titulo)div.append(node('h3',titulo),node('p','Siga as tarefas por página e atividade. Cada uma traz passos, fontes e uma forma de conferir a conclusão.','subtle'));
+  const eixos={negocio:'Decisão do visitante',tecnico:'Conferência da página',publicacao:'Intenção de publicação',dados:'Dados que faltam',qualificacao:'Confirmar a atuação'};
+  if(titulo&&lista(tarefas).some(t=>t.eixo)){const n=lista(tarefas).filter(t=>t.eixo==='negocio').length;div.append(node('p',n?n+' tarefa(s) sobre a decisão do visitante. As conferências técnicas e os dados pendentes continuam no plano.':'As evidências ainda não sustentaram uma decisão específica do visitante. Confira o perfil, as fontes e as pendências abaixo.','notice'));}
+  const ol=node('ol',null,'recommendations'),ocultas=[];let conferencias=0,decisoes=0;
+  for(const [i,tarefa] of lista(tarefas).entries()){
+    const li=node('li',null,'recommendation');li.id=tarefa.observacaoGoogle?tarefa.id:'tarefa-'+i;
+    const decisao=tarefa.decisaoCliente;
+    const ocultar=!prioritario&&(tarefa.eixo==='negocio'?decisoes++>=3:tarefa.base!=='observacao'&&conferencias++>=2);
+    if(ocultar){li.hidden=true;ocultas.push(li);}
+    li.append(node('span',tarefa.base==='observacao'?'Baseada em observação':'Hipótese a conferir','tag'));if(eixos[tarefa.eixo])li.append(node('span',eixos[tarefa.eixo],'tag'));li.append(node('h3',tarefa.titulo),node('p',decisao?.escolha||tarefa.acao));
+    if(tarefa.paginaAlvo?.url)li.append(linkSeguro(tarefa.paginaAlvo.url,'Abrir a página a conferir'));
+    const relacionadas=lista(tarefa.paginasRelacionadas).slice(0,4).filter(p=>p?.url&&p.url!==tarefa.paginaAlvo?.url);
+    if(relacionadas.length){const paginas=node('div',null,'subtle');paginas.append(node('p','Páginas relacionadas à mesma decisão:'));for(const p of relacionadas)paginas.append(linkSeguro(p.url));li.append(paginas);}
+    if(lista(tarefa.ofertasAfetadas).length)li.append(node('p','Ofertas relacionadas: '+tarefa.ofertasAfetadas.map(o=>o.nome).join('; ')+'.','subtle'));
+    if(tarefa.observacaoGoogle)li.append(observacaoDaTarefa(tarefa.observacaoGoogle));
+    if(lista(tarefa.atuacoesRelacionadas).length)li.append(node('p','Atividades relacionadas: '+tarefa.atuacoesRelacionadas.map(o=>o.nome).join('; ')+'.','subtle'));
+    if(tarefa.lacuna?.descricao)li.append(node('p',tarefa.lacuna.descricao,'subtle'));
+    if(decisao && typeof decisao==='object'){
+      li.append(node('h4','A decisão que precisa ficar clara'));if(decisao.objeto)li.append(node('p','Sobre: '+decisao.objeto));
+      if(lista(decisao.restricoes).length)li.append(notas('Condições publicadas a respeitar',decisao.restricoes.slice(0,8)));
+      if(lista(decisao.incertezas).length)li.append(node('p','Ainda precisa confirmar: '+decisao.incertezas.slice(0,4).join('; ')+'.','subtle'));
+      const bases=node('details',null,'details');bases.append(node('summary','Bases e percurso desta decisão'));
+      if(tarefa.acao&&tarefa.acao!==decisao.escolha)bases.append(node('p',tarefa.acao));
+      if(decisao.objetivo&&decisao.objetivo!==tarefa.acao)bases.append(node('p',decisao.objetivo));
+      for(const fato of lista(decisao.fatos).slice(0,8)){if(fato?.descricao)bases.append(node('p',fato.descricao));for(const e of lista(fato?.evidencias).slice(0,3))bases.append(evidencia(e));}
+      for(const escopo of lista(decisao.escoposPorOferta).slice(0,8)){
+        if(typeof escopo?.nome!=='string')continue;
+        bases.append(node('h4','Escopo da oferta: '+escopo.nome));if(escopo.pagina?.url)bases.append(linkSeguro(escopo.pagina.url));else if(typeof escopo.pagina==='string')bases.append(linkSeguro(escopo.pagina));
+        for(const fato of lista(escopo.fatos).slice(0,4)){if(fato?.descricao)bases.append(node('p',fato.descricao));for(const e of lista(fato?.evidencias).slice(0,2))bases.append(evidencia(e));}
+      }
+      if(lista(decisao.percurso).length){const passos=node('ol');decisao.percurso.slice(0,8).forEach(p=>passos.append(node('li',p)));bases.append(node('h4','Percurso a conferir'),passos);}li.append(bases);
+      if(decisao.resultadoAConferir)li.append(node('p','Resultado a conferir: '+decisao.resultadoAConferir,'subtle'));
+    }
+    if(tarefa.entregavel)li.append(node('h4','O que produzir'),node('p',tarefa.entregavel));
+    if(lista(tarefa.modeloEntregavel?.campos).length){const d=node('details',null,'details');d.append(node('summary','Rascunho para executar a tarefa'),node('p','Complete com dados confirmados. Os espaços sem informação continuam em aberto.','subtle'));const dl=node('dl');for(const c of tarefa.modeloEntregavel.campos){const dd=node('dd',c.valorSugerido==null?'A preencher':String(c.valorSugerido));dd.append(node('small',({trecho_publicado:'Origem: trecho publicado, a conferir.',declaracao_usuario:'Origem: declaração do usuário.',perfil_revisado:'Origem: perfil revisado.',hipotese_controlada:'Caso proposto e fictício para testar; não é necessidade observada do cliente.',a_confirmar:'Ainda precisa de confirmação.'}[c.origem] || 'Origem a confirmar.')));dl.append(node('dt',c.rotulo),dd);}d.append(dl);if(tarefa.modeloEntregavel.limite)d.append(node('p',tarefa.modeloEntregavel.limite,'subtle'));li.append(d);}
+    if(lista(tarefa.dependencias).length)li.append(notas('O que esta tarefa precisa',tarefa.dependencias.map(d=>typeof d==='string'?d:d.descricao+(d.estado==='disponivel'?' (disponível).':' (pendente).'))));
+    if(tarefa.esforco?.motivo)li.append(node('p','Esforço editorial estimado: '+tarefa.esforco.motivo,'subtle'));
+    if(lista(tarefa.passos).length){const passos=node('ol');for(const p of tarefa.passos)passos.append(node('li',p));li.append(passos);}
+    if(tarefa.criterioSucesso)li.append(node('h4','Como saber se a tarefa foi concluída'),node('p',tarefa.criterioSucesso));
+    if(tarefa.comoValidar && (!tarefa.criterioSucesso || !tarefa.comoValidar.includes(tarefa.criterioSucesso)))li.append(node('p',tarefa.comoValidar,'subtle'));
+    if(lista(tarefa.evidencias).length){const d=node('details',null,'details');d.append(node('summary','Evidências desta tarefa'));tarefa.evidencias.forEach(e=>d.append(evidencia(e)));li.append(d);}
+    if(lista(tarefa.evidenciasNegocio).length){const d=node('details',null,'details');d.append(node('summary','Relação desta tarefa com a atuação publicada'));tarefa.evidenciasNegocio.forEach(e=>d.append(evidencia(e)));li.append(d);}
+    if(lista(tarefa.limites).length)li.append(notas('Limites desta tarefa',tarefa.limites));ol.append(li);
+  }
+  div.append(ol);
+  if(ocultas.length){const b=node('button','Ver outras '+ocultas.length+' tarefas do plano','quiet');b.type='button';b.addEventListener('click',()=>{ocultas.forEach(li=>li.hidden=false);b.hidden=true;});div.append(b);}
+  return div;
+}
+function exibirFrentes(frentes) {
+  const div=node('div');div.append(node('h3','Um próximo passo para cada oferta'),node('p','As buscas relacionadas são reunidas para concentrar o trabalho. Os volumes e cenários não são somados.','subtle'));
+  const boxes=[];for(const [i,frente] of lista(frentes).entries()){
+    const box=node('article',null,'recommendation');box.append(node('span',rotulo(frente.prioridade),'tag'),node('h3',frente.nome),node('p',frente.motivo));
+    if(i>=3)box.hidden=true;boxes.push(box);
+    if(frente.paginaAlvo?.url)box.append(linkSeguro(frente.paginaAlvo.url,'Conferir a página desta oferta'));
+    const resumo=frente.resumo || {};
+    box.append(node('p',(resumo.termosPlanejados ?? lista(frente.termos).length)+' buscas ligadas à oferta; '+(resumo.posicoesAtuais ?? 0)+' com observações atuais; '+(resumo.demandasIndividuais ?? 0)+' com estimativas individuais de procura.','subtle'));
+    if(frente.proximoTeste){box.append(node('h4',frente.proximoTeste.titulo || rotulo(frente.proximoTeste.tipo)),node('p',frente.proximoTeste.acao));if(frente.proximoTeste.comoValidar)box.append(node('p',frente.proximoTeste.comoValidar,'subtle'));}
+    if(frente.valorPorContato?.premissasRevisadas && Number.isFinite(frente.valorPorContato.valor))box.append(node('p','Cenário de contribuição por contato desta oferta: '+frente.valorPorContato.valor.toLocaleString('pt-BR',{style:'currency',currency:'BRL'})+'. Condicionado às premissas declaradas e ao mesmo perfil de contatos, antes da aquisição e dos custos fixos. Não demonstra o valor de cada palavra.','subtle'));
+    const detalhe=notas('Buscas desta oferta',frente.termos);box.append(detalhe);
+    if(lista(frente.faltam).length)box.append(notas('Dados que faltam para decidir',frente.faltam));
+    div.append(box);
+  }
+  if(boxes.length>3){const b=node('button','Mostrar as '+boxes.length+' ofertas','quiet');b.type='button';b.addEventListener('click',()=>{boxes.forEach(box=>box.hidden=false);b.hidden=true;});div.append(b);}
+  return div;
+}
+function exibirIA(ia) {
+  const div=node('div');
+  if(!ia){div.append(node('p','O piloto de IA pode revisar até três contextos de evidências públicas. A priorização comercial acima continua usando o perfil e as regras verificáveis.','subtle'));return div;}
+  if(ia.estado==='sem_contexto')div.append(node('p','Ainda faltam contextos ligados à atuação para executar o modelo. Confira o perfil e a leitura pública.','notice warn'));
+  if(ia.estado==='historica')div.append(node('p',ia.aviso || 'Esta resposta usa evidências de uma análise anterior.','notice warn'));
+  div.append(node('p','Executado em '+data(ia.geradoEm)+'. Revisão de origem: '+ia.revisaoOrigem+'.','subtle'));
+  if(ia.selecao)div.append(node('p',ia.selecao.contextos+' contexto(s) selecionado(s) de '+ia.selecao.candidatosPublicados+' termos publicados. '+(ia.selecao.limite || ''),'subtle'));
+  const acoes={confirmar_publicacao:'Confirmar se a página deve ser pública',corrigir_indexacao:'Revisar indexação',melhorar_pagina:'Revisar o ponto observado na página',validar_demanda:'Investigar demanda',medir_conversao:'Medir conversões',validar_intencao:'Conferir a intenção da busca',atualizar_coleta:'Conferir a coleta',acompanhar:'Acompanhar',comparar_concorrentes:'Comparar concorrentes observados',preservar_exclusao:'Preservar a exclusão deliberada'};
+  for(const [i,r] of lista(ia.resultados).entries()){
+    const box=node('article',null,'recommendation');box.append(node('h4','Contexto '+(i+1)),node('p',r.origem==='regra'?'Decisão de uma regra de validação.':'Escolha do modelo local; revisão necessária.','subtle'));
+    const contexto=lista(ia.contextos)[i],termo=lista(contexto?.evidencias).find(e=>e.tipo==='serp' && e.termo)?.termo;
+    if(termo)box.append(node('p','Busca candidata: '+termo));
+    if(r.estado==='recusada')box.append(node('strong','Resposta recusada pelas validações'),notas('Motivos da recusa',[...lista(r.motivos_aplicabilidade),...lista(r.erros)]));
+    else{box.append(node('strong',acoes[r.escolha_ia?.acao] || 'Conferir a evidência'),node('p',r.orientacao_padrao),node('p',r.limite_padrao,'subtle'));}
+    if(r.aviso)box.append(node('p',r.aviso,'subtle'));
+    if(contexto){const d=node('details',null,'details');d.append(node('summary','Evidências enviadas ao piloto'));for(const e of lista(contexto.evidencias)){if(lista(r.escolha_ia?.evidencias).includes(e.id))d.append(node('strong',r.estado==='recusada'?'Mencionada na resposta recusada':'Citada na resposta'));d.append(node('p',(e.id || '')+': '+(e.descricao || '')));if(e.pagina)d.append(linkSeguro(e.pagina));}box.append(d);}div.append(box);
+  }
+  if(ia.limite)div.append(node('p',ia.limite,'subtle'));
+  return div;
+}
+function exibirDiagnostico(diagnostico) {
+  const div=node('div');div.append(node('h3','Melhorias observadas no site'));
+  const achados=lista(diagnostico?.verificacoes).filter(v=>v.estado==='atencao').slice(0,3);
+  if(!achados.length)div.append(node('p',diagnostico?.estado==='indisponivel'?'A leitura não foi suficiente para identificar melhorias. Abra o diagnóstico para conferir os limites.':'Nenhum problema foi identificado nas verificações automáticas selecionadas. Isso não certifica a qualidade ou acessibilidade do site.','subtle'));
+  for(const achado of achados){const d=node('details',null,'details');d.append(node('summary',achado.titulo),node('p',achado.orientacao),evidencia(achado.evidencia));if(lista(achado.passos).length){const ol=node('ol');achado.passos.forEach(p=>ol.append(node('li',p)));d.append(ol);}div.append(d);}
+  const link=node('a','Abrir o diagnóstico completo do site');link.href='/';div.append(link);
+  if(diagnostico?.coletadoEm)div.append(node('p','Leitura do diagnóstico: '+data(diagnostico.coletadoEm),'subtle'));
+  return div;
+}
+function resumirEvento(item) {
+  if(typeof item.resumo==='string')return item.resumo;
+  const resumo=item.resumo || {};
+  if(item.acao==='registrar_google_local'){
+    const captura=resumo.googleLocal;
+    if(!captura)return 'Captura do navegador registrada nesta revisão. Consulte o painel de capturas para conferir os recortes disponíveis.';
+    const partes=['Busca “'+captura.termo+'”', 'Capturada em '+data(captura.coletadoEm)];
+    if(captura.totalBlocosWeb>0){
+      partes.push(captura.totalBlocosWeb+' '+(captura.totalBlocosWeb===1?'bloco web reconhecido':'blocos web reconhecidos'));
+      if(captura.ordemBloco)partes.push('Domínio exibido no bloco '+captura.ordemBloco+' do recorte');
+    }else partes.push('A leitura do recorte requer conferência');
+    return partes.join('. ')+'.';
+  }
+  return 'Perfil: '+rotulo(resumo.perfil)+'. '+(resumo.palavras ?? 0)+' buscas candidatas; '+(resumo.verificadas ?? 0)+' buscas com observações válidas nesta execução. Fonte: '+rotulo(resumo.fonte)+'.';
+}
+function exibirRevisaoPerfil(revisao) {
+  const d=node('details',null,'details');d.append(node('summary','O que mudou nesta revisão do perfil'));
+  const nomes={nome:'Nome',resumo:'Descrição do negócio',publico:'Público',papel:'Forma de atuação',finalidade:'Finalidade',regioes:'Regiões',exclusoes:'Termos excluídos',estado:'Confirmação'};
+  const descrever=valor=>Array.isArray(valor)?valor.join('; ') || 'Não informado':String(valor ?? '') || 'Não informado';
+  for(const c of lista(revisao.campos))if(c.campo!=='economia')d.append(node('p',(nomes[c.campo] || c.campo)+': “'+descrever(c.antes)+'” → “'+descrever(c.depois)+'”.'));
+  for(const o of lista(revisao.ofertas?.adicionadas))d.append(node('p','Oferta adicionada: '+o.nome+'.'));
+  for(const o of lista(revisao.ofertas?.removidas))d.append(node('p','Oferta removida: '+o.nome+'.'));
+  for(const a of lista(revisao.atuacoes?.adicionadas))d.append(node('p','Atividade adicionada: '+a.nome+'.'));
+  for(const a of lista(revisao.atuacoes?.removidas))d.append(node('p','Atividade removida: '+a.nome+'.'));
+  for(const o of lista(revisao.ofertas?.alteradas)){if(lista(o.campos).some(c=>['nome','url'].includes(c)))d.append(node('p','Oferta alterada: “'+descrever(o.antes?.nome)+'” → “'+descrever(o.depois?.nome)+'”. Página: '+descrever(o.antes?.url)+' → '+descrever(o.depois?.url)+'.'));if(o.centralidade)d.append(node('p','Importância de '+o.depois?.nome+': '+descrever(o.centralidade.antes)+' → '+descrever(o.centralidade.depois)+'.'));}
+  if(revisao.economiaAlterada)d.append(node('p','Premissas financeiras alteradas. Os valores não são repetidos neste histórico.'));
+  if(!lista(revisao.campos).length && !['adicionadas','removidas','alteradas'].some(k=>lista(revisao.ofertas?.[k]).length) && !lista(revisao.atuacoes?.adicionadas).length && !lista(revisao.atuacoes?.removidas).length)d.append(node('p','Nenhuma diferença nos campos acompanhados.'));
+  d.append(node('p','Registro de declarações nesta instalação. Corrigir o perfil não confirma fatos do Google e não treina a IA.','subtle'));return d;
+}
+// END_RENDER_FUNCTIONS
+
+function apoioJornada(citacoes,titulo){
+  const fontes=node('details',null,'details');fontes.append(node('summary',titulo));
+  const unicas=new Set();
+  for(const f of lista(citacoes)){
+    const key=JSON.stringify([f.texto,f.contexto]);if(unicas.has(key))continue;unicas.add(key);
+    fontes.append(evidencia({tipo:'negocio_publicado',trecho:f.texto,url:f.contexto?.url,campo:f.contexto?.campo,coletadoEm:f.contexto?.coletadoEm,sha256:f.contexto?.sha256}));
+    if(f.contexto?.tituloPagina)fontes.append(node('p','Página: '+f.contexto.tituloPagina,'subtle'));
+    if(lista(f.contexto?.titulos).length)fontes.append(node('p','Seção: '+f.contexto.titulos.map(h=>h.texto).join(' / '),'subtle'));
+  }
+  return fontes;
+}
+
+function exibirEntendimentoNovo(r){
+  const div=node('div',null,'understanding');div.append(node('h3','Revisar ofertas e quem participa'));
+  div.append(node('p','A IA local propõe uma oferta e distingue quem contrata, executa, usa e paga. Revise as fontes e corrija o rascunho antes de confirmar.','subtle'));
+  if(r.capacidades?.entendimento?.instalado){
+    const b=botao('Analisar o negócio com IA local',()=>enviar('experimentar_entendimento',{revisao:projetoAtual.revisao}));b.id='entender-negocio';div.append(b);
+  }else div.append(node('p','A leitura por evidências está disponível. A IA local opcional ainda não está instalada nesta execução.','notice'));
+  const novo=r.entendimentoNovo,job=novo?.job;
+  if(!job)return div;
+  if(job.estado==='em_execucao'){const status=node('p','A análise está sendo executada no computador. Você pode aguardar aqui; as ofertas salvas continuam preservadas.','notice');status.setAttribute('role','status');div.append(status);return div;}
+  if(job.estado!=='concluido'){div.append(node('p',job.erro?.mensagem || 'A análise foi interrompida. A leitura e o perfil continuam disponíveis.','notice warn'));return div;}
+  const resultado=job.resultado;
+  if(!resultado)return div;
+  if(novo.fonteHistorica)div.append(node('p','Este resultado usa uma leitura anterior do site. Compare as datas antes de utilizar a sugestão.','notice warn'));
+  div.append(node('p',(resultado.ofertasAnalisadas||0)+' oferta(s) analisada(s), de '+(resultado.ofertasIdentificadas||0)+' identificada(s) neste recorte. As demais podem ser acrescentadas no perfil.','subtle'));
+  if(resultado.itensRecusados)div.append(node('p','Parte das propostas de oferta foi recusada na validação. O resultado pode estar incompleto; confira o perfil e as páginas acessíveis.','notice warn'));
+  for(const o of lista(resultado.ofertas)){
+    const box=node('article',null,'offer');box.append(node('span','Hipótese para revisão','tag hypothesis'),node('h4',o.nome),node('p','Papel proposto do site: '+rotulo(o.papel_site)+'.'));
+    if(o.jornada?.erro||o.jornada?.itensRecusados)box.append(node('p','Algumas partes não foram aceitas no formato ou não tinham apoio literal suficiente. Os campos vazios precisam de revisão; eles não significam que esses papéis não existam.','notice warn'));
+    const nomes={compradores:'Quem contrata',executores:'Quem executa',beneficiarios:'Quem recebe ou usa',pagadores:'Quem paga'};
+    for(const [k,nome] of Object.entries(nomes)){
+      const itens=lista(o.jornada?.[k]);box.append(node('h5',nome));
+      if(!itens.length)box.append(node('p','Não identificado nas fontes selecionadas.','subtle'));
+      for(const a of itens){const grupo=a.grupo==='$site'?r.perfil.nome:a.grupo;box.append(node('p',grupo),apoioJornada(a.citacoes,'Conferir apoio para '+grupo+' neste papel'));}
+    }
+    box.append(apoioJornada(o.citacoes,'Conferir a identificação desta oferta'));
+    for(const c of lista(o.jornada?.condicoes)){
+      const escopos={esta_oferta:'esta oferta',formulario:'um formulário',indefinida:'vínculo ainda não identificado'};
+      box.append(node('p','Condição proposta: '+rotulo(c.categoria)+'. Vínculo proposto: '+escopos[c.aplicacao]+'. Revise a página e a seção antes de aplicar.','subtle'),apoioJornada(c.citacoes,'Conferir o texto e o alcance desta condição'));
+    }
+    if(lista(o.jornada?.duvidas).length)box.append(notas('O que ainda precisa confirmar',o.jornada.duvidas));
+    box.append(botao('Preencher rascunho desta oferta',()=>{
+      const n=o.nome.normalize('NFKC').toLowerCase();let linha=linhasOfertas.find(l=>l.nome.value.normalize('NFKC').toLowerCase()===n);
+      if(!linha){if(linhasOfertas.length>=8){$('erro').textContent='Revise suas oito ofertas antes de acrescentar outra.';return;}adicionarOferta({nome:o.nome,url:o.citacoes?.[0]?.contexto?.url,origem:'hipotese_ia'});linha=linhasOfertas.at(-1);}
+      const mapa={comprador:'compradores',executor:'executores',beneficiario:'beneficiarios',pagador:'pagadores'};
+      for(const [campo,grupo] of Object.entries(mapa))if(!linha.jornada[campo].value.trim())linha.jornada[campo].value=lista(o.jornada?.[grupo]).map(a=>a.grupo==='$site'?r.perfil.nome:a.grupo).join('; ');
+      if($('confirmado'))$('confirmado').checked=false;linha.painel.open=true;marcarAlterado();linha.nome.focus();
+      $('status').textContent='Sugestão copiada para um rascunho. Revise as partes e o objetivo; depois confirme e salve o perfil.';
+    }));div.append(box);
+  }
+  for(const c of lista(novo.condicoesEstruturadas))for(const regra of lista(c.condicoes))div.append(node('p','Limite publicado para '+c.nome+': '+(regra.minimo===null?'mínimo não publicado':regra.minimo)+' a '+(regra.maximo===null?'máximo não publicado':regra.maximo)+' '+regra.unidade+'. O vínculo com a oferta ainda precisa de revisão.','subtle'));
+  if(lista(resultado.duvidas).length)div.append(notas('Limites do entendimento',resultado.duvidas));return div;
+}
+
+function exibirProposicoesNovo(r){
+  const div=node('div');if(!r.capacidades?.proposicoes?.instalado&&!r.proposicoesNovo)return div;
+  const painel=node('details',null,'details');painel.append(node('summary','Comparar a leitura por atividade (experimental)'),node('p','Esta alternativa conserva quem faz o quê, sobre qual objeto e em qual atividade. Ela não substitui o leitor atual nem modifica o perfil.','subtle'));
+  if(r.capacidades?.proposicoes?.instalado){const b=botao('Ler relações por atividade',()=>enviar('experimentar_proposicoes',{revisao:projetoAtual.revisao}));b.id='entender-atividades';painel.append(b);}
+  const novo=r.proposicoesNovo,job=novo?.job;
+  if(!job){div.append(painel);return div;}
+  if(job.estado==='em_execucao'){const p=node('p','A leitura experimental está em execução neste computador. O perfil salvo continua preservado.','notice');p.setAttribute('role','status');painel.append(p);painel.open=true;div.append(painel);return div;}
+  if(job.estado!=='concluido'){painel.append(node('p',job.erro?.mensagem||'A execução não foi concluída. Os artefatos disponíveis foram preservados.','notice warn'));div.append(painel);return div;}
+  const triagem=novo.revisaoEscopo,resultado=triagem?.resultadoTriado||job.resultado;if(!resultado||resultado.versao!==3){div.append(painel);return div;}
+  if(novo.fonteHistorica)painel.append(node('p','Esta leitura é de uma captura anterior. Confira as datas antes de usar o rascunho.','notice warn'));
+  painel.append(node('p',(resultado.ofertasAnalisadas||0)+' oferta(s) analisada(s) de '+(resultado.ofertasIdentificadas||0)+' identificada(s) no recorte. Sujeito, ação e objeto têm apoio literal na mesma unidade; a interpretação e os papéis continuam pendentes.','subtle'));
+  if(triagem?.resultadoTriado){
+    painel.append(node('p','A visualização confere URL, hash e contexto documental da fonte do nome. Políticas e publicações editoriais ficam pendentes de atribuição à operação. Dois trechos da mesma página ainda podem tratar de serviços diferentes. A resposta original permanece nos dados do job.','subtle'));
+    if(lista(triagem.pendencias).length){const d=node('details',null,'details');d.append(node('summary','Interpretações com escopo a confirmar ('+triagem.pendencias.length+')'));
+      for(const p of triagem.pendencias.slice(0,20)){const item=p.interpretacao||{},box=node('article',null,'evidence');box.append(node('h4',p.ofertaNome||'Atividade a revisar'),node('p','Campo: '+rotulo(p.campo)+'. '+(p.explicacao||'A fonte ou sua projeção não ficou vinculada à página usada para identificar a oferta. Isso não prova que a relação esteja errada.'),'subtle'));
+        if(item.sujeito)box.append(node('p',[item.sujeito,item.acao,item.objeto].filter(Boolean).join(' ')));if(item.unidadeLiteral?.texto)box.append(node('blockquote',item.unidadeLiteral.texto));box.append(apoioJornada(item.citacoes,'Conferir a fonte preservada e seu vínculo'));d.append(box);}
+      painel.append(d);
+    }
+  }
+  if(!lista(resultado.ofertas).length)painel.append(node('p','O leitor não entregou uma oferta aceita neste recorte. Isso não demonstra ausência de ofertas no negócio; confira as fontes e o perfil editável.','empty'));
+  if(resultado.ofertasRecusadas)painel.append(node('p',resultado.ofertasRecusadas+' proposta(s) de oferta foram recusadas pela conferência mecânica. A resposta pode estar incompleta.','notice warn'));
+  const escopos={fornecimento:'fornecimento da ferramenta ou oferta',implementacao:'implantação',uso:'uso',prestacao_da_oferta:'prestação da oferta',servico_do_cliente:'atividade do cliente',transacao_do_cliente:'transação do cliente',contratacao_da_oferta:'contratação desta oferta',indefinido:'atividade ainda não definida'},tipos={fornecedor:'fornecedor',usuario:'usuário',terceiro:'terceiro',ferramenta:'ferramenta',indefinido:'tipo ainda não definido'},alcances={oferta:'oferta',atividade:'atividade específica',formulario:'formulário',proposta_comercial:'proposta comercial',suporte:'suporte',transacao_do_cliente:'transação do cliente',indefinido:'alcance ainda não definido'};
+  for(const oferta of lista(resultado.ofertas)){
+    const box=node('article',null,'offer');box.append(node('h4',oferta.nome),node('p','Natureza proposta: '+rotulo(oferta.natureza)+'. Papel proposto da organização: '+rotulo(oferta.papel_site)+'.','subtle'),apoioJornada(oferta.citacoes,'Conferir o nome publicado desta oferta'));
+    const props=lista(oferta.jornada?.proposicoes);if(!props.length)box.append(node('p','Nenhuma relação foi entregue neste recorte. Isso não demonstra que o negócio não tenha participantes ou atividades.','empty'));
+    for(const p of props){const d=node('details',null,'details');d.append(node('summary',p.sujeito+' — '+p.acao+' '+p.objeto),node('p','Tipo proposto: '+(tipos[p.tipoSujeito]||'a esclarecer')+'. Atividade proposta: '+(escopos[p.escopo]||'a esclarecer')+'. Relação: '+rotulo(p.relacao)+'. São interpretações a revisar.'));
+      if(p.relacaoOrigem==='regra_verbo_literal')d.append(node('small','A categoria da relação foi atribuída por uma regra do programa a partir do verbo. Isso não confirma o papel, o alcance ou a interpretação.'));
+      else if(p.relacaoOrigem==='modelo')d.append(node('small','A categoria da relação foi proposta pelo modelo e ainda precisa de revisão.'));
+      d.append(node('blockquote',p.unidadeLiteral?.texto||''),apoioJornada(p.citacoes,'Comparar com a fonte completa e a seção'));box.append(d);}
+    for(const c of lista(oferta.jornada?.condicoes))box.append(node('p','Condição proposta: '+rotulo(c.categoria)+'. Alcance proposto: '+(alcances[c.alcance]||'a esclarecer')+'. Objeto: '+(c.aplicaA||'a esclarecer')+'.','subtle'),node('blockquote',c.unidadeLiteral?.texto||''),apoioJornada(c.citacoes,'Conferir o alcance desta condição'));
+    if(oferta.jornada?.itensRecusados)box.append(node('p','Algumas relações ou condições foram recusadas. A leitura pode estar incompleta; campos não entregues permanecem desconhecidos.','notice warn'));
+    if(lista(oferta.jornada?.incertezas).length)box.append(notas('O que ainda precisa esclarecer',oferta.jornada.incertezas));
+    box.append(botao(oferta.natureza==='programa_social'?'Copiar nome para atividade a revisar':'Copiar nome e tipo para conferir',()=>{
+      const fonteNome=lista(oferta.citacoes).find(f=>f.id===oferta.fonteNome),url=fonteNome?.contexto?.url,n=oferta.nome.normalize('NFKC').toLowerCase();
+      if(oferta.natureza==='programa_social'){
+        if(linhasAtuacoes.some(a=>a.nome.value.normalize('NFKC').toLowerCase()===n)){$('erro').textContent='A atividade já está no rascunho. Confira seus campos antes de salvar.';return;}
+        if(linhasAtuacoes.length>=8){$('erro').textContent='Revise as oito atividades antes de acrescentar outra.';return;}adicionarAtuacao({nome:oferta.nome,url,tipo:'programa_social'});linhasAtuacoes.at(-1).painel.open=true;
+      }else{
+        if(linhasOfertas.some(o=>o.nome.value.normalize('NFKC').toLowerCase()===n)){$('erro').textContent='A oferta já está no rascunho. Confira tipo, papel e partes sem substituir o que foi informado.';return;}
+        if(linhasOfertas.length>=8){$('erro').textContent='Revise as oito ofertas antes de acrescentar outra.';return;}
+        adicionarOferta({nome:oferta.nome,url,origem:'hipotese_ia',entrega:{tipoOferta:oferta.natureza,papelOrganizacao:oferta.papel_site}});linhasOfertas.at(-1).painel.open=true;
+      }
+      marcarAlterado();$('status').textContent='Rascunho acrescentado para revisão. As relações não preencheram atores automaticamente; confira a atividade e as partes antes de confirmar.';
+    }));painel.append(box);
+  }
+  if(lista(resultado.incertezas).length)painel.append(notas('Incertezas da leitura',resultado.incertezas));painel.append(node('p',resultado.limite,'subtle'));div.append(painel);return div;
+}
+
+function exibirCenarios(cenarios){
+  const div=node('details',null,'details');div.append(node('summary','Valor econômico: premissas e cenários por oferta'));
+  div.append(node('p','Use contatos qualificados da mesma oferta e período. A contribuição deve ser a parcela da própria empresa após custos variáveis; na intermediação, use a comissão.','subtle'));
+  const moeda=n=>n.toLocaleString('pt-BR',{style:'currency',currency:'BRL'});
+  const valor=x=>x.tipo==='valor'?moeda(x.valor):moeda(x.minimo)+' a '+moeda(x.maximo);
+  const leituras={
+    aquisicao_acima_da_contribuicao:'Confira os gastos deste grupo e o andamento dos contatos ainda em aberto antes de rever o investimento.',
+    contribuicao_acima_da_aquisicao:'Confira se os contatos já tiveram o mesmo prazo para fechar e levante os custos fixos antes de avaliar uma ampliação.',
+    equilibrio_nas_premissas:'Confira as premissas que mais mudam com novas vendas e novos contatos.',
+    faixa_inclui_equilibrio:'Refine as estimativas de contribuição ou custo para descobrir de que lado do equilíbrio o cenário fica.',
+  };
+  for(const c of lista(cenarios)){
+    div.append(node('h4',c.nome));const v=c.contribuicaoPorContatoQualificado;
+    if(v)div.append(node('p',valor(v)+' de contribuição por contato qualificado antes de aquisição e custos fixos.'));
+    else div.append(node('p',c.estado==='legado_sem_origem'?'Origem, período e população ainda precisam de preenchimento para calcular um cenário.':'Dados insuficientes para calcular um cenário desta oferta.'));
+    if(c.premissas?.periodo)div.append(node('p','Período: '+c.premissas.periodo.inicio+' a '+c.premissas.periodo.fim+'. Grupo: '+(c.premissas.coorte?.descricao||'Não informado')+'.','subtle'));
+    if(c.taxaFechamento?.amostra)div.append(node('p',c.taxaFechamento.amostra.fechamentos+' de '+c.taxaFechamento.amostra.contatosQualificados+' contatos qualificados fecharam, conforme contagem informada.','subtle'));
+    const comparacao=c.comparacaoAquisicao;
+    if(comparacao?.custoPorContatoQualificado&&comparacao.diferencaAntesDosFixos){
+      div.append(node('p',valor(comparacao.custoPorContatoQualificado)+' de aquisição por contato qualificado.'),
+        node('p',valor(comparacao.diferencaAntesDosFixos)+' de diferença por contato entre contribuição e aquisição, antes dos custos fixos.'),
+        node('p',leituras[comparacao.estado],'subtle'));
+      const limiar=comparacao.fechamentosParaCobrirAquisicao;
+      if(limiar){
+        const {minimo,maximo,contatosQualificados}=limiar;
+        const inteiro=n=>n.toLocaleString('pt-BR');
+        const quantidade=minimo===null?'':(minimo===maximo||maximo===null?inteiro(minimo):inteiro(minimo)+' a '+inteiro(maximo))+
+          (minimo===1&&(maximo===1||maximo===null)?' fechamento':' fechamentos');
+        const frase=minimo===null?'Com gasto positivo e contribuição por venda zero ou negativa, o limiar fica indefinido.':
+          maximo===null?'Na combinação mais favorável, o limiar é de '+quantidade+'. Com gasto e contribuição zero ou negativa, o limiar fica indefinido.':
+          'A cobertura da aquisição deste grupo exigiria '+quantidade+' antes dos custos fixos.';
+        div.append(node('p',frase));
+        if(minimo!==null&&minimo>contatosQualificados)div.append(node('p','Esse limiar supera o total de '+inteiro(contatosQualificados)+' contatos qualificados informado.','subtle'));
+      }
+    }else if(c.premissas?.custosAquisicao){
+      div.append(node('p','Para comparar aquisição com contribuição, informe contagens e custos do mesmo grupo e período.','subtle'));
+    }
+    div.append(node('p','Origem informada, sem auditoria dos registros. Este cenário não é valor de palavra-chave ou previsão de receita.','subtle'));
+  }
+  return div;
+}
+
+function exibirExecucaoTarefas(estado){
+  const div=node('div');div.append(node('h3','O que foi feito e o que mudou'),node('p','Registre a execução e a verificação. Encerrar uma atividade pode ter resultado positivo, negativo ou inconclusivo.','subtle'));
+  const itens=lista(estado?.itens).filter(t=>!t.arquivada);
+  if(!itens.length){div.append(node('p','Atualize as prioridades para registrar as próximas tarefas.','empty'));return div;}
+  for(const t of itens){
+    const d=node('details',null,'details task-record');d.append(node('summary',t.origem.titulo+' — '+rotulo(t.estado)));
+    d.append(node('p',t.origem.criterioSucesso));if(t.origem.paginaAlvo)d.append(linkSeguro(t.origem.paginaAlvo));
+    const responsavel=campo('Responsável',t.responsavel,{max:120}),nota=campo('Registro da execução',t.nota,{tipo:'textarea',max:4000});d.append(responsavel.div,nota.div);
+    const salvar=estadoNovo=>enviar('registrar_tarefa',{revisao:projetoAtual.revisao,tarefa:{id:t.id,revisao:t.revisao,responsavel:responsavel.input.value.trim()||null,nota:nota.input.value.trim(),...(estadoNovo?{estado:estadoNovo}:{})}});
+    d.append(botao('Salvar registro',()=>salvar()));
+    if(['pendente','em_andamento'].includes(t.estado)){
+      d.append(botao(t.estado==='pendente'?'Começar tarefa':'Voltar a pendente',()=>salvar(t.estado==='pendente'?'em_andamento':'pendente')));
+      d.append(botao('Descartar com justificativa',()=>salvar('descartada')));
+      const resultado=node('details',null,'details');resultado.append(node('summary','Registrar verificação e encerrar atividade'));
+      const implementada=campo('Data da execução',t.implementadoEm?.slice(0,16),{tipo:'datetime-local'}),verificada=campo('Data da verificação','',{tipo:'datetime-local'}),metodo=campo('Como você verificou','',{max:2000}),evidenciaDecl=campo('O que foi constatado','',{tipo:'textarea',max:4000}),indicador=campo('Indicador conferido','',{max:160}),valor=campo('Valor registrado','',{max:2000}),unidade=campo('Unidade','',{max:80});
+      const escolha=node('select');for(const [v,n] of [['confirmado','Critério confirmado'],['nao_confirmado','Critério não confirmado'],['inconclusivo','Resultado inconclusivo']]){const op=node('option',n);op.value=v;escolha.append(op);}const label=node('label','Resultado da conferência');escolha.id='resultado-'+(++contadorCampos);label.htmlFor=escolha.id;resultado.append(label,escolha);
+      const tipo=node('select');for(const [v,n] of [['texto','Registro em texto'],['numero','Quantidade numérica'],['booleano','Sim ou não']]){const op=node('option',n);op.value=v;tipo.append(op);}tipo.id='tipo-medida-'+(++contadorCampos);const labelTipo=node('label','Tipo de medida');labelTipo.htmlFor=tipo.id;resultado.append(labelTipo,tipo);
+      for(const c of [implementada,verificada,metodo,evidenciaDecl,indicador,valor,unidade])resultado.append(c.div);
+      resultado.append(botao('Salvar verificação e encerrar',()=>{try{
+        const v=tipo.value==='numero'?numeroOpcional(valor.input.value,'medida',Number.MAX_SAFE_INTEGER,-Number.MAX_SAFE_INTEGER):tipo.value==='booleano'?/^(?:sim|true|verdadeiro)$/i.test(valor.input.value)?true:/^(?:não|nao|false|falso)$/i.test(valor.input.value)?false:null:valor.input.value.trim();
+        const tarefa={id:t.id,revisao:t.revisao,estado:'concluida',responsavel:responsavel.input.value.trim()||null,nota:nota.input.value.trim(),implementadoEm:new Date(implementada.input.value).toISOString(),verificacao:{metodo:metodo.input.value.trim(),evidencia:evidenciaDecl.input.value.trim(),verificadoEm:new Date(verificada.input.value).toISOString(),url:t.origem.paginaAlvo,resultado:escolha.value,medida:{indicador:indicador.input.value.trim(),tipo:tipo.value,valor:v,unidade:unidade.input.value.trim()}}};
+        enviar('registrar_tarefa',{revisao:projetoAtual.revisao,tarefa});
+      }catch{$('erro').textContent='Preencha as datas, a medida e o método da verificação.';}}));d.append(resultado);
+    }else d.append(botao('Reabrir tarefa',()=>salvar('pendente')));
+    if(t.verificacao)d.append(node('p','Última verificação declarada: '+rotulo(t.verificacao.resultado)+'. '+t.verificacao.evidencia,'notice'));
+    const chaveRascunho=projetoAtual.dominio+'|'+t.id+'|'+t.revisao,rascunho=rascunhosTarefas.get(chaveRascunho),controles=[...d.querySelectorAll('input,textarea,select')];
+    if(rascunho?.valores?.length===controles.length)controles.forEach((c,i)=>c.value=rascunho.valores[i]);
+    if(rascunho?.aberto)d.open=true;
+    const guardar=()=>rascunhosTarefas.set(chaveRascunho,{valores:controles.map(c=>c.value),aberto:d.open});
+    d.addEventListener('input',guardar);d.addEventListener('change',guardar);d.addEventListener('toggle',guardar);
+    div.append(d);
+  }
+  if(lista(estado?.itens).some(t=>t.arquivada))div.append(node('p','Tarefas arquivadas e revisões anteriores permanecem no histórico exportável.','subtle'));
+  return div;
+}
+
+function botao(texto,acao,classe='quiet') {const b=node('button',texto,classe);b.type='button';b.addEventListener('click',acao);return b;}
+function campo(nome,valor,{tipo='text',max=400,ajuda,full=false}={}) {
+  const div=node('div',null,'field'+(full?' full':'')),id='campo-'+(++contadorCampos),label=node('label',nome),input=node(tipo==='textarea'?'textarea':'input');label.htmlFor=id;input.id=id;
+  if(tipo!=='textarea')input.type=tipo;input.value=valor ?? '';input.maxLength=max;div.append(label,input);
+  if(ajuda){const small=node('small',ajuda);small.id=id+'-ajuda';input.setAttribute('aria-describedby',small.id);div.append(small);}return{div,input};
+}
+function marcarAlterado(evento){alterado=true;if(evento?.target?.id!=='confirmado'&&$('confirmado'))$('confirmado').checked=false;$('perfil-status').textContent='Há alterações não salvas. Revise e confirme novamente se quiser salvar o perfil confirmado.';atualizarAcoes();}
+function adicionarOferta(oferta={}) {
+  if(linhasOfertas.length>=8)return;
+  const box=node('fieldset',null,'offer'),legend=node('legend','Oferta '+(linhasOfertas.length+1));box.append(legend);
+  const painel=node('details',null,'offer-details'),sumario=node('summary',oferta.nome || 'Nova oferta');painel.open=!oferta.id;painel.append(sumario,box);
+  const origemOferta=oferta.origem==='site'?'Proposta a partir do site. Confira a oferta.':oferta.origem==='hipotese_ia'?'Rascunho sugerido pela IA. Confira o nome, o tipo e as partes antes de salvar.':oferta.id?'Informação salva na sua revisão.':'Oferta para você preencher.';
+  const top=node('div',null,'offer-top');top.append(node('small',origemOferta,'subtle'));
+  const campos=node('div',null,'fields');
+  const nome=campo('Produto ou serviço',oferta.nome,{max:120}),url=campo('Página desta oferta',oferta.url,{max:2048,ajuda:'Opcional. Endereço público no site do negócio.'});
+  const contribuicao=campo('Contribuição por venda (R$)',oferta.economia?.contribuicaoPorVenda,{tipo:'number',ajuda:'Opcional. Receita que fica com a empresa menos os custos variáveis. Pode ser negativa; mantenha desconhecido quando não tiver essa informação.'});contribuicao.input.min='-1000000000';contribuicao.input.max='1000000000';contribuicao.input.step='any';
+  const taxa=campo('Contatos que viram venda (%)',typeof oferta.economia?.taxaFechamento==='number'?oferta.economia.taxaFechamento*100:'',{tipo:'number',ajuda:'Opcional. Use uma taxa observada ou uma hipótese explícita.'});taxa.input.min='0';taxa.input.max='100';taxa.input.step='any';
+  for(const c of[nome,url])campos.append(c.div);
+  const importancia=node('div',null,'field'),labelImportancia=node('label','Importância desta oferta na atuação'),centralidade=node('select');centralidade.id='importancia-'+(++contadorCampos);labelImportancia.htmlFor=centralidade.id;
+  for(const [valor,titulo] of [['indefinida','Ainda não definida'],['principal','Atividade principal'],['complementar','Atividade complementar']]){const op=node('option',titulo);op.value=valor;centralidade.append(op);}centralidade.value=oferta.centralidade?.nivel || 'indefinida';
+  importancia.append(labelImportancia,centralidade,node('small','Orienta o foco da investigação. Não é volume de buscas, lucro ou recomendação de orçamento.'));campos.append(importancia);
+  const linha={box,painel,id:oferta.id,nome:nome.input,url:url.input,contribuicao:contribuicao.input,taxa:taxa.input,centralidade,centralidadeAlterada:false};
+  linha.entrega={};linha.entregaAnterior=oferta.entrega||null;linha.entregaAlterada=false;
+  for(const [chave,titulo,opcoes] of [['tipoOferta','Tipo desta oferta',[['indefinido','Ainda não definido'],['software','Software ou plataforma'],['servico','Serviço'],['produto','Produto']]],['papelOrganizacao','Papel da empresa nesta oferta',[['indefinido','Ainda não definido'],['disponibiliza','Disponibiliza a ferramenta ou oferta'],['executa','Executa a atividade descrita'],['vende','Vende o produto'],['intermedeia','Intermedeia entre as partes']]]]){
+    const div=node('div',null,'field'),label=node('label',titulo),s=node('select');s.id='entrega-'+(++contadorCampos);label.htmlFor=s.id;
+    for(const [v,n] of opcoes){const op=node('option',n);op.value=v;s.append(op);}s.value=oferta.entrega?.[chave]||'indefinido';
+    s.addEventListener('change',()=>{linha.entregaAlterada=true;});div.append(label,s,node('small',chave==='tipoOferta'?'Opcional e específico desta oferta. Programas sociais e participação ficam em outras atividades.':'Este papel não define quem executa a rotina do cliente; esclareça isso nas partes abaixo.'));campos.append(div);linha.entrega[chave]=s;
+  }
+  const jornada=node('div',null,'fields');linha.jornada={};
+  const ajudasJornada={comprador:'Quem pede ou escolhe esta oferta pode ser diferente de quem a usa.',executor:'Em software, separe quem fornece a ferramenta de quem realiza a rotina. Em intermediação, identifique quem presta a atividade.',beneficiario:'Quem utiliza ou recebe o benefício, mesmo quando outra pessoa contrata.',pagador:'Opcional. Não presuma que quem usa também paga.',objetivo:'Descreva a atividade e a necessidade concreta. Papéis desconhecidos podem ficar vazios.'};
+  for(const [chave,rotuloCampo] of [['comprador','Quem solicita ou contrata'],['executor','Quem executa a atividade principal'],['beneficiario','Quem recebe ou usa'],['pagador','Quem paga'],['objetivo','O que o cliente quer resolver']]){
+    const c=campo(rotuloCampo,oferta.jornada?.[chave],{max:500,ajuda:ajudasJornada[chave],full:chave==='objetivo'});linha.jornada[chave]=c.input;jornada.append(c.div);
+  }
+  const blocoJornada=node('div');blocoJornada.append(node('h4','As partes desta oferta'),jornada);
+  const p=oferta.premissasEconomicas,financeiro=node('details',null,'details');financeiro.append(node('summary','Dados econômicos, origem e período (opcional)'),node('p','Você pode usar o plano sem preencher estes valores. Complete somente o que conhece. Uma faixa é uma hipótese informada, sem intervalo de confiança. Contagens e custos ficam separados.','subtle'));
+  const pCampos=node('div',null,'fields');pCampos.append(contribuicao.div,taxa.div);linha.premissas={};linha.premissasOriginais=p;
+  const origem=node('select');for(const [v,n] of [['declarada','Hipótese declarada'],['registro_local','Resumo de registros locais']]){const o=node('option',n);o.value=v;origem.append(o);}origem.value=['declarada','registro_local'].includes(p?.origem?.tipo)?p.origem.tipo:'declarada';origem.id='origem-premissa-'+(++contadorCampos);const origemLabel=node('label','Origem dos valores');origemLabel.htmlFor=origem.id;pCampos.append(origemLabel,origem);linha.premissas.origem=origem;
+  const ponto=p?.contribuicaoPorVenda?.tipo==='valor'?p.contribuicaoPorVenda.valor:undefined;
+  if(p?.contribuicaoPorVenda)linha.contribuicao.value=ponto??'';
+  if(p?.fechamento)linha.taxa.value=p.fechamento.tipo==='valor'?p.fechamento.valor*100:'';
+  const config=[['referencia','De onde vieram os números',p?.origem?.referencia,'text',240],['inicio','Início do período',p?.periodo?.inicio,'date',10],['fim','Fim do período',p?.periodo?.fim,'date',10],['populacao','Quais contatos estão nesta análise',p?.coorte?.descricao,'text',400],['criterio','Como um contato foi considerado qualificado',p?.coorte?.criterioQualificacao,'text',400],['contatos','Contatos qualificados distintos',p?.fechamento?.tipo==='contagem'?p.fechamento.contatosQualificados:null,'number',30],['fechamentos','Desses contatos, quantos fecharam',p?.fechamento?.tipo==='contagem'?p.fechamento.fechamentos:null,'number',30],['minContrib','Contribuição mínima por venda (R$)',p?.contribuicaoPorVenda?.tipo==='intervalo'?p.contribuicaoPorVenda.minimo:null,'number',30],['maxContrib','Contribuição máxima por venda (R$)',p?.contribuicaoPorVenda?.tipo==='intervalo'?p.contribuicaoPorVenda.maximo:null,'number',30],['minTaxa','Fechamento mínimo (%)',p?.fechamento?.tipo==='intervalo'?p.fechamento.minimo*100:null,'number',30],['maxTaxa','Fechamento máximo (%)',p?.fechamento?.tipo==='intervalo'?p.fechamento.maximo*100:null,'number',30],['aquisicao','Aquisição para estes contatos no período (R$)',p?.custosAquisicao?.total?.tipo==='valor'?p.custosAquisicao.total.valor:null,'number',30],['fixos','Custos fixos da empresa no período (R$)',p?.custosFixos?.total?.tipo==='valor'?p.custosFixos.total.valor:null,'number',30]];
+  config.push(['minAquisicao','Aquisição mínima para estes contatos (R$)',p?.custosAquisicao?.total?.tipo==='intervalo'?p.custosAquisicao.total.minimo:null,'number',30],['maxAquisicao','Aquisição máxima para estes contatos (R$)',p?.custosAquisicao?.total?.tipo==='intervalo'?p.custosAquisicao.total.maximo:null,'number',30],['minFixos','Custos fixos mínimos da empresa (R$)',p?.custosFixos?.total?.tipo==='intervalo'?p.custosFixos.total.minimo:null,'number',30],['maxFixos','Custos fixos máximos da empresa (R$)',p?.custosFixos?.total?.tipo==='intervalo'?p.custosFixos.total.maximo:null,'number',30]);
+  for(const [k,l,v,tipo,max] of config){const c=campo(l,v,{tipo,max});if(tipo==='number'){c.input.step=['contatos','fechamentos'].includes(k)?'1':'any';c.input.min=k.includes('Contrib')?'-1000000000':'0';}linha.premissas[k]=c.input;pCampos.append(c.div);}
+  for(const c of [linha.contribuicao,linha.taxa,...Object.values(linha.premissas)])c.addEventListener('input',()=>{linha.removerPremissas=false;});
+  financeiro.append(pCampos,node('p','Se informar contagens, elas têm preferência sobre a taxa declarada. Faixas têm preferência sobre valores pontuais. Custos não são deduzidos automaticamente.','subtle'));
+  financeiro.append(botao('Limpar premissas deste rascunho',()=>{for(const [k,c] of Object.entries(linha.premissas))if(k!=='origem')c.value='';linha.contribuicao.value='';linha.taxa.value='';linha.removerPremissas=true;marcarAlterado();}));
+  centralidade.addEventListener('change',()=>{linha.centralidadeAlterada=true;});
+  nome.input.addEventListener('input',()=>{sumario.textContent=nome.input.value || 'Nova oferta';});
+  top.append(botao('Remover oferta',()=>{linhasOfertas=linhasOfertas.filter(l=>l!==linha);painel.remove();renumerarOfertas();marcarAlterado();}));box.append(top,campos,blocoJornada,financeiro);
+  if(lista(oferta.evidencias).length){const d=node('details',null,'details');d.append(node('summary','O que o site diz sobre esta oferta'));for(const e of oferta.evidencias)d.append(evidencia(e));box.append(d);}
+  linhasOfertas.push(linha);$('ofertas').append(painel);renumerarOfertas();
+}
+function renumerarOfertas(){linhasOfertas.forEach((l,i)=>{l.box.querySelector('legend').textContent='Oferta '+(i+1);});const b=$('adicionar-oferta');if(b)b.disabled=executando||linhasOfertas.length>=8;}
+function adicionarAtuacao(atividade={}) {
+  if(linhasAtuacoes.length>=8)return;
+  const box=node('fieldset',null,'offer'),legend=node('legend','Atividade '+(linhasAtuacoes.length+1));box.append(legend);
+  const painel=node('details',null,'offer-details'),sumario=node('summary',atividade.nome || 'Nova atividade');painel.open=!atividade.nome;painel.append(sumario,box);
+  const campos=node('div',null,'fields'),nome=campo('Nome da atividade',atividade.nome,{max:120}),url=campo('Página da atividade',atividade.url,{max:2048,ajuda:'Página pública do próprio site, se houver.'});
+  const grupo=node('div',null,'field'),label=node('label','Tipo de atividade'),tipo=node('select');tipo.id='tipo-atividade-'+(++contadorCampos);label.htmlFor=tipo.id;
+  for(const [valor,titulo] of [['programa_social','Programa ou projeto social'],['captacao','Captação de apoio'],['participacao','Participação ou voluntariado']]){const op=node('option',titulo);op.value=valor;tipo.append(op);}tipo.value=atividade.tipo || 'programa_social';grupo.append(label,tipo);campos.append(nome.div,url.div,grupo);box.append(campos);
+  const linha={box,painel,nome:nome.input,url:url.input,tipo};
+  nome.input.addEventListener('input',()=>{sumario.textContent=nome.input.value || 'Nova atividade';});
+  box.append(botao('Remover atividade',()=>{linhasAtuacoes=linhasAtuacoes.filter(a=>a!==linha);painel.remove();renumerarAtuacoes();marcarAlterado();}));
+  if(lista(atividade.evidencias).length){const d=node('details',null,'details');d.append(node('summary','O que foi publicado sobre esta atividade'));atividade.evidencias.forEach(e=>d.append(evidencia(e)));box.append(d);}
+  linhasAtuacoes.push(linha);$('atuacoes').append(painel);renumerarAtuacoes();
+}
+function renumerarAtuacoes(){linhasAtuacoes.forEach((l,i)=>{l.box.querySelector('legend').textContent='Atividade '+(i+1);});const b=$('adicionar-atuacao');if(b)b.disabled=executando||linhasAtuacoes.length>=8;}
+function exibirPerfil(perfil) {
+  const form=node('form');form.id='perfil-form';
+  const aviso=node('div',null,'notice'+(perfil.estado==='confirmado'?'':' warn'));
+  aviso.append(node('strong',perfil.estado==='confirmado'?'Perfil confirmado por você':'Confira o entendimento do negócio'),node('p','A leitura sugere ofertas a partir das páginas acessíveis. Corrija o resumo, acrescente serviços e retire o que não faz parte do negócio.'));
+  const cobertura=perfil.cobertura || {};if(cobertura.paginasLidas!=null)aviso.append(node('p','Cobertura: '+cobertura.paginasLidas+' página(s) lida(s)'+(cobertura.limitePaginas?' de um limite de '+cobertura.limitePaginas:'')+'. Não é uma leitura garantida de todo o site.','subtle'));
+  if(perfil.entendimento){const e=perfil.entendimento;aviso.append(node('p','Forma de atuação: '+rotulo(e.papel)+(e.natureza==='declaracao_usuario'?' (informada por você).':' (hipótese a confirmar).')),exibirEntendimentoNegocio(e));if(lista(e.evidencias).length){const d=node('details',null,'details');d.append(node('summary','De onde veio este entendimento'));e.evidencias.forEach(item=>d.append(evidencia(item)));aviso.append(d);}}
+  if(perfil.entendimento?.descricaoPublicada){const descricao=perfil.entendimento.descricaoPublicada;const d=node('details',null,'details');d.append(node('summary','Como o próprio site descreve o negócio'),node('blockquote',descricao.texto),evidencia({...descricao,trecho:null}));aviso.append(d);}
+  if(lista(perfil.perguntas).length){const d=node('details',null,'details');d.append(node('summary','Perguntas para melhorar a análise'));for(const p of perfil.perguntas)d.append(node('p',p.pergunta),node('small',p.motivo));aviso.append(d);}
+  form.append(aviso);const fields=node('div',null,'fields');
+  const nome=campo('Nome do negócio',perfil.nome,{max:120}),publico=campo('Quem você atende',perfil.publico,{max:500});
+  const resumo=campo('O que o negócio oferece e como funciona',perfil.resumo,{tipo:'textarea',max:1600,full:true,ajuda:'Descreva a atividade principal, quem atende e como a pessoa pode participar ou contratar.'});
+  const regioes=campo('Regiões atendidas',lista(perfil.regioes).join('\n'),{tipo:'textarea',max:504,ajuda:'Até 5 regiões, uma por linha e até 100 caracteres cada. Informe apenas onde você atende.'}),exclusoes=campo('O que evitar nas buscas',lista(perfil.exclusoes).join('\n'),{tipo:'textarea',max:1514,ajuda:'Até 15 termos, um por linha e até 100 caracteres cada. Exclua temas que não representam seu negócio.'});
+  const papelDiv=node('div',null,'field'),papelLabel=node('label','Como o negócio entrega suas ofertas'),papel=node('select');papel.id='papel-negocio';papelLabel.htmlFor=papel.id;for(const [valor,titulo] of [['indefinido','Ainda não sei / não definido'],['intermediacao','Intermediação entre compradores e fornecedores'],['servicos','Prestação de serviços'],['produtos','Venda de produtos'],['misto','Produtos e serviços']]){const op=node('option',titulo);op.value=valor;papel.append(op);}papel.value=perfil.entendimento?.papel || 'indefinido';papelDiv.append(papelLabel,papel,node('small','Ajuste a hipótese quando ela não descrever seu negócio.'));
+  const finalidadeDiv=node('div',null,'field'),finalidadeLabel=node('label','Finalidade principal da atuação'),finalidade=node('select');finalidade.id='finalidade-negocio';finalidadeLabel.htmlFor=finalidade.id;
+  for(const [valor,titulo] of [['indefinida','Ainda não definida'],['comercial','Comercial'],['social','Social, apoio ou participação']]){const op=node('option',titulo);op.value=valor;finalidade.append(op);}finalidade.value=perfil.entendimento?.finalidade?.tipo || 'indefinida';finalidadeDiv.append(finalidadeLabel,finalidade,node('small','Uma atuação social pode ter vendas explícitas separadas. Programas e doações não são tratados como vendas por padrão.'));
+  for(const c of[nome,publico,resumo])fields.append(c.div);fields.append(papelDiv,finalidadeDiv);for(const c of[regioes,exclusoes])fields.append(c.div);form.append(fields);
+  const ofertas=node('div',null,'offers');ofertas.id='ofertas';form.append(node('h3','Suas ofertas'),node('p',perfil.entendimento?.papel==='intermediacao'?'Na intermediação, use a receita que fica com sua empresa, como a comissão, antes de descontar custos variáveis. Os campos financeiros são opcionais e ficam no computador.':'Descreva apenas os produtos ou serviços vendidos. Os campos financeiros são opcionais e podem continuar desconhecidos.','subtle'),ofertas);
+  const add=botao('Adicionar oferta',()=>{adicionarOferta();marcarAlterado();});add.id='adicionar-oferta';form.append(add);
+  const atuacoes=node('div',null,'offers');atuacoes.id='atuacoes';form.append(node('h3','Atividades que não são vendas'),node('p','Revise programas, participação e apoio. Cadastre produtos ou serviços vendidos na seção de ofertas.','subtle'),atuacoes);
+  const addAtuacao=botao('Adicionar atividade',()=>{adicionarAtuacao();marcarAlterado();});addAtuacao.id='adicionar-atuacao';form.append(addAtuacao);
+  const confirm=node('label',null,'confirm'),check=node('input');check.type='checkbox';check.id='confirmado';check.checked=perfil.estado==='confirmado';const texto=node('span','Revisei o perfil, as ofertas e as atividades desta organização.');texto.append(node('small','Você pode salvar um rascunho. A medição das novas buscas começa após a confirmação. Corrigir este perfil orienta a análise; não treina automaticamente um modelo.'));confirm.append(check,texto);form.append(confirm);
+  const actions=node('div',null,'inline-actions'),save=node('button','Salvar perfil');save.type='submit';actions.append(save,botao('Descartar alterações',()=>{desenhar(projetoAtual);$('status').textContent='Alterações não salvas descartadas.';}));const status=node('p','', 'subtle');status.id='perfil-status';actions.append(status);form.append(actions);
+  form.addEventListener('input',marcarAlterado);form.addEventListener('change',marcarAlterado);
+  form.addEventListener('submit',event=>{event.preventDefault();if(!form.reportValidity())return;try{
+    const entrada={nome:nome.input.value,resumo:resumo.input.value,publico:publico.input.value,regioes:regioes.input.value.split('\n').map(t=>t.trim()).filter(Boolean),exclusoes:exclusoes.input.value.split('\n').map(t=>t.trim()).filter(Boolean),ofertas:linhasOfertas.map(montarOferta),atuacoes:linhasAtuacoes.map(montarAtuacao),confirmado:check.checked};
+    if(check.checked || papel.value !== (perfil.entendimento?.papel || 'indefinido'))entrada.papel=papel.value;
+    if(check.checked || finalidade.value !== (perfil.entendimento?.finalidade?.tipo || 'indefinida'))entrada.finalidade=finalidade.value;
+    enviar('salvar_perfil',{perfil:entrada,revisao:projetoAtual.revisao});
+  }catch(e){$('erro').textContent=e.message;}});
+  if(lista(perfil.limites).length)form.append(notas('Limites do entendimento do negócio',perfil.limites));return form;
+}
+function desenhar(r) {
+  const root=$('report');root.replaceChildren();root.hidden=false;document.body.classList.add('loaded');linhasOfertas=[];linhasAtuacoes=[];
+  const head=node('div',null,'project-head'),title=node('div');const h=node('h1',r.dominio);h.tabIndex=-1;h.id='titulo-projeto';title.append(h,node('p','Revisão '+r.revisao+' · Atualizado em '+data(r.geradoEm)));head.append(title);
+  const actions=node('div',null,'project-actions');const reler=botao('Atualizar leitura do site',()=>enviar('reler_site'));reler.id='reler-site';
+  const plano=botao('Baixar plano de trabalho',()=>enviar('exportar_plano',{revisao:projetoAtual.revisao}));plano.id='exportar-plano';
+  actions.append(reler,plano,botao('Exportar dados completos',exportar));head.append(actions);root.append(head);
+  const ids=['perfil','palavras','posicoes','oportunidades','historico'];const steps=node('ol',null,'steps');
+  const nomes=['Entender o negócio','Descobrir buscas','Verificar posições','Escolher prioridades','Acompanhar'];
+  ids.forEach((id,i)=>{const m=lista(r.modulos).find(m=>m.id===id)||r.modulos[i]||{};const li=node('li'),a=node('a',(i+1)+'. '+nomes[i]);a.href='#'+id;li.append(a,node('small',rotulo(m.estado),'step-state'));if(m.detalhe)li.append(node('small',m.detalhe));steps.append(li);});root.append(steps);
+  const perfil=secao('1','perfil','O que seu negócio faz','Este perfil orienta a descoberta de buscas e a avaliação das oportunidades.');perfil.body.append(exibirPerfil(r.perfil),exibirEntendimentoNovo(r),exibirProposicoesNovo(r),exibirInteracoesPublicas(r.contextoPublico),exibirPerguntasPublicadas(r.contextoPublico));const revisarLeitura=botao('Ver sugestões da leitura salva',()=>enviar('revisar_leitura',{revisao:projetoAtual.revisao}),'quiet');revisarLeitura.id='revisar-leitura';perfil.body.append(revisarLeitura,exibirPropostaDaLeitura(r.propostaDaLeitura));root.append(perfil.section);for(const oferta of r.perfil.ofertas)adicionarOferta(oferta);renumerarOfertas();for(const a of lista(r.perfil.entendimento?.atuacoes).filter(a=>a.tipo!=='oferta').slice(0,8))adicionarAtuacao(a);
+  const palavras=secao('2','palavras','As buscas que vale investigar','Termos publicados e sugestões novas têm origens diferentes. Ambos precisam de validação de procura.');palavras.body.append(exibirMapaInvestigacao(r.mapaInvestigacao),exibirPalavras(r.palavras));root.append(palavras.section);
+  const posicoes=secao('3','posicoes','Onde o site foi observado','Cada resultado vale para uma busca, data, contexto e profundidade.');
+  const medir=botao(r.posicoes?.progresso?.continuar?'Verificar próximo lote':'Verificar posições',()=>enviar('medir',{revisao:projetoAtual.revisao}), '');medir.id='medir';posicoes.body.append(medir,node('p','A consulta usa a fonte configurada e sua cota. Novos lotes só são solicitados quando você clica; não há monitoramento automático.','subtle'),exibirPosicoes(r.posicoes));root.append(posicoes.section);
+  if(r.capacidades?.posicoes?.configurada===false)posicoes.body.append(node('p','Esta instalação ainda está sem fonte de posições. A descoberta e as recomendações disponíveis continuam funcionando.','notice warn'));
+  posicoes.body.append(exibirGoogleLocal(r));
+  const oportunidades=secao('4','oportunidades','Onde concentrar o esforço',r.perfil.entendimento?.finalidade?.tipo==='social'?'A relação com a missão e com o público vem antes do volume. Separe participação, apoio e hipótese de resultado medido.':'A relação com o que você oferece e com a decisão do visitante vem antes do volume. Separe hipótese de resultado medido.');
+  const analisar=botao('Atualizar prioridades',()=>enviar('analisar',{revisao:projetoAtual.revisao}), '');analisar.id='analisar';oportunidades.body.append(analisar,exibirOportunidades(r.oportunidades,r.demanda),exibirPendenciasDeOferta(r.prioridades),exibirCenarios(r.cenariosEconomicos));if(r.diagnostico)oportunidades.body.append(exibirDiagnostico(r.diagnostico));root.append(oportunidades.section);
+  if(r.capacidades?.ia?.instalada || r.capacidades?.ia?.candidata || r.ia || r.iaCandidata){const piloto=node('details',null,'details');piloto.append(node('summary','Experimentar o piloto de IA local'));if(r.capacidades?.ia?.instalada){const b=botao('Executar piloto anterior',()=>enviar('experimentar_ia',{revisao:projetoAtual.revisao}));b.id='experimentar-ia';piloto.append(b);}piloto.append(exibirIA(r.ia));
+    if(r.capacidades?.ia?.candidata || r.iaCandidata){piloto.append(node('h3','Comparar o ajuste experimental'),node('p','Uma versão treinada localmente está disponível para comparação. Ela mantém o piloto anterior e requer revisão humana; o resultado ainda não comprova retorno comercial.','subtle'));if(r.capacidades?.ia?.candidata){const b=botao('Testar versão ajustada',()=>enviar('experimentar_ia_candidata',{revisao:projetoAtual.revisao}));b.id='experimentar-ia-candidata';piloto.append(b);}piloto.append(exibirIA(r.iaCandidata));}oportunidades.body.append(piloto);}
+  const historico=secao('5','historico','Acompanhar a evolução','As execuções ficam registradas localmente. Uma mudança de posição, sozinha, não comprova aumento de vendas.');
+  const atualizarHistorico=botao('Atualizar histórico',()=>enviar('historico'));atualizarHistorico.id='atualizar-historico';historico.body.append(exibirExecucaoTarefas(r.tarefas),atualizarHistorico);const ul=node('ol',null,'history');for(const item of [...lista(r.historico)].reverse()){const li=node('li');li.append(node('strong',data(item.criadoEm)+' — '+rotulo(item.acao)),node('p',resumirEvento(item)),node('small','Revisão '+item.revisao));if(item.revisaoPerfil?.versao===1)li.append(exibirRevisaoPerfil(item.revisaoPerfil));for(const comparacao of lista(item.comparacoes)){li.append(node('p',comparacao.termo+': posição '+comparacao.antes+' em '+data(comparacao.de)+' para '+comparacao.agora+' em '+data(comparacao.ate)+'. '+(comparacao.limite || 'Variação entre capturas; não comprova efeito de uma mudança.')));}ul.append(li);}if(!r.historico.length)ul.append(node('li','Ainda não há execuções registradas.'));historico.body.append(ul);
+  const limites=notas('Limites desta análise',r.limites);limites.id='limites-analise';historico.body.append(limites);if($('como-link')){$('como-link').href='#limites-analise';$('como-link').textContent='Método e limites';}
+  const apagar=node('details',null,'details erase');apagar.append(node('summary','Excluir este projeto local'));apagar.append(node('p','Remove o perfil e o histórico deste projeto. Capturas públicas e execuções da IA continuam nos arquivos locais de evidência, sem limpeza automática. Diagnósticos e posições em cache seguem seus próprios prazos. Exporte antes se quiser conservar a análise.','subtle'));
+  apagar.append(botao('Excluir perfil e histórico',()=>enviar('excluir',{revisao:projetoAtual.revisao}),'danger'));historico.body.append(apagar);root.append(historico.section);
+  alterado=false;atualizarAcoes();agendarConsultaEntendimento();
+}
+function atualizarAcoes() {
+  document.body.classList.toggle('loading',executando);$('report').setAttribute('aria-busy',String(executando));
+  for(const b of document.querySelectorAll('button'))b.disabled=executando;
+  for(const controle of document.querySelectorAll('input,textarea,select'))controle.disabled=executando;
+  const bloqueado=executando||alterado||projetoAtual?.perfil?.estado!=='confirmado';
+  for(const id of['medir','analisar','experimentar-ia','experimentar-ia-candidata'])if($(id))$(id).disabled=bloqueado;
+  if($('medir') && projetoAtual?.capacidades?.posicoes?.configurada===false)$('medir').disabled=true;
+  if($('entender-negocio'))$('entender-negocio').disabled=executando||alterado||projetoAtual?.entendimentoNovo?.estado==='em_execucao'||!projetoAtual?.evidenciasNegocio?.capturaId;
+  if($('entender-atividades'))$('entender-atividades').disabled=executando||alterado||projetoAtual?.entendimentoNovo?.estado==='em_execucao'||projetoAtual?.proposicoesNovo?.estado==='em_execucao'||!projetoAtual?.evidenciasNegocio?.capturaId;
+  if($('entender-negocio')&&projetoAtual?.proposicoesNovo?.estado==='em_execucao')$('entender-negocio').disabled=true;
+  if($('reler-site'))$('reler-site').disabled=executando||alterado;
+  if($('revisar-leitura'))$('revisar-leitura').disabled=executando||alterado;
+  if($('exportar-plano'))$('exportar-plano').disabled=executando||alterado;
+  if($('importar-google-local'))$('importar-google-local').disabled=executando||alterado;
+  for(const id of ['conectar-extensao-google','atualizar-capturas-google'])if($(id))$(id).disabled=executando||alterado;
+  if($('atualizar-historico'))$('atualizar-historico').disabled=executando||alterado;
+  const add=$('adicionar-oferta');if(add)add.disabled=executando||linhasOfertas.length>=8;
+  const addAtuacao=$('adicionar-atuacao');if(addAtuacao)addAtuacao.disabled=executando||linhasAtuacoes.length>=8;
+}
+function agendarConsultaEntendimento(){
+  clearTimeout(consultaEntendimentoTimer);
+  const acao=projetoAtual?.proposicoesNovo?.estado==='em_execucao'?'consultar_proposicoes':projetoAtual?.entendimentoNovo?.estado==='em_execucao'?'consultar_entendimento':null;
+  if(!acao)return;
+  consultaEntendimentoTimer=setTimeout(()=>{
+    if(executando||alterado||document.activeElement?.closest('#report input,#report textarea,#report select')){agendarConsultaEntendimento();return;}
+    enviar(acao);
+  },2500);
+}
+async function enviar(acao,extras={}) {
+  if(executando)return;
+  const site=['iniciar','consultar'].includes(acao)?$('site').value.trim():projetoAtual?.dominio;
+  if(!site){$('erro').textContent='Informe o site para continuar.';$('site').focus();return;}
+  if(!['salvar_perfil','excluir'].includes(acao) && alterado){$('erro').textContent='Salve o perfil ou descarte as alterações antes de continuar.';return;}
+  let falhou=false;executando=true;const sequencia=++pedidoAtual;controlador?.abort();controlador=new AbortController();
+  $('erro').textContent='';$('status').textContent=['iniciar','reler_site'].includes(acao)?'Lendo as páginas públicas e preparando o perfil. Isso pode levar um minuto.':acao==='medir'?'Solicitando um lote de posições à fonte configurada.':['experimentar_ia','experimentar_ia_candidata','experimentar_entendimento','experimentar_proposicoes'].includes(acao)?'Executando o piloto de IA no computador. Aguarde as validações das respostas.':'Atualizando a análise local…';atualizarAcoes();
+  try{
+    const resposta=await fetch('/api/projeto',{method:'POST',credentials:'same-origin',headers:{'Content-Type':'application/json'},body:JSON.stringify({site,acao,...extras}),signal:controlador.signal});
+    let r;try{r=await resposta.json();}catch{throw new Error('O aplicativo não confirmou a resposta. Abra a análise salva antes de repetir a operação.');}if(sequencia!==pedidoAtual)return;
+    if(!resposta.ok)throw new Error(r.erro || 'Não foi possível concluir a operação. Tente novamente.');
+    if(acao==='exportar_plano'){
+      if(r.versao!==1 || r.formato!=='markdown' || r.dominio!==projetoAtual.dominio || r.revisao!==projetoAtual.revisao || typeof r.conteudo!=='string' || !r.conteudo.trim() || r.conteudo.length>512000)throw new Error('O plano recebido está incompleto. A análise foi preservada.');
+      baixarArquivo(r.conteudo,'text/markdown;charset=utf-8','plano-'+projetoAtual.dominio+'-r'+projetoAtual.revisao+'.md');
+      $('status').textContent='Plano de trabalho salvo em arquivo, sem incluir os campos financeiros de contribuição e taxa de fechamento.';return;
+    }
+    if(acao==='excluir' && r.estado==='excluido'){
+      projetoAtual=null;alterado=false;$('report').replaceChildren();$('report').hidden=true;document.body.classList.remove('loaded');if($('como-link')){$('como-link').href='#como-funciona';$('como-link').textContent='Como funciona';}$('status').textContent='Perfil e histórico excluídos deste computador.';$('site').focus();return;
+    }
+    if(acao==='registrar_tarefa')rascunhosTarefas.delete(projetoAtual.dominio+'|'+extras.tarefa.id+'|'+extras.tarefa.revisao);
+    projetoAtual=validarProjeto(r);desenhar(projetoAtual);$('site').value=r.dominio;
+    if(acao==='registrar_google_local'&&$('capturas-google-local')){$('capturas-google-local').open=true;$('capturas-google-local').scrollIntoView?.({block:'start'});}
+    $('status').textContent=acao==='salvar_perfil'?'Perfil salvo. As sugestões e prioridades refletem esta revisão.':acao==='medir'?'Lote concluído. Confira a cobertura e a data das observações.':acao==='registrar_google_local'?'Captura local salva. Confira a ordem reconhecida, a data e os limites.':'Análise atualizada.';
+    if(['iniciar','consultar'].includes(acao))$('titulo-projeto').focus();
+  }catch(e){falhou=true;if(sequencia===pedidoAtual && e.name!=='AbortError'){$('erro').textContent=e.message || 'A conexão com o programa local foi interrompida. Abra a análise salva antes de repetir.';$('status').textContent='Não foi possível confirmar a operação. A última análise exibida foi preservada.';}}
+  finally{if(sequencia===pedidoAtual){executando=false;atualizarAcoes();if(!falhou)agendarConsultaEntendimento();else clearTimeout(consultaEntendimentoTimer);}}
+}
+function exportar() {
+  if(!projetoAtual)return;
+  baixarArquivo(JSON.stringify(projetoAtual,null,2),'application/json','visibilidade-'+projetoAtual.dominio+'-r'+projetoAtual.revisao+'.json');
+}
+function baixarArquivo(conteudo,tipo,nome) {
+  const url=URL.createObjectURL(new Blob([conteudo],{type:tipo}));
+  const a=node('a');a.href=url;a.download=nome.replace(/[^a-z0-9._-]/gi,'_');document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);
+}
+$('site-form').addEventListener('submit',event=>{event.preventDefault();enviar('iniciar');});
+$('abrir').addEventListener('click',()=>{if($('site-form').reportValidity())enviar('consultar');});
+</script>
+</body>
+</html>

@@ -4,6 +4,25 @@ const categoriasPublicas = new Set(["com", "co", "org", "net", "gov", "edu", "ac
 
 export class ErroConsulta extends Error {}
 
+// Estes links não identificam o destino orgânico: a resposta do buscador pode
+// ocultar o site atrás de um redirecionamento. Não os siga nem infira domínio.
+export function redirecionamentoGoogleOpaco(valor) {
+  let url;
+  try { url = valor instanceof URL ? valor : new URL(valor); } catch { return false; }
+  const host = url.hostname.toLowerCase().replace(/\.$/, '');
+  if (!/^(?:[a-z0-9-]+\.)*google\.(?:com|com\.[a-z]{2}|co\.[a-z]{2}|[a-z]{2,3})$/i.test(host)) return false;
+  let caminho = url.pathname;
+  try {
+    // Some intermediaries escape the path more than once.
+    for (let i = 0; i < 3; i++) {
+      const novo = decodeURIComponent(caminho);
+      if (novo === caminho) break;
+      caminho = novo;
+    }
+  } catch { return true; }
+  return /^\/(?:goto|url)(?:\/|$)/i.test(caminho);
+}
+
 function hostCanonico(host) {
   const dominio = host.toLowerCase().replace(/\.$/, "");
   return dominio.startsWith("www.") && dominio.split(".").length > 2 ? dominio.slice(4) : dominio;

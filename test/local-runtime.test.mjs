@@ -14,6 +14,19 @@ import {criarServidor} from '../server.mjs';
 import {criarFranquia} from '../src/franquia.mjs';
 
 const CHAVE = 'chave_ficticia_apenas_para_testes_1234567890123456789012345678901234';
+
+test('guia e ZIP da extensão são locais, sem scripts remotos nem arquivos do cliente',async t=>{
+ const app=await servidor(t,{iaLocal:{disponivel:async()=>false}});
+ const guia=await consultar(app.porta,{path:'/google-local'});
+ assert.equal(guia.status,200);assert.match(guia.headers['content-security-policy'],/default-src 'none'/);
+ assert.match(guia.texto,/Baixar extensão local/);assert.doesNotMatch(guia.texto,/<script/iu);
+ const zip=await fetch(app.endereco+'/google-local/extensao.zip');
+ assert.equal(zip.status,200);assert.match(zip.headers.get('content-disposition'),/visibilidade-google-local.zip/);
+ const bytes=Buffer.from(await zip.arrayBuffer());assert.equal(bytes.readUInt32LE(0),0x04034b50);assert.ok(bytes.includes(Buffer.from('manifest.json')));assert.ok(bytes.includes(Buffer.from('capturar.mjs')));
+ assert.ok(!bytes.includes(Buffer.from('SERPAPI_KEY')));assert.ok(!bytes.includes(Buffer.from('visibilidade.sqlite')));
+ const head=await consultar(app.porta,{path:'/google-local',method:'HEAD'});assert.equal(head.status,200);assert.equal(head.texto,'');
+});
+
 const temporario = () => mkdtempSync(join(tmpdir(), 'visibilidade-local-'));
 const remover = pasta => rmSync(pasta, {recursive: true, force: true});
 function consultar(porta, {path = '/', method = 'GET', headers = {}, body} = {}) {
@@ -37,6 +50,24 @@ async function servidor(t, opcoes = {}) {
     env:{PORT:'0',...opcoes.env,DATA_DIR:pasta}});
   return {...app,pasta};
 }
+
+test('servidor revela a candidata apenas quando o verificador local a disponibiliza',async t=>{
+  const iaLocal={disponivel:async()=>true,candidataDisponivel:async()=>true,executar:async()=>({versao:1,estado:'experimental',resultados:[]})};
+  const app=await servidor(t,{iaLocal}),r=await consultar(app.porta);
+  assert.equal(r.status,200);assert.match(r.texto,/const IA_LOCAL_HABILITADA = true;/);
+  assert.match(r.texto,/const IA_CANDIDATA_HABILITADA = true;/);
+});
+
+test('leitor por atividade exige modo de pesquisa explícito mesmo com serviço instalado',async t=>{
+  let inicios=0;
+  const proposicoesLocal={disponivel:async()=>true,iniciar:async()=>{inicios++;throw Error('Não iniciar ao abrir.');},consultar:async()=>({estado:'interrompido'}),fechar:async()=>{}};
+  const comum={iaLocal:{disponivel:async()=>false},entendimentoLocal:{disponivel:async()=>false,fechar:async()=>{}},proposicoesLocal};
+  const normal=await servidor(t,comum),r=await consultar(normal.porta,{path:'/api/capacidades'});
+  assert.equal(JSON.parse(r.texto).proposicoes,undefined);assert.equal(inicios,0);
+  const pesquisa=await servidor(t,{...comum,habilitarProposicoes:true}),p=JSON.parse((await consultar(pesquisa.porta,{path:'/api/capacidades'})).texto);
+  assert.equal(p.proposicoes.instalado,true);assert.equal(p.proposicoes.padrao,false);assert.equal(inicios,0);
+  assert.doesNotMatch(JSON.stringify(p),/Users|modelo.*safetensors|api_key|prompt/);
+});
 
 test('configuração valida Node, porta e chave sem imprimir valores; diretório relativo usa a raiz', () => {
   const padrao = carregarConfiguracao({env:{},carregarEnv:false});
@@ -72,13 +103,13 @@ test('.env é opcional e não substitui variáveis já presentes no processo', (
   }
 });
 
-test('SQLite aplica ambas migrações uma vez e cache/cota sobrevivem à reinicialização', async () => {
+test('SQLite aplica migrações uma vez e cache/cota sobrevivem à reinicialização', async () => {
   const pasta = temporario(), arquivo = join(pasta,'dados','visibilidade.sqlite');
   let db;
   try {
     db = abrirBanco({arquivo});
     const migracoes = await db.prepare('SELECT nome, checksum FROM schema_migrations ORDER BY nome').all();
-    assert.deepEqual(migracoes.results.map(m=>m.nome),['0000_ranking_gratuito.sql','0001_cota_dominio.sql']);
+    assert.deepEqual(migracoes.results.map(m=>m.nome),['0000_ranking_gratuito.sql','0001_cota_dominio.sql','0002_projetos_modulares.sql']);
     assert.ok(migracoes.results.every(m=>/^[a-f0-9]{64}$/.test(m.checksum)));
     assert.equal(await db.prepare('PRAGMA journal_mode').first('journal_mode'),'wal');
     assert.equal(Object.values(await db.prepare('PRAGMA busy_timeout').first())[0],5000);
@@ -91,7 +122,7 @@ test('SQLite aplica ambas migrações uma vez e cache/cota sobrevivem à reinici
     db.close();db.close();
     assert.throws(()=>db.prepare('SELECT 1'),/fechado/);
     db = abrirBanco({arquivo});
-    assert.equal(await db.prepare('SELECT COUNT(*) AS n FROM schema_migrations').first('n'),2);
+    assert.equal(await db.prepare('SELECT COUNT(*) AS n FROM schema_migrations').first('n'),3);
     const reaberta = criarFranquia(db,agora);
     assert.deepEqual(await reaberta.obter('captura'),relatorio);
     assert.equal(await reaberta.reservar('cliente.com.br'),false);
@@ -196,6 +227,22 @@ test('Worker real serve HTML e usa o transporte injetado tanto para coleta quant
   assert.ok(!JSON.stringify(resultado).includes(CHAVE));
 });
 
+test('executável informa como abrir outra instalação quando a porta estiver em uso',async t=>{
+  const app=await servidor(t),pasta=temporario();
+  t.after(()=>remover(pasta));
+  const child=spawn(process.execPath,[fileURLToPath(new URL('../server.mjs',import.meta.url))],{
+    cwd:RAIZ_PROJETO,env:{PORT:String(app.porta),DATA_DIR:pasta,SERPAPI_KEY:''},
+    stdio:['ignore','ignore','pipe'],timeout:10_000,
+  });
+  let erro='';
+  child.stderr.on('data',p=>{erro+=p.toString();});
+  const [codigo,sinal]=await once(child,'close');
+  assert.equal(codigo,1);
+  assert.equal(sinal,null);
+  assert.match(erro,/porta local está em uso.*PORT=0 npm start/u);
+  assert.equal((await consultar(app.porta,{path:'/healthz'})).status,200);
+});
+
 test('SIGINT e SIGTERM fecham o executável e deixam o banco reutilizável', {skip:process.platform==='win32'}, async t => {
   for (const sinal of ['SIGINT','SIGTERM']) await t.test(sinal,async () => {
     const pasta=temporario();
@@ -207,7 +254,7 @@ test('SIGINT e SIGTERM fecham o executável e deixam o banco reutilizável', {sk
       await new Promise((resolver,rejeitar)=>{
         timer=setTimeout(()=>rejeitar(new Error('Servidor não iniciou no prazo do teste')),10_000);
         let texto='';
-        child.stdout.on('data',parte=>{texto+=parte.toString();if(/disponível em http:\/\/127\.0\.0\.1:\d+/.test(texto)){pronto=true;resolver();}});
+        child.stdout.on('data',parte=>{texto+=parte.toString();if(/disponível em http:\/\/127\.0\.0\.1:\d+\/projeto/.test(texto)){pronto=true;resolver();}});
         child.once('error',rejeitar);
         child.once('exit',()=>{if(!pronto)rejeitar(new Error('Servidor encerrou antes de iniciar'));});
       });

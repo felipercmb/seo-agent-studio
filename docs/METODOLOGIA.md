@@ -24,7 +24,7 @@ Há também limites de requisições, redirecionamentos e sitemaps. Portanto, um
 
 ## 2. Descoberta de termos
 
-Regras extraem candidatos de elementos como título, cabeçalhos, conteúdo e dados estruturados. Eles podem representar marca, serviço, produto, localidade ou nomes declarados no conteúdo. Um nome publicado em um catálogo mantém seu contexto; sua descoberta não comprova procura pelo público.
+Regras extraem candidatos de elementos como título, cabeçalhos, conteúdo e dados estruturados. Eles podem representar marca, serviço, produto, localidade ou nomes declarados no conteúdo. Cabeçalhos ambíguos podem ser marcados como temas a confirmar; chamadas institucionais reconhecidas são deixadas para depois de ofertas com sinais mais claros. A classificação é uma hipótese e ainda pode errar. Um nome publicado em um catálogo mantém seu contexto; sua descoberta não comprova procura pelo público.
 
 Cada candidato preserva a evidência disponível: página, campo, trecho, data e identificador do conteúdo. Buscas relacionadas que a fonte retornar também podem entrar como candidatos, com o termo de origem e o identificador da consulta. Essa expansão é limitada a uma geração e filtrada pela relação com o termo original.
 
@@ -39,6 +39,8 @@ A SerpApi fornece as páginas de resultados. O operador configura sua própria c
 O contexto padrão é Google Brasil, idioma português, computador e localidade Brasil. Uma palavra contendo o nome de uma cidade não transforma esse contexto em uma medição feita naquela cidade.
 
 Cada termo pode percorrer até cinco páginas, seguindo a continuação validada da fonte. A quantidade real de resultados varia. O código verifica contexto, consulta, data, ordem dos resultados e paginação antes de atribuir posição.
+
+Se um resultado vier como redirecionamento opaco do Google, sem domínio de destino identificável, a página inteira é rejeitada. Isso impede que o endereço do Google seja listado como concorrente ou que uma resposta incompleta indique falsamente que o site não apareceu. A ferramenta não segue esse redirecionamento para tentar adivinhar o destino.
 
 A leitura avança em etapas de até quatro páginas do Google. A primeira requisição pode apenas descobrir ou recuperar termos. A interface pode executar até seis etapas por sequência, incluindo a inicial, com intervalo de pelo menos três segundos. Você pode pausar e continuar; não há monitoramento em segundo plano. Ocultar ou fechar a página interrompe novas etapas, embora uma requisição já enviada possa terminar.
 
@@ -77,7 +79,7 @@ Uma captura só é tratada como atual durante uma hora. Quando uma página de um
 
 O progresso é reutilizado por até sete dias no SQLite local. A descoberta pode ser relida após seu prazo próprio, separadamente da validade das posições. Expiração de uso não significa eliminação segura imediata do arquivo em disco.
 
-Os dados estruturados e trechos necessários à evidência podem ficar no banco. Isso inclui os relatórios de posições e do diagnóstico que alimentam o agente, reutilizáveis por até sete dias, com nova validação da idade a cada análise. O HTML integral é usado temporariamente na coleta e não compõe o relatório persistido. A chave da fonte permanece na configuração do operador.
+Os dados estruturados e trechos necessários à evidência podem ficar no banco. Isso inclui os relatórios de posições e do diagnóstico que alimentam o agente, reutilizáveis por até sete dias, com nova validação da idade a cada análise. No fluxo modular local, as capturas completas com HTML e os artefatos de entendimento também são preservados em arquivos privados de `DATA_DIR/evidencias-negocio/capturas` e `DATA_DIR/evidencias-negocio/execucoes`. Não há limpeza automática desses arquivos: apagar o projeto no banco não apaga as evidências em disco. A retenção do arquivo não renova a validade de uma posição ou publicação. A chave da fonte permanece na configuração do operador; as premissas financeiras não são enviadas ao leitor de páginas públicas. Consulte [uso local e retenção](USO-LOCAL-INTEGRADO.md).
 
 ## 6. Consumo gratuito
 

@@ -1,0 +1,387 @@
+{
+  "natureza": "Controle autoral injetado, sem modelo, cliente real ou fonte remota.",
+  "base": {
+    "versao": 1,
+    "dominio": "example.com",
+    "fontes": [
+      {
+        "id": "s01",
+        "tipo": "declaracao",
+        "texto": "🔧 A ferramenta Aurora organiza os pedidos dos usuários. Os analistas do cliente configuram a integração. A equipe Aurora implementa o fluxo junto ao cliente. Os usuários utilizam a ferramenta Aurora. O teste da ferramenta Aurora dura 10 dias e não exige cartão de crédito. A plataforma destina-se a equipes de operações.",
+        "contexto": {
+          "paginaId": "pag_aaaaaaaaaaaaaaaaaaaa",
+          "url": "https://example.com/aurora",
+          "tituloPagina": "Ferramenta Aurora",
+          "titulos": [
+            {
+              "nivel": 2,
+              "texto": "Ferramenta Aurora"
+            }
+          ],
+          "campo": "p",
+          "coletadoEm": "2026-11-16T20:00:00Z",
+          "sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+          "recortado": false,
+          "classePagina": "institucional"
+        }
+      }
+    ]
+  },
+  "saida": {
+    "versao": 3,
+    "candidato": "proposicoes-c1",
+    "dominio": "example.com",
+    "entradaSha256": "0e123dde18a286ed05f928dba240133694879a2afcb564a73b653149afe2cf4c",
+    "perfilConfirmado": false,
+    "revisaoSemantica": "pendente",
+    "ofertas": [
+      {
+        "nome": "ferramenta Aurora",
+        "nomePublicado": "ferramenta Aurora",
+        "fonteNome": "s01",
+        "origemNome": "texto",
+        "natureza": "software",
+        "papel_site": "disponibiliza",
+        "evidencias": [
+          "s01"
+        ],
+        "citacoes": [
+          {
+            "id": "s01",
+            "tipo": "declaracao",
+            "texto": "🔧 A ferramenta Aurora organiza os pedidos dos usuários. Os analistas do cliente configuram a integração. A equipe Aurora implementa o fluxo junto ao cliente. Os usuários utilizam a ferramenta Aurora. O teste da ferramenta Aurora dura 10 dias e não exige cartão de crédito. A plataforma destina-se a equipes de operações.",
+            "contexto": {
+              "paginaId": "pag_aaaaaaaaaaaaaaaaaaaa",
+              "url": "https://example.com/aurora",
+              "tituloPagina": "Ferramenta Aurora",
+              "titulos": [
+                {
+                  "nivel": 2,
+                  "texto": "Ferramenta Aurora"
+                }
+              ],
+              "campo": "p",
+              "coletadoEm": "2026-11-16T20:00:00Z",
+              "sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+              "recortado": false,
+              "classePagina": "institucional"
+            }
+          }
+        ],
+        "revisaoSemantica": "pendente",
+        "jornada": {
+          "proposicoes": [
+            {
+              "unidade": "u001",
+              "sujeito": "A ferramenta Aurora",
+              "tipoSujeito": "ferramenta",
+              "relacao": "executa",
+              "acao": "organiza",
+              "objeto": "os pedidos dos usuários",
+              "escopo": "uso",
+              "id": "p01",
+              "unidadeLiteral": {
+                "id": "u001",
+                "fonte": "s01",
+                "inicio": 0,
+                "fim": 55,
+                "texto": "🔧 A ferramenta Aurora organiza os pedidos dos usuários."
+              },
+              "evidencias": [
+                "s01"
+              ],
+              "citacoes": [
+                {
+                  "id": "s01",
+                  "tipo": "declaracao",
+                  "texto": "🔧 A ferramenta Aurora organiza os pedidos dos usuários. Os analistas do cliente configuram a integração. A equipe Aurora implementa o fluxo junto ao cliente. Os usuários utilizam a ferramenta Aurora. O teste da ferramenta Aurora dura 10 dias e não exige cartão de crédito. A plataforma destina-se a equipes de operações.",
+                  "contexto": {
+                    "paginaId": "pag_aaaaaaaaaaaaaaaaaaaa",
+                    "url": "https://example.com/aurora",
+                    "tituloPagina": "Ferramenta Aurora",
+                    "titulos": [
+                      {
+                        "nivel": 2,
+                        "texto": "Ferramenta Aurora"
+                      }
+                    ],
+                    "campo": "p",
+                    "coletadoEm": "2026-11-16T20:00:00Z",
+                    "sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+                    "recortado": false,
+                    "classePagina": "institucional"
+                  }
+                }
+              ],
+              "natureza": "interpretacao_publicacao",
+              "revisaoSemantica": "pendente"
+            },
+            {
+              "unidade": "u002",
+              "sujeito": "Os analistas do cliente",
+              "tipoSujeito": "usuario",
+              "relacao": "executa",
+              "acao": "configuram",
+              "objeto": "a integração",
+              "escopo": "uso",
+              "id": "p02",
+              "unidadeLiteral": {
+                "id": "u002",
+                "fonte": "s01",
+                "inicio": 56,
+                "fim": 104,
+                "texto": "Os analistas do cliente configuram a integração."
+              },
+              "evidencias": [
+                "s01"
+              ],
+              "citacoes": [
+                {
+                  "id": "s01",
+                  "tipo": "declaracao",
+                  "texto": "🔧 A ferramenta Aurora organiza os pedidos dos usuários. Os analistas do cliente configuram a integração. A equipe Aurora implementa o fluxo junto ao cliente. Os usuários utilizam a ferramenta Aurora. O teste da ferramenta Aurora dura 10 dias e não exige cartão de crédito. A plataforma destina-se a equipes de operações.",
+                  "contexto": {
+                    "paginaId": "pag_aaaaaaaaaaaaaaaaaaaa",
+                    "url": "https://example.com/aurora",
+                    "tituloPagina": "Ferramenta Aurora",
+                    "titulos": [
+                      {
+                        "nivel": 2,
+                        "texto": "Ferramenta Aurora"
+                      }
+                    ],
+                    "campo": "p",
+                    "coletadoEm": "2026-11-16T20:00:00Z",
+                    "sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+                    "recortado": false,
+                    "classePagina": "institucional"
+                  }
+                }
+              ],
+              "natureza": "interpretacao_publicacao",
+              "revisaoSemantica": "pendente"
+            },
+            {
+              "unidade": "u003",
+              "sujeito": "A equipe Aurora",
+              "tipoSujeito": "fornecedor",
+              "relacao": "executa",
+              "acao": "implementa",
+              "objeto": "o fluxo",
+              "escopo": "implementacao",
+              "id": "p03",
+              "unidadeLiteral": {
+                "id": "u003",
+                "fonte": "s01",
+                "inicio": 105,
+                "fim": 157,
+                "texto": "A equipe Aurora implementa o fluxo junto ao cliente."
+              },
+              "evidencias": [
+                "s01"
+              ],
+              "citacoes": [
+                {
+                  "id": "s01",
+                  "tipo": "declaracao",
+                  "texto": "🔧 A ferramenta Aurora organiza os pedidos dos usuários. Os analistas do cliente configuram a integração. A equipe Aurora implementa o fluxo junto ao cliente. Os usuários utilizam a ferramenta Aurora. O teste da ferramenta Aurora dura 10 dias e não exige cartão de crédito. A plataforma destina-se a equipes de operações.",
+                  "contexto": {
+                    "paginaId": "pag_aaaaaaaaaaaaaaaaaaaa",
+                    "url": "https://example.com/aurora",
+                    "tituloPagina": "Ferramenta Aurora",
+                    "titulos": [
+                      {
+                        "nivel": 2,
+                        "texto": "Ferramenta Aurora"
+                      }
+                    ],
+                    "campo": "p",
+                    "coletadoEm": "2026-11-16T20:00:00Z",
+                    "sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+                    "recortado": false,
+                    "classePagina": "institucional"
+                  }
+                }
+              ],
+              "natureza": "interpretacao_publicacao",
+              "revisaoSemantica": "pendente"
+            },
+            {
+              "unidade": "u004",
+              "sujeito": "Os usuários",
+              "tipoSujeito": "usuario",
+              "relacao": "utiliza",
+              "acao": "utilizam",
+              "objeto": "a ferramenta Aurora",
+              "escopo": "uso",
+              "id": "p04",
+              "unidadeLiteral": {
+                "id": "u004",
+                "fonte": "s01",
+                "inicio": 158,
+                "fim": 199,
+                "texto": "Os usuários utilizam a ferramenta Aurora."
+              },
+              "evidencias": [
+                "s01"
+              ],
+              "citacoes": [
+                {
+                  "id": "s01",
+                  "tipo": "declaracao",
+                  "texto": "🔧 A ferramenta Aurora organiza os pedidos dos usuários. Os analistas do cliente configuram a integração. A equipe Aurora implementa o fluxo junto ao cliente. Os usuários utilizam a ferramenta Aurora. O teste da ferramenta Aurora dura 10 dias e não exige cartão de crédito. A plataforma destina-se a equipes de operações.",
+                  "contexto": {
+                    "paginaId": "pag_aaaaaaaaaaaaaaaaaaaa",
+                    "url": "https://example.com/aurora",
+                    "tituloPagina": "Ferramenta Aurora",
+                    "titulos": [
+                      {
+                        "nivel": 2,
+                        "texto": "Ferramenta Aurora"
+                      }
+                    ],
+                    "campo": "p",
+                    "coletadoEm": "2026-11-16T20:00:00Z",
+                    "sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+                    "recortado": false,
+                    "classePagina": "institucional"
+                  }
+                }
+              ],
+              "natureza": "interpretacao_publicacao",
+              "revisaoSemantica": "pendente"
+            },
+            {
+              "unidade": "u006",
+              "sujeito": "A plataforma",
+              "tipoSujeito": "ferramenta",
+              "relacao": "destina_se_a",
+              "acao": "destina-se a",
+              "objeto": "equipes de operações",
+              "escopo": "fornecimento",
+              "id": "p05",
+              "unidadeLiteral": {
+                "id": "u006",
+                "fonte": "s01",
+                "inicio": 273,
+                "fim": 320,
+                "texto": "A plataforma destina-se a equipes de operações."
+              },
+              "evidencias": [
+                "s01"
+              ],
+              "citacoes": [
+                {
+                  "id": "s01",
+                  "tipo": "declaracao",
+                  "texto": "🔧 A ferramenta Aurora organiza os pedidos dos usuários. Os analistas do cliente configuram a integração. A equipe Aurora implementa o fluxo junto ao cliente. Os usuários utilizam a ferramenta Aurora. O teste da ferramenta Aurora dura 10 dias e não exige cartão de crédito. A plataforma destina-se a equipes de operações.",
+                  "contexto": {
+                    "paginaId": "pag_aaaaaaaaaaaaaaaaaaaa",
+                    "url": "https://example.com/aurora",
+                    "tituloPagina": "Ferramenta Aurora",
+                    "titulos": [
+                      {
+                        "nivel": 2,
+                        "texto": "Ferramenta Aurora"
+                      }
+                    ],
+                    "campo": "p",
+                    "coletadoEm": "2026-11-16T20:00:00Z",
+                    "sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+                    "recortado": false,
+                    "classePagina": "institucional"
+                  }
+                }
+              ],
+              "natureza": "interpretacao_publicacao",
+              "revisaoSemantica": "pendente"
+            }
+          ],
+          "condicoes": [
+            {
+              "unidade": "u005",
+              "categoria": "prazo",
+              "aplicaA": "teste da ferramenta Aurora",
+              "alcance": "oferta",
+              "id": "c01",
+              "aplicacao": "esta_atividade",
+              "oferta": "ferramenta Aurora",
+              "evidencia": "s01",
+              "unidadeLiteral": {
+                "id": "u005",
+                "fonte": "s01",
+                "inicio": 200,
+                "fim": 272,
+                "texto": "O teste da ferramenta Aurora dura 10 dias e não exige cartão de crédito."
+              },
+              "citacoes": [
+                {
+                  "id": "s01",
+                  "tipo": "declaracao",
+                  "texto": "🔧 A ferramenta Aurora organiza os pedidos dos usuários. Os analistas do cliente configuram a integração. A equipe Aurora implementa o fluxo junto ao cliente. Os usuários utilizam a ferramenta Aurora. O teste da ferramenta Aurora dura 10 dias e não exige cartão de crédito. A plataforma destina-se a equipes de operações.",
+                  "contexto": {
+                    "paginaId": "pag_aaaaaaaaaaaaaaaaaaaa",
+                    "url": "https://example.com/aurora",
+                    "tituloPagina": "Ferramenta Aurora",
+                    "titulos": [
+                      {
+                        "nivel": 2,
+                        "texto": "Ferramenta Aurora"
+                      }
+                    ],
+                    "campo": "p",
+                    "coletadoEm": "2026-11-16T20:00:00Z",
+                    "sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+                    "recortado": false,
+                    "classePagina": "institucional"
+                  }
+                }
+              ],
+              "revisaoSemantica": "pendente"
+            }
+          ],
+          "incertezas": [
+            "Quem paga a assinatura da ferramenta não foi identificado nesta publicação."
+          ],
+          "recusadas": [],
+          "perfilConfirmado": false,
+          "revisaoSemantica": "pendente",
+          "fontesSelecionadas": [
+            {
+              "id": "s01",
+              "tipo": "declaracao",
+              "texto": "🔧 A ferramenta Aurora organiza os pedidos dos usuários. Os analistas do cliente configuram a integração. A equipe Aurora implementa o fluxo junto ao cliente. Os usuários utilizam a ferramenta Aurora. O teste da ferramenta Aurora dura 10 dias e não exige cartão de crédito. A plataforma destina-se a equipes de operações.",
+              "contexto": {
+                "paginaId": "pag_aaaaaaaaaaaaaaaaaaaa",
+                "url": "https://example.com/aurora",
+                "tituloPagina": "Ferramenta Aurora",
+                "titulos": [
+                  {
+                    "nivel": 2,
+                    "texto": "Ferramenta Aurora"
+                  }
+                ],
+                "campo": "p",
+                "coletadoEm": "2026-11-16T20:00:00Z",
+                "sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+                "recortado": false,
+                "classePagina": "institucional"
+              }
+            }
+          ],
+          "entradaSha256": "0e123dde18a286ed05f928dba240133694879a2afcb564a73b653149afe2cf4c"
+        }
+      }
+    ],
+    "recusadas": [],
+    "inferencias": [],
+    "novoAjustePesos": false,
+    "modeloPadraoAlterado": false,
+    "codigoMudouDuranteExecucao": false,
+    "incertezas": [],
+    "ofertasIdentificadas": 1,
+    "ofertasAnalisadas": 1,
+    "estado": "revisao_necessaria",
+    "limite": "Relações com sujeito, ação, objeto e escopo publicados para revisão. Conclusão mecânica não certifica interpretação, serviço real ou valor comercial."
+  }
+}

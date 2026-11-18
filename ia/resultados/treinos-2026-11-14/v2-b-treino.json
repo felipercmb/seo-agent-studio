@@ -1,0 +1,74 @@
+{
+  "estado": "concluido",
+  "inicio": "2026-11-15T02:01:32.918206+00:00",
+  "modelo": "mlx-community/Qwen2.5-1.5B-Instruct-4bit",
+  "revisao": "8b403126fc14f14cfc99bb4cfa72ecbc129ea677",
+  "plataforma": "macOS-26.5.2-arm64-arm-64bit-Mach-O",
+  "python": "3.14.6",
+  "versoes": {
+    "mlx": "0.32.4",
+    "mlx-lm": "0.32.2",
+    "transformers": "5.23.0",
+    "tokenizers": "0.23.3",
+    "huggingface-hub": "2.4.0"
+  },
+  "dados_manifest_sha256": "7834b892680d556739e00655c8892fbe6851f97227c0c7f78f2a751283895eb0",
+  "config_fonte_sha256": "5cff107a4329b50e59f292f7fe3b2d408eef6a00bec5eb2aef0e59d2df1a1b1f",
+  "treinador_sha256": "2415e4016b10df02029285264c3ed8e057ce8e7d1439e74043c48516d3a4f433",
+  "dados": {
+    "train": "bc2eafbd5370601f0fa6226035196cd5264a3459445cf67bfef329d16a7bf7e1",
+    "valid": "0997233bb8d9bc10e5dd52f09b557b401e89ea54fc022c41f9c252399fdfb768"
+  },
+  "tamanhos": {
+    "train": {
+      "casos": 418,
+      "max_tokens": 527
+    },
+    "valid": {
+      "casos": 24,
+      "max_tokens": 446
+    }
+  },
+  "config": {
+    "train": true,
+    "test": false,
+    "seed": 4202,
+    "fine_tune_type": "lora",
+    "optimizer": "adam",
+    "num_layers": 8,
+    "batch_size": 1,
+    "iters": 360,
+    "learning_rate": 5e-05,
+    "max_seq_length": 1024,
+    "mask_prompt": true,
+    "grad_checkpoint": true,
+    "steps_per_report": 20,
+    "steps_per_eval": 60,
+    "val_batches": -1,
+    "save_every": 60,
+    "trust_remote_code": false,
+    "report_to": null,
+    "lora_parameters": {
+      "keys": [
+        "self_attn.q_proj",
+        "self_attn.v_proj"
+      ],
+      "rank": 8,
+      "scale": 20.0,
+      "dropout": 0.0
+    }
+  },
+  "duracao_segundos": 432.15961008286104,
+  "fim": "2026-11-15T02:08:45.078395+00:00",
+  "codigo_saida": 0,
+  "max_rss_bytes": 1162739712,
+  "checkpoints": {
+    "0000060_adapters.safetensors": "50faac87751a0001b4ae684babdc4a6a1df2d87324b6dec0b16f65b202c54412",
+    "0000120_adapters.safetensors": "265bec5c25c5df9ec2918fa73273a7cac2f04619df2fcfc710d5819c15d736ef",
+    "0000180_adapters.safetensors": "a9484b8360982a2876b6c0bdc5064dfe33be270a524238d097edbfdcaa8526be",
+    "0000240_adapters.safetensors": "384827cc807329c0190dbb8adc55908aec7fb069fffdae2b8b0fc72f1f562de3",
+    "0000300_adapters.safetensors": "87586ff08e7b163ca6fdd091e7551cf1282ef9dad9fa8867accb1ebbd618bc52",
+    "0000360_adapters.safetensors": "caec52da873e8eccbe5bdc9d393a70709de96133e6926a348f23605077fc6ef0",
+    "adapters.safetensors": "caec52da873e8eccbe5bdc9d393a70709de96133e6926a348f23605077fc6ef0"
+  }
+}

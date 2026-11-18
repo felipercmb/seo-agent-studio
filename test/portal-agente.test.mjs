@@ -32,6 +32,7 @@ function contexto(){
   const c={URL,AbortController,Date,document:{createElement:tag=>new Elemento(tag),createDocumentFragment:()=>new Elemento('fragment'),
       getElementById:id=>nos(painelAgente).find(no=>no.id===id),body:{classList:{add(){},remove(){}}}},
     painelAgente,espelho,agenteAtual:null,pedidoAgente:null,dominioAgente:null,timerAgente:null,revisaoAgente:0,
+    IA_LOCAL_HABILITADA:true,IA_CANDIDATA_HABILITADA:true,pedidoIA:null,relatorioIA:null,erroIA:null,executandoIA:false,revisaoIA:0,modoIA:'padrao',
     filtroAgente:'todas',limiteAgente:5,dataHora:valor=>valor||'data indisponível',
     setTimeout:(fn,ms)=>{timers.set(++id,{fn,ms});return id;},clearTimeout:n=>timers.delete(n),
     fetch:(url,opcoes)=>new Promise(resolve=>pedidos.push({url,opcoes,resolve})),
@@ -65,6 +66,104 @@ test('contrato do agente exige domínio, versão e listas válidas; posição au
     {...r,oportunidades:[oportunidade({acoes:[{titulo:'x',descricao:'x',base:'comprovada'}]})]}]){
     assert.throws(()=>c.validarRelatorioAgente(ruim,'negocio.com'),/incompleta/);
   }
+});
+
+test('IA experimental apresenta apenas sugestões aceitas, com evidência tratada como texto',()=>{
+  const {c}=contexto();
+  c.relatorioIA={resultados:[{estado:'recusada',orientacao_padrao:'NÃO MOSTRAR',motivos_aplicabilidade:['Falta fonte.']},
+    {estado:'revisao_necessaria',orientacao_padrao:'Conferir o título.',limite_padrao:'Revisão necessária.',
+      evidencias_citadas:[{tipo:'pagina',descricao:'<script>instrução indevida</script>',pagina:'javascript:alert(1)',sha256_pagina:'a'.repeat(64)}]}]};
+  const painel=c.exibirIA('negocio.com');assert.match(painel.textContent,/Sugestão bloqueada/);
+  assert.doesNotMatch(painel.textContent,/NÃO MOSTRAR/);assert.match(painel.textContent,/<script>/);
+  assert.ok(!nos(painel).some(n=>['script','a'].includes(n.tagName)));assert.match(painel.textContent,/SHA-256/);
+});
+
+test('interface distingue orientação por regra de escolha do modelo',()=>{
+  const {c}=contexto();
+  c.relatorioIA={resultados:[{estado:'revisao_necessaria',origem:'regra',orientacao_padrao:'Confirme a intenção de publicação.',
+    limite_padrao:'A intenção não é conhecida.',evidencias_citadas:[]},
+    {estado:'revisao_necessaria',origem:'ia',orientacao_padrao:'Revise a página.',limite_padrao:'Revise a escolha.',evidencias_citadas:[]}]};
+  const texto=c.exibirIA('negocio.com').textContent;
+  assert.match(texto,/Escolha por regra verificada/);assert.match(texto,/Escolha da IA/);
+});
+
+test('a interface explica quando uma regra substitui uma escolha da IA',()=>{
+  const {c}=contexto();c.relatorioIA={resultados:[{estado:'revisao_necessaria',origem:'regra',ajustada_por_regra:true,
+    aviso:'A IA não citou um diagnóstico específico.',orientacao_padrao:'Investigue a demanda.',
+    limite_padrao:'A demanda não foi medida.',evidencias_citadas:[]}]};
+  const texto=c.exibirIA('negocio.com').textContent;
+  assert.match(texto,/Escolha por regra verificada/);assert.match(texto,/IA não citou um diagnóstico/);
+});
+
+test('evidência atual da busca mostra termo, posição, concorrente e captura sem interpretar HTML',()=>{
+  const {c}=contexto();
+  c.relatorioIA={resultados:[{estado:'revisao_necessaria',origem:'regra',orientacao_padrao:'Compare os resultados.',
+    limite_padrao:'Não sabemos a causa.',evidencias_citadas:[{tipo:'serp',termo:'oferta <script>x</script>',
+      atual:true,posicao:27,pagina:'https://negocio.com/',concorrentes:[{pagina:'https://rival.example/',posicao:3},
+        {pagina:'javascript:alert(1)',posicao:5}],fontes_serp:[{id:'captura_123',sha256:'a'.repeat(64),descricao:'Página 3'}]}]}]};
+  const painel=c.exibirIA('negocio.com');
+  assert.match(painel.textContent,/Busca: oferta <script>x<\/script>/);assert.match(painel.textContent,/Posição observada: 27/);
+  assert.match(painel.textContent,/posição 3/);assert.match(painel.textContent,/rival\.example/);
+  assert.match(painel.textContent,/captura_123/);assert.match(painel.textContent,/SHA-256 da captura/);
+  assert.ok(!nos(painel).some(n=>n.tagName==='script'));
+  assert.ok(!nos(painel).some(n=>n.tagName==='a'&&String(n.href).startsWith('javascript:')));
+});
+
+test('recorte sem posição mostra páginas examinadas sem inventar classificação',()=>{
+  const {c}=contexto();
+  c.relatorioIA={resultados:[{estado:'revisao_necessaria',origem:'regra',orientacao_padrao:'Confira o recorte.',
+    limite_padrao:'A posição é desconhecida.',evidencias_citadas:[{tipo:'serp',termo:'busca de teste',
+      atual:false,posicao:null,estado_fonte:'nao_observado_recorte',
+      recorte_serp:[{id:'captura_123',sha256:'a'.repeat(64),observado_em:'2026-11-15T12:00:00Z'}]}]}]};
+  const texto=c.exibirIA('negocio.com').textContent;
+  assert.match(texto,/Página examinada: captura captura_123/);assert.match(texto,/SHA-256 da captura/);
+  assert.doesNotMatch(texto,/Posição observada:/);
+});
+
+test('passos específicos aparecem somente quando a evidência corresponde ao mesmo diagnóstico',()=>{
+  const {c}=contexto(),data='2026-11-15T12:00:00Z',hash='a'.repeat(64),url='https://negocio.com/oferta';
+  const melhoria={paginaAlvo:url,sha256Pagina:hash,evidencia:'Nenhum title foi identificado.',coletadoEm:data,
+    orientacao:'Confira o título da página.',passos:['Abra a página.','Peça revisão do título <script>não executar</script>.']};
+  c.agenteAtual=relatorio({melhorias:[melhoria]});
+  const evidencia={id:'d1',tipo:'pagina',pagina:url,atual:true,sha256_pagina:hash,observado_em:data,descricao:melhoria.evidencia};
+  c.relatorioIA={resultados:[{estado:'revisao_necessaria',escolha_ia:{acao:'melhorar_pagina'},
+    orientacao_padrao:'Revise a página.',limite_padrao:'Não garante posição.',evidencias_citadas:[evidencia]}]};
+  let painel=c.exibirIA('negocio.com');assert.match(painel.textContent,/Como conferir este ponto/);
+  assert.match(painel.textContent,/Confira o título da página/);assert.match(painel.textContent,/<script>não executar<\/script>/);
+  assert.ok(!nos(painel).some(n=>n.tagName==='script'));
+  evidencia.sha256_pagina='b'.repeat(64);painel=c.exibirIA('negocio.com');
+  assert.doesNotMatch(painel.textContent,/Como conferir este ponto/);
+});
+
+test('identifica o termo a investigar só quando há correspondência única com a origem',()=>{
+  const {c}=contexto(),data='2026-11-15T12:00:00Z',hash='a'.repeat(64),url='https://negocio.com/oferta';
+  const origem={tipo:'site',url,trecho:'Serviço de manutenção',sha256:hash,coletadoEm:data};
+  const oferta=oportunidade({termo:'Manutenção de equipamentos',paginaAlvo:url,evidencias:[origem]});
+  c.agenteAtual=relatorio({oportunidades:[oferta]});
+  const evidencia={id:'p1',tipo:'pagina',pagina:url,atual:true,sha256_pagina:hash,observado_em:data,descricao:origem.trecho};
+  c.relatorioIA={resultados:[{estado:'revisao_necessaria',escolha_ia:{acao:'validar_demanda'},
+    orientacao_padrao:'Investigue a procura.',limite_padrao:'A procura não foi medida.',evidencias_citadas:[evidencia]}]};
+  assert.match(c.exibirIA('negocio.com').textContent,/Termo para investigar: Manutenção de equipamentos/);
+  c.agenteAtual.oportunidades.push({...oferta,termo:'Outro termo'});
+  assert.doesNotMatch(c.exibirIA('negocio.com').textContent,/Termo para investigar:/);
+});
+
+test('mudança de domínio descarta resposta atrasada da IA e solicita apenas o site',async()=>{
+  const a=contexto();a.c.prepararAgente('negocio.com');a.c.agenteAtual=relatorio();
+  const pedido=a.c.analisarIA('negocio.com');assert.equal(a.pedidos[0].url,'/api/ia');
+  assert.deepEqual(JSON.parse(a.pedidos[0].opcoes.body),{site:'negocio.com'});
+  a.c.prepararAgente('novo.com');assert.equal(a.pedidos[0].opcoes.signal.aborted,true);
+  a.pedidos[0].resolve({ok:true,json:async()=>({versao:1,estado:'experimental',dominio:'negocio.com',resultados:[{estado:'recusada'}]})});
+  await pedido;assert.equal(a.c.relatorioIA,null);assert.doesNotMatch(a.painelAgente.textContent,/Sugestão bloqueada/);
+});
+
+test('ajuste não aprovado é optativo e usa rota fixa com aviso visível',async()=>{
+  const a=contexto();a.c.prepararAgente('negocio.com');a.c.agenteAtual=relatorio();
+  const pendente=a.c.analisarIA('negocio.com',true);
+  assert.equal(a.pedidos[0].url,'/api/ia-candidata');assert.deepEqual(JSON.parse(a.pedidos[0].opcoes.body),{site:'negocio.com'});
+  a.pedidos[0].resolve({ok:true,json:async()=>({versao:1,estado:'experimental',dominio:'negocio.com',resultados:[{estado:'recusada'}]})});
+  await pendente;assert.match(a.painelAgente.textContent,/não atingiu todos os critérios/);
+  assert.match(a.painelAgente.textContent,/Resultado do novo ajuste em avaliação/);
 });
 
 test('filtro mantém a ordem recebida, mostra cinco por vez e permite chegar aos cem',()=>{

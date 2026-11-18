@@ -1,0 +1,28 @@
+Decodificação opcional experimental, já instalada e utilizada em ensaios locais de CPU e de geração real MLX. O runtime de negócio a ativa explicitamente com `--decodificacao esquema`; a opção padrão continua `livre`. A integração restringe a estrutura da resposta e não aprova o agente para uso com clientes.
+
+Foi instalado apenas `outlines_core==0.2.14`, sem o pacote completo Outlines e sem suas dependências. O wheel oficial `outlines_core-0.2.14-cp314-cp314-macosx_14_0_arm64.whl` foi conferido com o SHA-256 publicado no PyPI (`69410e5b55bcbaad8c865d94bd01e7bff8a57996dcd2251b7d50dec70d7d9a63`) e com seu RECORD. O ensaio usa Python3.14, MLX0.32.4, mlx-lm0.32.2 e transformers5.23.0. O ambiente de execução foi recomposto por wheels oficiais das mesmas versões em um espelho local fora do iCloud; o ambiente original foi preservado. O Outlines1.3.3 completo declara Python>=3.10,<3.14 e não foi instalado.
+
+Plataforma efetivamente validada: macOS26.5.2 arm64, CPython3.14.6, outlines-core0.2.14, MLX/MLX-Metal0.32.4, mlx-lm0.32.2, transformers5.23.0 e NumPy2.5.4. Isso não comprova execução em Intel, Linux, Windows ou outra versão de Python. O lock operacional exato, com hashes dos40wheels e recibo de instalação, está em `_reparo/lock-oficial-20261116-0644/requirements-pinned-hashes.txt` no espelho; esse arquivo recompõe o ambiente medido, não uma instalação portátil genérica. Nenhuma dependência foi atualizada durante a recuperação.
+
+O helper usa bytes do tokenizer ByteLevel, preservando tokens UTF-8 incompletos, acentos e U+200D. Não decodifica tokens isolados com substituição por U+FFFD. Decoders ou AddedTokens não suportados, prefixo manual de JSON, draft/MTP, batch, salto/rollback de contexto e reuso com contexto repetido são recusados. É necessário um processador novo por geração. Um índice preparado pode ser reutilizado quando schema e tokenizer forem idênticos.
+
+A integração prepara `preparar_indice_json(schema, tokenizer)`, cria `criar_processador_mlx(indice)` e passa `logits_processors=[processador]` a `stream_generate`, com `draft_model=None` e JSON gerado integralmente. Os imports de core/MLX são adiados. O caminho padrão aplica a máscara com operações MX no device escolhido pelo processo; os testes CPU definem `mx.set_default_device(mx.cpu)` antes de criar tensores. O kernel Metal específico do Outlines permanece uma opção separada e não foi validado nestes ensaios.
+
+Foi corrigido um limite de integração no término: no core0.2.14, um Guide final anuncia EOS em `get_tokens()` mas não aceita `advance(EOS)`. O lookahead do gerador MLX pode chamar o processador novamente com esse EOS anexado. O wrapper agora reaplica a máscara terminal sem avançar o Guide nesse único caso. EOS antecipado, token inválido após o JSON e contexto repetido continuam recusados. As execuções anteriores que falharam por esse problema foram preservadas; não foram recontadas como respostas válidas.
+
+Os testes locais verificaram o índice nativo, as máscaras com vocabulário/logits de tamanhos diferentes, chaves e enums do schema, Unicode e o callback posterior ao EOS. A regressão `test_eos_lookahead_cpu.py` passou em 7/7 casos com Guide nativo e MLXCPU, sem pesos ou GPU. O ensaio real Qwen3.5-9B-4bit, prompt V5, schema e correção EOS concluiu 24/24 saídas de papel/finalidade com contrato válido na VAL12; os valores categóricos exatos foram 8/12 para papel e 10/12 para finalidade. Esses números são um recorte de validação, não desempenho em teste reservado, ganho de pesos, qualidade de planos ou avaliação completa do produto.
+
+A execução posterior de conteúdo com 9B terminou com código137 após 4/60 respostas e foi preservada como incompleta. Os índices de gramática usam RAM do host, fora do limite de tensores MLX. Para reduzir essa expansão, o runtime experimental atual compila uma projeção do schema que retira somente `maxLength` das strings; o contrato posterior continua aplicando esses comprimentos e recusando excessos, sem truncar respostas. Os hashes do schema original e do compilado são registrados separadamente. A cache mantém um único índice e libera o anterior antes de compilar outro. Esses ajustes não garantem que qualquer modelo ou orçamento caiba na memória disponível.
+
+Para repetir os testes de integração no ambiente local com essas dependências:
+
+```sh
+.venv-ia/bin/python ia/negocio/decodificacao/test_core_mlx.py
+.venv-ia/bin/python ia/negocio/decodificacao/test_eos_lookahead_cpu.py
+```
+
+Os recibos de instalação e CPU estão em `_reparo/lock-oficial-20261116-0644/` no espelho operacional. A rodada `data/experimentos-modulares/rodada-treino-negocio-7h-20261116-031117/` preserva as predições e as cápsulas de código; `base9-val12-categorias-v5-esquema-eos.json` registra o ensaio real citado. Repetições devem usar novos arquivos de saída e preservar hashes, versões, schema, prompt e tokenizer.
+
+Schema pode restringir JSON, chaves, enums, IDs de fontes conhecidos e limites suportados pelo conversor. Não assegura texto literal, escopo, relações entre atores, coerência de `faltam`, atribuição de publicidade, viabilidade do teste ou utilidade U1–U4. Parser estrito, validação posterior e revisão semântica continuam necessários. Orçamento de tokens ainda pode truncar JSON; não há reparo silencioso. Não há medição de ranking Google, receita ou retorno neste decoder.
+
+Não aplicar `mx.eval` como suposta correção da issue1156: o mantenedor fechou issue/PR porque a premissa de lazy evaluation estava incorreta. Draft/MTP exige um protocolo próprio; continua recusado. Comparações de qualidade exigem o mesmo modelo, prompt, dados e decoder; mudar a camada de estrutura não demonstra ganho dos pesos.

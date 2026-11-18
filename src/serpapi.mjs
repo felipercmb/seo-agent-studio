@@ -1,4 +1,4 @@
-import {normalizarSite} from './consulta.mjs';
+import {normalizarSite, redirecionamentoGoogleOpaco} from './consulta.mjs';
 
 const ORIGEM = 'https://serpapi.com';
 const MAX_BYTES = 512 * 1024;
@@ -199,6 +199,7 @@ function urlPublica(valor, chave) {
   let url;
   try { url = new URL(valor); } catch { throw indisponivel(); }
   if (!['http:', 'https:'].includes(url.protocol) || url.username || url.password) throw indisponivel();
+  if (redirecionamentoGoogleOpaco(url)) throw indisponivel();
   // Credentials reflected in provider fields cannot leak via result links.
   for (const nome of [...url.searchParams.keys()]) {
     if (/^(?:api[_-]?key|key|token|access_token|auth|authorization|secret|password|senha)$/i.test(nome)) url.searchParams.delete(nome);

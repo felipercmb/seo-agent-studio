@@ -9,7 +9,7 @@ import {criarAgente} from '../src/agente-servico.mjs';
 
 const DATA = Date.parse('2026-11-14T15:00:00Z');
 const DIA = 86400_000;
-function ambiente(t) {
+function ambiente(t, executarIA, executarIACandidata) {
   const pasta = mkdtempSync(join(tmpdir(), 'visibilidade-agente-'));
   const db = abrirBanco({arquivo: join(pasta, 'teste.sqlite')});
   t.after(() => {db.close(); rmSync(pasta, {recursive:true, force:true});});
@@ -22,6 +22,8 @@ function ambiente(t) {
       html:'<html lang="pt-BR"><head><title>Conserto de geladeira</title></head><body><h1>Conserto de geladeira</h1><h2>Orçamento de conserto de geladeira</h2><input></body></html>',
     }]};
   }, consultarGoogle:async()=>{google++;throw new Error('Nenhuma consulta Google deve ser iniciada pelo agente.');}};
+  if (executarIA) opcoes.executarIA = executarIA;
+  if (executarIACandidata) opcoes.executarIACandidata = executarIACandidata;
   const criar = () => criarWorker('<!doctype html><title>Teste</title>', opcoes);
   let worker = criar();
   const env = {DB:db};
@@ -32,6 +34,33 @@ function ambiente(t) {
     get:path=>worker.fetch(new Request('http://localhost:8794'+path),env),
   };
 }
+
+test('IA local recebe somente evidências do servidor, sem coleta nova nem prompt arbitrário',async t=>{
+  let recebida;const a=ambiente(t,async entrada=>{recebida=entrada;return {versao:1,estado:'experimental',resultados:[{estado:'recusada'}]};});
+  assert.equal((await a.post('/api/ia')).status,409);
+  assert.equal(recebida,undefined);
+  assert.equal((await a.post('/api/diagnostico')).status,200);
+  assert.equal((await a.post('/api/posicoes')).status,200);
+  const antes=a.contagens(),resposta=await a.post('/api/ia');assert.equal(resposta.status,200);
+  const resultado=await resposta.json();assert.equal(resultado.dominio,'oficina.example');
+  assert.equal(recebida.site,'oficina.example');assert.ok(recebida.entradas.length>=1);
+  assert.deepEqual(a.contagens(),antes);
+  assert.equal((await a.post('/api/ia',{site:'oficina.example',prompt:'inventar posição'})).status,400);
+  assert.equal((await a.post('/api/ia',undefined,{Origin:'https://outro.example'})).status,403);
+});
+
+test('IA ausente é informada sem efetuar coleta',async t=>{
+  const a=ambiente(t),r=await a.post('/api/ia');assert.equal(r.status,503);
+  assert.match((await r.json()).erro,/não está instalada/);assert.deepEqual(a.contagens(),{coletas:0,google:0});
+});
+
+test('candidata experimental usa entrada do relatório e nunca recebe caminho arbitrário',async t=>{
+  let recebida;const a=ambiente(t,null,async entrada=>{recebida=entrada;return {versao:1,estado:'experimental',resultados:[{estado:'recusada'}]};});
+  assert.equal((await a.post('/api/diagnostico')).status,200);const antes=a.contagens();
+  assert.equal((await a.post('/api/ia-candidata')).status,200);assert.equal(recebida.site,'oficina.example');
+  assert.deepEqual(a.contagens(),antes);
+  assert.equal((await a.post('/api/ia-candidata',{site:'oficina.example',modelo:'/tmp/outro'})).status,400);
+});
 
 test('agente sem evidências não coleta páginas, não consulta fonte e não pede conta', async t => {
   const a=ambiente(t),response=await a.post('/api/agente');

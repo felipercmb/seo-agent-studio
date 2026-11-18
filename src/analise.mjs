@@ -1,4 +1,6 @@
 import {parse} from 'parse5';
+import {createHash} from 'node:crypto';
+import {metaTemNoindex,classificarCabecalhoRobots} from './robots-diretivas.mjs';
 
 const MAX_PAGINAS = 3;
 const MAX_HTML = 1024 * 1024;
@@ -124,6 +126,21 @@ function extrair(html) {
   const viewport = elementos.some(no => no.tagName === 'meta' &&
     atributos.get(no).name?.toLowerCase() === 'viewport' &&
     /(?:^|[,;])\s*width\s*=\s*device-width\s*(?:[,;]|$)/i.test(atributos.get(no).content || ''));
+  // Google can process robots meta tags in the body as well as the head.
+  // Ignore text and inert template/script/noscript contents; HTTP headers and
+  // the rendered DOM are assessed separately.
+  function metaAtiva(no) {
+    for (let pai = pais.get(no); pai; pai = pais.get(pai)) {
+      if (['script', 'style', 'template', 'noscript'].includes(pai.tagName)) return false;
+    }
+    return true;
+  }
+  const noindexHtml = elementos.some(no => {
+    if (no.tagName !== 'meta' || !metaAtiva(no)) return false;
+    const a = atributos.get(no), nome = (a.name || '').trim().toLowerCase();
+    if (!['robots','googlebot'].includes(nome)) return false;
+    return metaTemNoindex(a.content);
+  });
   const contatos = ativos.filter(no => {
     if (no.tagName !== 'a') return false;
     const href = (atributos.get(no).href || '').trim();
@@ -138,13 +155,20 @@ function extrair(html) {
         /^#(?:contato|contact|fale-conosco)$/i.test(url.hash);
     } catch { return false; }
   });
-  return {titulo, idioma, idiomaValido, viewport, semRotulo: semRotulo.length,
+  return {titulo, idioma, idiomaValido, viewport, noindexHtml, semRotulo: semRotulo.length,
     semAlt: semAlt.length, h1: ativos.filter(no => no.tagName === 'h1' && visivel.get(no)).length,
     contatos: contatos.length, controles: controles.filter(no => !ocultos.get(no) && !('disabled' in atributos.get(no))).length,
     imagens: ativos.filter(no => no.tagName === 'img').length};
 }
 
 const REGRAS = [
+  {id: 'diretiva-noindex-html', titulo: 'Confirme a intenção da diretiva de indexação', categoria: 'Indexação',
+    problema: p => p.dados.noindexHtml ? 1 : 0,
+    trecho: () => 'O HTML inicial contém meta robots ou googlebot com noindex ou none. A intenção de publicação não é conhecida.',
+    ok: 'Não foi identificada diretiva noindex ou none nas meta tags robots e googlebot do HTML inicial. Isso não confirma indexação.',
+    orientacao: 'Uma diretiva pode ser deliberada. Confirme com o responsável se o endereço deve aparecer em buscas antes de propor alterações.',
+    passos: ['Confirme com o responsável se esta URL deve aparecer em buscas.', 'Se a exclusão não for intencional, investigue a diretiva no código e nos cabeçalhos HTTP.', 'Após qualquer alteração aprovada, volte a conferir a URL e sua situação na fonte apropriada.'],
+    esforco: 'Revisão com o responsável pelo site', prioridade: 'Evita tratar uma exclusão intencional como defeito ou presumir indexação.'},
   {id: 'rotulos-formulario', titulo: 'Identifique os campos e botões', categoria: 'Acessibilidade',
     problema: p => p.dados.semRotulo, trecho: p => `${p.dados.semRotulo} controle(s) sem nome identificável no HTML desta página.`,
     ok: 'Os controles examinados têm um nome identificável no HTML; a clareza dos nomes precisa de revisão humana.',
@@ -191,6 +215,33 @@ const REGRAS = [
     esforco: 'Edição de conteúdo', prioridade: 'Ajuda a entender rapidamente o assunto da página.'},
 ];
 
+function verificacaoCabecalho(paginas) {
+  const estados=paginas.map(p=>{
+    const h=p.cabecalhoRobots;
+    if (!h || typeof h!=='object') return {pagina:p,estado:'inconclusivo'};
+    if (h.estado==='ausente') return {pagina:p,estado:h.estado};
+    if (!['noindex','sem_noindex'].includes(h.estado) || typeof h.valor!=='string' || !/^[a-f0-9]{64}$/.test(h.sha256 || '')) return {pagina:p,estado:'inconclusivo'};
+    const reavaliado=classificarCabecalhoRobots(h.valor),digest=createHash('sha256').update(h.valor).digest('hex');
+    if (reavaliado.estado!==h.estado || h.estado==='noindex' && reavaliado.escopo!==h.escopo || digest!==h.sha256) return {pagina:p,estado:'inconclusivo'};
+    return {pagina:p,estado:h.estado,cabecalho:h};
+  });
+  const afetadas=estados.filter(e=>e.estado==='noindex'),incompleta=estados.some(e=>e.estado==='inconclusivo');
+  const primeira=afetadas[0] || estados[0];
+  const estado=afetadas.length?'atencao':incompleta?'indisponivel':'verificado';
+  const trecho=afetadas.length
+    ? 'O cabeçalho HTTP X-Robots-Tag recebido indica noindex ou none para todos os robôs ou para Googlebot. A intenção de publicação é desconhecida.'
+    : incompleta ? 'Não foi possível avaliar o cabeçalho de indexação de todas as páginas lidas. Isso não confirma indexação.'
+    : 'Não foi identificado noindex aplicável ao Google no cabeçalho HTTP das páginas lidas. Isso não confirma indexação.';
+  return {id:'diretiva-noindex-http',titulo:'Confirme a diretiva de indexação enviada pelo servidor',categoria:'Indexação',estado,
+    evidencia:{url:primeira.pagina.url,trecho,quantidade:afetadas.length,
+      ...(afetadas.length?{valorCabecalho:primeira.cabecalho.valor,sha256Cabecalho:primeira.cabecalho.sha256}: {})},
+    paginasAfetadas:afetadas.map(e=>e.pagina.url),
+    orientacao:'Confirme com o responsável se esta URL deve aparecer em buscas antes de propor qualquer alteração no servidor.',
+    passos:['Confirme a intenção de publicação desta URL.','Se a exclusão não for intencional, investigue a configuração do cabeçalho HTTP.',
+      'Após qualquer mudança aprovada, confira a resposta recebida e a situação na fonte apropriada.'],
+    esforco:'Revisão com o responsável pelo site',prioridade:'Evita presumir que uma diretiva do servidor seja erro ou prova de posição.'};
+}
+
 function manuais(url, semColeta = false) {
   const evidencia = {url, trecho: semColeta ? 'Não foi possível ler páginas. Esta é uma conferência sugerida, sem diagnóstico de defeito.' : 'Esta tarefa depende de uma pessoa; a leitura de HTML não confirma seu resultado.', quantidade: null};
   return [
@@ -228,6 +279,7 @@ export function analisarPaginas({dominio, coletadoEm, paginas = [], falhas = []}
   }
   if (recebidas.length > MAX_PAGINAS) problemas.push({url: '', motivo: 'A análise se limita a três páginas por consulta.'});
   const verificacoes = [];
+  if (lidas.length) verificacoes.push(verificacaoCabecalho(lidas));
   for (const regra of lidas.length ? REGRAS : []) {
     const afetadas = regra.agregado && lidas.some(p => !regra.problema(p)) ? [] : lidas.filter(p => regra.problema(p));
     const primeira = afetadas[0] || (regra.agregado ? lidas.find(p => !regra.problema(p)) : lidas[0]);
@@ -250,10 +302,12 @@ export function analisarPaginas({dominio, coletadoEm, paginas = [], falhas = []}
     estado: !lidas.length ? 'indisponivel' : problemas.length ? 'parcial' : 'concluido',
     paginas: lidas.map(p => ({url: p.url, coletadoEm: limpar(p.coletadoEm || coletadoEm, 40),
       bytes: Number.isSafeInteger(p.bytes) && p.bytes >= 0 ? p.bytes : null,
-      sha256: /^[a-f0-9]{64}$/i.test(p.sha256 || '') ? p.sha256.toLowerCase() : null, status: p.status ?? 200})),
+      sha256: /^[a-f0-9]{64}$/i.test(p.sha256 || '') ? p.sha256.toLowerCase() : null, status: p.status ?? 200,
+      ...(p.cabecalhoRobots?.estado==='noindex' && verificacaoCabecalho([p]).estado==='atencao'
+        ? {cabecalhoRobots:{estado:'noindex',escopo:p.cabecalhoRobots.escopo,valor:p.cabecalhoRobots.valor,sha256:p.cabecalhoRobots.sha256}} : {})})),
     verificacoes, acoes, falhas: problemas,
     limites: [
-      'Leitura do HTML inicial de até três páginas públicas; não executa JavaScript, CSS, formulários ou pedidos de atendimento.',
+      'Leitura do HTML inicial e de cabeçalhos HTTP disponíveis de até três páginas públicas; não executa JavaScript, CSS, formulários ou pedidos de atendimento.',
       'Os resultados se referem apenas às páginas e ao momento da coleta. Ausência nesta leitura não comprova ausência no site inteiro.',
       'Itens verificados confirmam apenas a condição descrita. Não constituem certificação de acessibilidade, segurança ou qualidade do negócio.',
       'Acessibilidade completa exige avaliação humana. Contraste, foco, teclado, adaptação visual, clareza e entrega de mensagens não foram testados automaticamente.',

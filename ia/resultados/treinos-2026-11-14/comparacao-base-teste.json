@@ -1,0 +1,327 @@
+{
+  "tipo": "base",
+  "split": "test",
+  "modelo": "mlx-community/Qwen2.5-1.5B-Instruct-4bit",
+  "revisao": "8b403126fc14f14cfc99bb4cfa72ecbc129ea677",
+  "versoes": {
+    "mlx": "0.32.4",
+    "mlx-lm": "0.32.2",
+    "transformers": "5.23.0",
+    "tokenizers": "0.23.3",
+    "huggingface-hub": "2.4.0"
+  },
+  "temperatura": 0,
+  "adaptador_sha256": null,
+  "config_adaptador_sha256": null,
+  "manifesto_sha256": "92a479a007ebcb5ff14d078090a9f0ddcda467b10be834b51d7724a11cfd364f",
+  "casos_sha256": "d9d083b6ae71a36e5cf1fd8c7794617c2e559e10dfe92229b11e16954ae2f4e9",
+  "codigo_sha256": {
+    "comparacao/contrato.py": "50c93c0a256b14d7d24d86315d3d6fb038b77e56b3723de3bbca4c2368df0034",
+    "comparacao/avaliar.py": "513850d64c1abf69af7cb7bf8f9d9f534b2acb3d95581c18743d8166cc0168bb",
+    "v2/decodificar.py": "f871b8435e18c22e27c9321e74524dfdec619d85dfabca62d2277380567a75f2"
+  },
+  "duracao_segundos": 10.705335584003478,
+  "metricas": {
+    "acertos": 7,
+    "total": 18,
+    "pares_corretos": 0,
+    "total_pares": 9,
+    "falsas_priorizacoes": 5,
+    "sem_base_total": 6
+  },
+  "resultados": [
+    {
+      "id": "test/priorizar/4/0/1",
+      "par": "test/priorizar/4/0",
+      "grupo": "test/priorizar/4",
+      "classe": "priorizar",
+      "esperado": {
+        "escolha": "b"
+      },
+      "saida": {
+        "escolha": "a"
+      },
+      "bruto": "{\"escolha\":\"a\"}",
+      "erro": null,
+      "correto": false,
+      "priorizou_sem_base": false
+    },
+    {
+      "id": "test/insuficiente/2/0/0",
+      "par": "test/insuficiente/2/0",
+      "grupo": "test/insuficiente/2",
+      "classe": "insuficiente",
+      "esperado": {
+        "escolha": "insuficiente"
+      },
+      "saida": {
+        "escolha": "a"
+      },
+      "bruto": "{\"escolha\":\"a\"}",
+      "erro": null,
+      "correto": false,
+      "priorizou_sem_base": true
+    },
+    {
+      "id": "test/priorizar/0/0/0",
+      "par": "test/priorizar/0/0",
+      "grupo": "test/priorizar/0",
+      "classe": "priorizar",
+      "esperado": {
+        "escolha": "a"
+      },
+      "saida": {
+        "escolha": "a"
+      },
+      "bruto": "{\"escolha\":\"a\"}",
+      "erro": null,
+      "correto": true,
+      "priorizou_sem_base": false
+    },
+    {
+      "id": "test/priorizar/2/0/1",
+      "par": "test/priorizar/2/0",
+      "grupo": "test/priorizar/2",
+      "classe": "priorizar",
+      "esperado": {
+        "escolha": "b"
+      },
+      "saida": {
+        "escolha": "a"
+      },
+      "bruto": "{\"escolha\":\"a\"}",
+      "erro": null,
+      "correto": false,
+      "priorizou_sem_base": false
+    },
+    {
+      "id": "test/priorizar/5/0/0",
+      "par": "test/priorizar/5/0",
+      "grupo": "test/priorizar/5",
+      "classe": "priorizar",
+      "esperado": {
+        "escolha": "a"
+      },
+      "saida": {
+        "escolha": "a"
+      },
+      "bruto": "{\"escolha\":\"a\"}",
+      "erro": null,
+      "correto": true,
+      "priorizou_sem_base": false
+    },
+    {
+      "id": "test/insuficiente/1/0/0",
+      "par": "test/insuficiente/1/0",
+      "grupo": "test/insuficiente/1",
+      "classe": "insuficiente",
+      "esperado": {
+        "escolha": "insuficiente"
+      },
+      "saida": {
+        "escolha": "a"
+      },
+      "bruto": "{\"escolha\":\"a\"}",
+      "erro": null,
+      "correto": false,
+      "priorizou_sem_base": true
+    },
+    {
+      "id": "test/insuficiente/2/0/1",
+      "par": "test/insuficiente/2/0",
+      "grupo": "test/insuficiente/2",
+      "classe": "insuficiente",
+      "esperado": {
+        "escolha": "insuficiente"
+      },
+      "saida": {
+        "escolha": "a"
+      },
+      "bruto": "{\"escolha\":\"a\"}",
+      "erro": null,
+      "correto": false,
+      "priorizou_sem_base": true
+    },
+    {
+      "id": "test/insuficiente/0/0/1",
+      "par": "test/insuficiente/0/0",
+      "grupo": "test/insuficiente/0",
+      "classe": "insuficiente",
+      "esperado": {
+        "escolha": "insuficiente"
+      },
+      "saida": {
+        "escolha": "a"
+      },
+      "bruto": "{\"escolha\":\"a\"}",
+      "erro": null,
+      "correto": false,
+      "priorizou_sem_base": true
+    },
+    {
+      "id": "test/priorizar/5/0/1",
+      "par": "test/priorizar/5/0",
+      "grupo": "test/priorizar/5",
+      "classe": "priorizar",
+      "esperado": {
+        "escolha": "b"
+      },
+      "saida": {
+        "escolha": "a"
+      },
+      "bruto": "{\"escolha\":\"a\"}",
+      "erro": null,
+      "correto": false,
+      "priorizou_sem_base": false
+    },
+    {
+      "id": "test/priorizar/3/0/0",
+      "par": "test/priorizar/3/0",
+      "grupo": "test/priorizar/3",
+      "classe": "priorizar",
+      "esperado": {
+        "escolha": "a"
+      },
+      "saida": {
+        "escolha": "a"
+      },
+      "bruto": "{\"escolha\":\"a\"}",
+      "erro": null,
+      "correto": true,
+      "priorizou_sem_base": false
+    },
+    {
+      "id": "test/priorizar/1/0/0",
+      "par": "test/priorizar/1/0",
+      "grupo": "test/priorizar/1",
+      "classe": "priorizar",
+      "esperado": {
+        "escolha": "a"
+      },
+      "saida": {
+        "escolha": "a"
+      },
+      "bruto": "{\"escolha\":\"a\"}",
+      "erro": null,
+      "correto": true,
+      "priorizou_sem_base": false
+    },
+    {
+      "id": "test/insuficiente/1/0/1",
+      "par": "test/insuficiente/1/0",
+      "grupo": "test/insuficiente/1",
+      "classe": "insuficiente",
+      "esperado": {
+        "escolha": "insuficiente"
+      },
+      "saida": {
+        "escolha": "a"
+      },
+      "bruto": "{\"escolha\":\"a\"}",
+      "erro": null,
+      "correto": false,
+      "priorizou_sem_base": true
+    },
+    {
+      "id": "test/insuficiente/0/0/0",
+      "par": "test/insuficiente/0/0",
+      "grupo": "test/insuficiente/0",
+      "classe": "insuficiente",
+      "esperado": {
+        "escolha": "insuficiente"
+      },
+      "saida": {
+        "escolha": "insuficiente"
+      },
+      "bruto": "{\"escolha\":\"insuficiente\"}",
+      "erro": null,
+      "correto": true,
+      "priorizou_sem_base": false
+    },
+    {
+      "id": "test/priorizar/1/0/1",
+      "par": "test/priorizar/1/0",
+      "grupo": "test/priorizar/1",
+      "classe": "priorizar",
+      "esperado": {
+        "escolha": "b"
+      },
+      "saida": {
+        "escolha": "a"
+      },
+      "bruto": "{\"escolha\":\"a\"}",
+      "erro": null,
+      "correto": false,
+      "priorizou_sem_base": false
+    },
+    {
+      "id": "test/priorizar/2/0/0",
+      "par": "test/priorizar/2/0",
+      "grupo": "test/priorizar/2",
+      "classe": "priorizar",
+      "esperado": {
+        "escolha": "a"
+      },
+      "saida": {
+        "escolha": "a"
+      },
+      "bruto": "{\"escolha\":\"a\"}",
+      "erro": null,
+      "correto": true,
+      "priorizou_sem_base": false
+    },
+    {
+      "id": "test/priorizar/0/0/1",
+      "par": "test/priorizar/0/0",
+      "grupo": "test/priorizar/0",
+      "classe": "priorizar",
+      "esperado": {
+        "escolha": "b"
+      },
+      "saida": {
+        "escolha": "a"
+      },
+      "bruto": "{\"escolha\":\"a\"}",
+      "erro": null,
+      "correto": false,
+      "priorizou_sem_base": false
+    },
+    {
+      "id": "test/priorizar/3/0/1",
+      "par": "test/priorizar/3/0",
+      "grupo": "test/priorizar/3",
+      "classe": "priorizar",
+      "esperado": {
+        "escolha": "b"
+      },
+      "saida": {
+        "escolha": "a"
+      },
+      "bruto": "{\"escolha\":\"a\"}",
+      "erro": null,
+      "correto": false,
+      "priorizou_sem_base": false
+    },
+    {
+      "id": "test/priorizar/4/0/0",
+      "par": "test/priorizar/4/0",
+      "grupo": "test/priorizar/4",
+      "classe": "priorizar",
+      "esperado": {
+        "escolha": "a"
+      },
+      "saida": {
+        "escolha": "a"
+      },
+      "bruto": "{\"escolha\":\"a\"}",
+      "erro": null,
+      "correto": true,
+      "priorizou_sem_base": false
+    }
+  ],
+  "limites": [
+    "Pares sintéticos com autoria comum e sem revisão especializada.",
+    "Uma escolha de investigação não indica maior receita ou melhora real de ranking.",
+    "A gramática limita o formato; ela não garante a escolha correta."
+  ]
+}

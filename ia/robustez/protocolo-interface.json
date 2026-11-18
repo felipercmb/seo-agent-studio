@@ -1,0 +1,8 @@
+{
+  "versao": 1,
+  "objetivo": "Comparar o fluxo real da interface, incluindo regras, modelo e bloqueios, contra preferencias editoriais fracas, nao revisadas por especialista.",
+  "selecao": "Somente validacao; zero escolhas criticas tanto exibidas como antes da barreira; nao piorar acertos aceitos no total nem em diagnostico e termo_sem_demanda; nao aumentar recusas; entre elegiveis preferir mais acertos aceitos, depois menos recusas; empate mantem modelo anterior.",
+  "teste": "Abrir uma vez depois de congelar a selecao; comparar somente o modelo anterior com o escolhido. Os grupos pertencem a dominios distintos, mas resultados de paginas da mesma empresa sao correlacionados.",
+  "criticas": "Em paginas publicas sem intencao confirmada, indicar corrigir ou preservar exclusao; acompanhar ou comparar concorrentes sem posicao atual citada; confirmar publicacao sem diretiva comprovada; selecionar referencias inexistentes.",
+  "limites": "Teste de concordancia editorial nao e avaliacao clinica de SEO, nem garante resultados, ROI, desempenho no Google ou prontidao autonoma para clientes. Casos sem acesso sao mantidos como sem evidencias."
+}

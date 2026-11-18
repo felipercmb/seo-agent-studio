@@ -3,6 +3,9 @@ import {criarDiagnostico, ErroDiagnostico} from "./diagnostico.mjs";
 import {criarCapturas} from './capturas.mjs';
 import {criarPosicoesAtuais} from './posicoes-atuais.mjs';
 import {criarAgente} from './agente-servico.mjs';
+import {prepararEntradasIA} from './entrada-ia.mjs';
+import {criarCoordenador} from './modulos/coordenador.mjs';
+import {ErroProjeto} from './modulos/repositorio.mjs';
 
 const politica = [
   "default-src 'none'", "script-src 'unsafe-inline'", "style-src 'unsafe-inline'",
@@ -19,11 +22,11 @@ function resposta(corpo, tipo, status, metodo, extras = {}) {
   }});
 }
 
-async function lerCorpo(request) {
+async function lerCorpo(request, maximo = 4096) {
   if (!/^application\/json(?:;|$)/i.test(request.headers.get('Content-Type') || '')) {
     throw new ErroConsulta('Envie o endereço em uma consulta JSON.');
   }
-  if (Number(request.headers.get('Content-Length')) > 4096 || !request.body) throw new ErroConsulta('Consulta inválida.');
+  if (Number(request.headers.get('Content-Length')) > maximo || !request.body) throw new ErroConsulta('Consulta inválida.');
   const leitor = request.body.getReader();
   const partes = [];
   let tamanho = 0, temporizador;
@@ -38,7 +41,7 @@ async function lerCorpo(request) {
       const {done, value} = await Promise.race([leitor.read(), tempo]);
       if (done) break;
       tamanho += value.byteLength;
-      if (tamanho > 4096) throw new ErroConsulta('Consulta inválida.');
+      if (tamanho > maximo) throw new ErroConsulta('Consulta inválida.');
       partes.push(value);
     }
     const bytes = new Uint8Array(tamanho);
@@ -57,10 +60,16 @@ export function criarWorker(html, opcoes = {}) {
   const diagnosticar = criarDiagnostico({...opcoes, coletar});
   const posicoes = criarPosicoesAtuais({...opcoes, coletar: criarCapturas({...opcoes, objetivo: 'descoberta'})});
   const agente = criarAgente({agora: opcoes.agora});
+  const coordenador = criarCoordenador({...opcoes, coletar: criarCapturas({...opcoes, objetivo: 'descoberta'})});
   return {
     async fetch(request, env = {}) {
       const url = new URL(request.url), metodo = request.method;
-      if (['/api/diagnostico', '/api/posicoes', '/api/agente'].includes(url.pathname)) {
+      if (url.pathname === '/projeto' && env.MODULOS_LOCAIS === true && opcoes.htmlProjeto) {
+        if (!['GET', 'HEAD'].includes(metodo)) return resposta('Método indisponível.', 'text/plain', 405, metodo, {Allow:'GET, HEAD'});
+        return resposta(opcoes.htmlProjeto, 'text/html', 200, metodo);
+      }
+      if (['/api/diagnostico', '/api/posicoes', '/api/agente', '/api/ia', '/api/ia-candidata', '/api/projeto'].includes(url.pathname)) {
+        if (url.pathname === '/api/projeto' && env.MODULOS_LOCAIS !== true) return resposta(JSON.stringify({erro:'Os perfis de negócio estão disponíveis apenas na instalação local.'}), 'application/json', 404, metodo);
         if (metodo !== 'POST') return resposta('Use o formulário para analisar o site.', 'text/plain', 405, metodo, {Allow: 'POST'});
         const origem = request.headers.get('Origin');
         if ((origem && origem !== url.origin) || request.headers.get('Sec-Fetch-Site') === 'cross-site') {
@@ -68,9 +77,19 @@ export function criarWorker(html, opcoes = {}) {
         }
         try {
           if (url.search) throw new ErroConsulta('Envie o endereço pelo formulário.');
-          const entrada = await lerCorpo(request);
+          const entrada = await lerCorpo(request, url.pathname === '/api/projeto' ? 65536 : 4096);
           let relatorio;
-          if (url.pathname === '/api/agente') relatorio = await agente.executar(entrada, env);
+          if (url.pathname === '/api/projeto') relatorio = await coordenador.executar(entrada, env);
+          else if (url.pathname === '/api/ia' || url.pathname === '/api/ia-candidata') {
+            const executar = url.pathname === '/api/ia-candidata' ? opcoes.executarIACandidata : opcoes.executarIA;
+            if (typeof executar !== 'function') return resposta(JSON.stringify({erro:'A IA local não está instalada nesta execução.'}), 'application/json', 503, metodo);
+            const base = await agente.executar(entrada, env);
+            if (base.estado === 'sem_dados') return resposta(JSON.stringify({erro:'Leia o site antes de executar a IA local.'}), 'application/json', 409, metodo);
+            const resultado = await executar(prepararEntradasIA(base, {agora:opcoes.agora}));
+            if (!resultado || resultado.versao !== 1 || resultado.estado !== 'experimental' ||
+                !Array.isArray(resultado.resultados) || resultado.resultados.length < 1 || resultado.resultados.length > 3) throw new Error('Resposta da IA inválida.');
+            relatorio = {...resultado, dominio:base.dominio, geradoEm:new Date().toISOString()};
+          } else if (url.pathname === '/api/agente') relatorio = await agente.executar(entrada, env);
           else {
             const ranking = url.pathname === '/api/posicoes';
             relatorio = ranking ? await posicoes(entrada, env) : await diagnosticar(entrada, request);
@@ -81,7 +100,7 @@ export function criarWorker(html, opcoes = {}) {
           const invalido = erro instanceof ErroConsulta;
           const limitado = erro instanceof ErroDiagnostico;
           const mensagem = invalido || limitado ? erro.message : 'Não foi possível analisar as páginas agora. Tente novamente em instantes.';
-          return resposta(JSON.stringify({erro: mensagem}), 'application/json', invalido ? 400 : limitado ? erro.status : 503, metodo,
+          return resposta(JSON.stringify({erro: mensagem}), 'application/json', erro instanceof ErroProjeto ? erro.status : invalido ? 400 : limitado ? erro.status : 503, metodo,
             limitado ? {'Retry-After': String(erro.espera)} : {});
         }
       }

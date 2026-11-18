@@ -1,5 +1,5 @@
-import {normalizarSite, ErroConsulta} from './consulta.mjs';
-import {descobrirTermos} from './descoberta.mjs';
+import {normalizarSite, ErroConsulta, redirecionamentoGoogleOpaco} from './consulta.mjs';
+import {descobrirTermos, chamadaDeNavegacao, rotuloDeAtendimento, rotuloInstitucional, cabecalhoSemOferta, ancoraProdutoAmbigua, rotuloDeTema} from './descoberta.mjs';
 import {consultarGoogle, ErroFonte} from './serpapi.mjs';
 import {criarFranquia, MAX_DOMINIO_DIA} from './franquia.mjs';
 
@@ -9,7 +9,9 @@ const HORA = 3600_000, DIA = 86400_000, ESPERA = 3000;
 const normal = s => s.normalize('NFD').replace(/\p{M}/gu, '').toLocaleLowerCase('pt-BR').replace(/[^\p{L}\p{N}]+/gu, ' ').trim();
 const idTermo = s => 't:' + s.normalize('NFC').toLocaleLowerCase('pt-BR').replace(/\s+/g,' ').trim();
 const pertence = (host, dominio) => host === dominio || host.endsWith('.' + dominio);
-const atual = (p, agora) => Number.isFinite(Date.parse(p?.coletadoEm)) && Date.parse(p.coletadoEm) <= agora && agora - Date.parse(p.coletadoEm) < HORA;
+const atual = (p, agora) => Number.isFinite(Date.parse(p?.coletadoEm)) && Date.parse(p.coletadoEm) <= agora &&
+  agora - Date.parse(p.coletadoEm) < HORA && Array.isArray(p.resultados) &&
+  p.resultados.every(r => typeof r?.url === 'string' && !redirecionamentoGoogleOpaco(r.url));
 const termos = job => job.candidatos.map(c => ({c, k: idTermo(c.termo), q: job.termos[idTermo(c.termo)]}));
 const motivoFonte = codigo => ({
   cota: 'A franquia gratuita compartilhada está esgotada neste período.',
@@ -30,6 +32,29 @@ function limparExpiradas(job, agora) {
     }
   }
   job.ativos = job.ativos.filter(k => job.termos[k] && !job.termos[k].expirada && !job.termos[k].concluida);
+}
+function limparChamadasAntigas(job) {
+  const removidos = new Set(job.candidatos.filter(c => chamadaDeNavegacao(c?.termo)).map(c => idTermo(c.termo)));
+  const marcas = job.candidatos.filter(c => c?.tipo === 'marca').map(c => c.termo);
+  const atendimentos = new Set(job.candidatos.filter(c => c?.tipo === 'servico' && rotuloDeAtendimento(c.termo)).map(c => idTermo(c.termo)));
+  const institucionais = new Set(job.candidatos.filter(c => c?.tipo === 'servico' && !atendimentos.has(idTermo(c.termo)) && rotuloInstitucional(c.termo,marcas)).map(c => idTermo(c.termo)));
+  const temas = new Set(job.candidatos.filter(c =>
+    (c?.tipo === 'servico' && !atendimentos.has(idTermo(c.termo)) && !institucionais.has(idTermo(c.termo)) &&
+      (cabecalhoSemOferta(c.termo,c.evidencia?.campo,c.evidencia?.url) || rotuloDeTema(c.termo,c.evidencia?.campo))) ||
+    (c?.tipo === 'produto' && (ancoraProdutoAmbigua(c.termo,c.evidencia?.campo) || rotuloDeTema(c.termo,c.evidencia?.campo)))).map(c => idTermo(c.termo)));
+  if (!removidos.size && !atendimentos.size && !institucionais.size && !temas.size) return;
+  job.candidatos = job.candidatos.filter(c => !removidos.has(idTermo(c.termo)));
+  for (const c of job.candidatos) if (atendimentos.has(idTermo(c.termo))) c.tipo = 'atendimento';
+  else if (institucionais.has(idTermo(c.termo))) c.tipo = 'institucional';
+  else if (temas.has(idTermo(c.termo))) c.tipo = 'tema';
+  const faixa = c => c.tipo === 'atendimento' ? 3 : c.tipo === 'institucional' ? 2 : c.tipo === 'tema' ? 1 : 0;
+  job.candidatos.sort((a,b) => faixa(a)-faixa(b));
+  for (const k of removidos) delete job.termos[k];
+  job.ativos = job.ativos.filter(k => !removidos.has(k) && !atendimentos.has(k) && !institucionais.has(k) && !temas.has(k));
+  if (Number.isInteger(job.descoberta.termosDescobertos))
+    job.descoberta.termosDescobertos = Math.max(0, job.descoberta.termosDescobertos-removidos.size);
+  const aviso = 'Chamadas genéricas foram retiradas e termos de atendimento, temas e rótulos institucionais foram adiados; outras sugestões continuam hipóteses.';
+  if (!job.limites.includes(aviso)) job.limites.push(aviso);
 }
 function elegivel(q, agora) {
   if (!q) return true;
@@ -83,14 +108,15 @@ function resumirConsulta(q, dominio) {
   return {termo:q.termo,estado:encontrado?'encontrado':'nao_encontrado',posicao:encontrado?.posicao ?? null,
     posicaoNaPagina:encontrado?.posicaoNaPagina ?? null,pagina:encontrado?.pagina ?? null,url:encontrado?.url ?? null,
     resultados,acima,paginas,profundidadeObservada:resultados.length,coletadoEm:pagina.coletadoEm,
-    fonte:pagina.fonte,sha256:pagina.sha256,contexto:{...CONTEXTO},concluida:!!q.concluida && !['paginacao_inconsistente','pagina_repetida'].includes(q.interrompidaPor),
+    fonte:pagina.fonte,sha256:pagina.sha256,contexto:{...CONTEXTO},concluida:!!q.concluida &&
+      (!!encontrado || !['paginacao_inconsistente','pagina_repetida'].includes(q.interrompidaPor)),
     interrompidaPor:q.interrompidaPor || null,motivo:q.falhou?motivoFonte(q.falhou):null};
 }
 function relatorio(job, agora, {codigo=null,novas=0,reutilizadas=0,continuar=false,reutilizado=false}={}) {
   const consultas = termos(job).map(({q}) => q && resumirConsulta(q,job.dominio)).filter(Boolean);
   const verificadas = consultas.filter(c => c.paginas.length).length;
   const encontradas = consultas.filter(c => c.estado === 'encontrado').length;
-  const finalizadas = consultas.filter(c => c.concluida && !['paginacao_inconsistente','pagina_repetida'].includes(c.interrompidaPor)).length;
+  const finalizadas = consultas.filter(c => c.concluida).length;
   const paginasConsultadas = consultas.reduce((n,c) => n+c.paginas.length,0);
   const pendentes = job.candidatos.length-finalizadas;
   const estado = codigo==='configuracao'?'fonte_nao_configurada':
@@ -105,7 +131,7 @@ function relatorio(job, agora, {codigo=null,novas=0,reutilizadas=0,continuar=fal
     aviso:codigo?motivoFonte(codigo):continuar?'A descoberta está disponível. As posições são verificadas em lotes; acompanhe a cobertura e as datas.':
       !job.candidatos.length?'Não houve conteúdo suficiente para descobrir termos com evidência.':'Confira o recorte e a data de cada busca. A cobertura não representa todas as pesquisas do Google.',
     limites:[...job.limites,
-      'Descobrimos até 100 termos no conteúdo de até 12 páginas públicas. São candidatos, não prova de procura ou de posição.',
+      job.planoExterno ? 'Este plano combina termos publicados com hipóteses do perfil revisado; nenhum candidato comprova procura ou posição.' : 'Descobrimos até 100 termos no conteúdo de até 12 páginas públicas. São candidatos, não prova de procura ou de posição.',
       'A verificação percorre até cinco páginas por termo, conforme a continuação fornecida pela fonte. A quantidade de resultados pode variar.',
       'A posição exibida soma o deslocamento da paginação à posição orgânica dentro da página; preservamos ambos na evidência. Não é uma posição universal ou personalizada.',
       'As páginas são capturas separadas. Concorrentes de páginas diferentes têm suas próprias datas; a busca pode variar durante a paginação.',
@@ -117,21 +143,29 @@ function relatorio(job, agora, {codigo=null,novas=0,reutilizadas=0,continuar=fal
 }
 
 export function criarPosicoesAtuais(opcoes={}) {
+  // Identificador interno: separa planos editados sem mudar a franquia global
+  // ou permitir ao navegador escolher uma chave de cache.
+  if (opcoes.planoId != null && !/^[a-f0-9]{64}$/.test(opcoes.planoId)) throw new Error('Identificador de plano inválido');
   const coletar=opcoes.coletar, descobrir=opcoes.descobrir??descobrirTermos, consultar=opcoes.consultarGoogle??consultarGoogle, agora=opcoes.agora??Date.now;
   const pendentes=new Map();
   async function executar(dominio,continuacao,env) {
-    const prazo=agora()+65_000, banco=opcoes.franquia??criarFranquia(env.DB,agora), chave='ranking-plano-v2:'+dominio;
-    const vazio=()=>({versao:2,dominio,candidatos:[],descoberta:{paginasLidas:0,limitePaginas:12,limiteTermos:MAX_TERMOS,termosDescobertos:0,limitada:true},limites:[],termos:{},ativos:[],ultimoLote:0});
+    const prazo=agora()+65_000, banco=opcoes.franquia??criarFranquia(env.DB,agora), chave='ranking-plano-v2:'+dominio+(opcoes.planoId ? ':modular:'+opcoes.planoId : '');
+    const vazio=()=>({versao:2,dominio,planoExterno:!!opcoes.planoId,candidatos:[],descoberta:{paginasLidas:0,limitePaginas:12,limiteTermos:MAX_TERMOS,termosDescobertos:0,limitada:true},limites:[],termos:{},ativos:[],ultimoLote:0});
     let job=vazio(), token=null, criado=false;
     try {
       if (banco) {
         token=await banco.bloquear(chave);
-        if (!token) { const salvo=await banco.obter(chave); if(salvo?.versao===2)job=salvo; limparExpiradas(job,agora()); return relatorio(job,agora(),{codigo:'ocupada',continuar:true,reutilizado:!!salvo}); }
+        if (!token) { const salvo=await banco.obter(chave); if(salvo?.versao===2)job=salvo; limparChamadasAntigas(job); limparExpiradas(job,agora()); return relatorio(job,agora(),{codigo:'ocupada',continuar:true,reutilizado:!!salvo}); }
         const salvo=await banco.obter(chave);
         if(salvo?.versao===2 && salvo.dominio===dominio)job=salvo;
       }
-      limparExpiradas(job,agora());
-      const precisaDescobrir=(!job.descoberta.coletadoEm || agora()-Date.parse(job.descoberta.coletadoEm)>=DIA) &&
+      limparChamadasAntigas(job); limparExpiradas(job,agora());
+      const ultimaLeitura=Date.parse(job.descoberta.releituraTentadaEm || job.descoberta.coletadoEm);
+      // A failed initial read should not suppress retries for a whole day.
+      // Keep a minimum interval so repeated page loads do not hammer a site.
+      const leituraFalhou=job.descoberta.paginasLidas===0 && Number.isFinite(ultimaLeitura) && agora()-ultimaLeitura>=900_000;
+      const precisaDescobrir=opcoes.planoId ? !job.descoberta.planoPreparadoEm :
+        (!job.descoberta.coletadoEm || agora()-Date.parse(job.descoberta.coletadoEm)>=DIA || leituraFalhou) &&
         (!job.descoberta.releituraTentadaEm || agora()-Date.parse(job.descoberta.releituraTentadaEm)>=900_000);
       if(precisaDescobrir) {
         let coleta;
@@ -148,7 +182,8 @@ export function criarPosicoesAtuais(opcoes={}) {
           job.candidatos=descoberta.candidatos.slice(0,MAX_TERMOS);
           job.limites=descoberta.limites;
           job.descoberta={...descoberta.cobertura,paginasLidas:descoberta.cobertura?.paginasLidas??coleta.paginas.length,
-            limitePaginas:12,limiteTermos:MAX_TERMOS,termosDescobertos:job.candidatos.length,coletadoEm:coleta.coletadoEm||new Date(agora()).toISOString()};
+            limitePaginas:12,limiteTermos:MAX_TERMOS,termosDescobertos:job.candidatos.length,coletadoEm:coleta.coletadoEm||new Date(agora()).toISOString(),
+            ...(opcoes.planoId ? {planoPreparadoEm:new Date(agora()).toISOString()} : {})};
           const validos=new Map(job.candidatos.map(c=>[idTermo(c.termo),c.termo]));
           job.termos=Object.fromEntries(Object.entries(job.termos).filter(([k,q])=>validos.get(k)===q.termo));
           job.ativos=job.ativos.filter(k=>validos.has(k));
@@ -208,7 +243,7 @@ export function criarPosicoesAtuais(opcoes={}) {
             q.concluida=true;q.interrompidaPor='pagina_repetida';
           }else{
             q.paginas.push(p);q.tentadaEm=agora();delete q.falhou;
-            incluirRelacionadas(job,p,candidato);
+            if (!job.planoExterno) incluirRelacionadas(job,p,candidato);
             q.concluida=p.resultados.some(r=>pertence(r.dominio,dominio)) || p.proximoInicio==null || pagina>=MAX_PAGINAS;
             q.interrompidaPor=p.paginacaoInterrompida?'paginacao_inconsistente':pagina>=MAX_PAGINAS?'limite_paginas':null;
           }

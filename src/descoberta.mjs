@@ -1,6 +1,7 @@
 import {parse} from 'parse5';
 import {normalizarSite} from './consulta.mjs';
 import {destinoPermitido} from './coleta.mjs';
+import {metaTemNofollow} from './robots-diretivas.mjs';
 
 const MAX_HTML = 1024 * 1024;
 const MAX_NOS = 30_000;
@@ -12,6 +13,12 @@ const IGNORAR = new Set(['style', 'template', 'noscript', 'form', 'input', 'text
 const TIPOS_MARCA = new Set(['LocalBusiness', 'Organization', 'Corporation', 'ProfessionalService', 'Store', 'RealEstateAgent', 'Restaurant', 'HomeAndConstructionBusiness']);
 const CHAVES_ESTRUTURA = ['@graph', 'hasOfferCatalog', 'itemListElement', 'itemOffered', 'makesOffer', 'offers', 'service', 'provider', 'mainEntity', 'item'];
 const GENERICOS = new Set(['inicio', 'home', 'contato', 'fale conosco', 'sobre', 'sobre nos', 'quem somos', 'servicos', 'nossos servicos', 'produtos', 'nossos produtos', 'solucoes', 'nossas solucoes', 'saiba mais', 'conheca', 'menu', 'blog', 'noticias', 'depoimentos', 'clientes', 'nossos clientes', 'entre em contato', 'bem vindo', 'bem vinda', 'politica de privacidade', 'termos de uso', 'cookies', 'resultados', 'contate nos', 'empreendimentos', 'condominios', 'imoveis', 'apartamentos', 'casas', 'lancamentos', 'encontre seu imovel', 'pesquise seu imovel', 'busque seu imovel']);
+// Rótulos de atendimento podem ser úteis às pessoas, mas não são, por si só,
+// uma oferta comercial. Mantê-los no fim evita gastar primeiro a cota neles.
+const ATENDIMENTO = new Set(['data privacy enquiries','data privacy inquiries','privacy enquiries','privacy inquiries',
+  'privacy requests','support requests','customer support','customer service','contact support',
+  'central de atendimento','atendimento ao cliente','ajuda e suporte','solicitacoes de privacidade',
+  'acesso rapido a servicos','servicos disponiveis']);
 // A short procedural service can be useful without additional words. Other
 // one-word headings may just be categories; explicit Service data below does
 // not need this heuristic because it declares what is offered.
@@ -19,15 +26,77 @@ const PROCEDIMENTOS = new Set(['alinhamento', 'balanceamento', 'dedetizacao', 'd
 const limpar = v => typeof v === 'string' ? v.replace(/[\u0000-\u001f\u007f-\u009f\u200b-\u200f\u202a-\u202e\u2060-\u206f]/g, ' ').replace(/\s+/g, ' ').trim() : '';
 const chave = v => limpar(v).normalize('NFD').replace(/\p{M}/gu, '').toLowerCase().replace(/[^\p{L}\p{N}]+/gu, ' ').trim();
 const atributos = no => Object.fromEntries((no.attrs || []).map(a => [a.name, a.value]));
-const COMERCIAL = /\b(?:conserto|troca|revisao|manutencao|alinhamento|balanceamento|consultoria|licenciamento|gestao|agencia|servico|servicos|producao|produto|produtos|imoveis|imovel|apartamento|locacao|aluguel|venda|assessoria|instalacao|reparo|tratamento|limpeza|auditoria|projeto|desenvolvimento|seguro|curso|aula|terapia|fisioterapia|dedetizacao|impermeabilizacao|show|shows|contratacao|contratar)\b/;
+const COMERCIAL = /\b(?:conserto|troca|revisao|manutencao|alinhamento|balanceamento|consultoria|licenciamento|gestao|agencia|servico|servicos|producao|produto|produtos|imoveis|imovel|apartamento|locacao|aluguel|venda|assessoria|instalacao|reparo|tratamento|limpeza|auditoria|projeto|desenvolvimento|seguro|curso|aula|terapia|fisioterapia|dedetizacao|impermeabilizacao|show|shows|contratacao|contratar|sistema|sistemas|software|frete|logistica)\b/;
+
+// Calls to sign up or follow a brand are interface labels, not a service
+// described by the site. Keep this deliberately narrower than generic verbs.
+export function chamadaDeNavegacao(valor) {
+  const normal = chave(valor);
+  return /^(?:cadastre se(?:\s|$)|siga nos (?:nas? )?redes? sociais?(?:\s|$))/.test(normal) ||
+    /(?:^| )leia mais$/.test(normal) || /^caso (?:voce )?tenha duvidas (?:envie|entre em contato)\b/.test(normal) ||
+    ['duvidas frequentes','links uteis','produtos relacionados','servicos relacionados','ver tudo','ver todas',
+      'pagina inicial','traducao do site','opcoes de acessibilidade'].includes(normal);
+}
+
+export function rotuloDeAtendimento(valor) {
+  const normal = chave(valor);
+  return ATENDIMENTO.has(normal) || /^para (?:acessar|consultar|emitir|baixar)\b/.test(normal);
+}
+
+export function ancoraProdutoAmbigua(valor, campo) {
+  const texto = limpar(valor), normal = chave(texto);
+  return campo === 'a.texto' && !!normal && (normal.split(' ').length === 1 ||
+    /^\d{1,3}(?:[.,]\d+)?\s*%\s*(?:off|de desconto)\b/i.test(texto));
+}
+
+// A product collection, promotion, institutional department or event is a
+// topic to investigate; its heading alone does not identify an offered
+// service or an individual product. Explicit schema remains untouched.
+export function rotuloDeTema(valor, campo) {
+  if (!['title','h1','h2','h3','a.texto'].includes(campo)) return false;
+  const texto = limpar(valor), normal = chave(texto);
+  return /^(?:(?:top|nossos|nossas|os|as) )?produtos?(?: |$)/.test(normal) ||
+    /^(?:[\p{L}\p{N}]+ )?produtos?$/u.test(normal) ||
+    /^(?:at[eé]\s*)?\d{1,3}(?:[.,]\d+)?\s*%\s*(?:off|de desconto)\b/i.test(texto) ||
+    /^desenvolvimento institucional(?: |$)/.test(normal) ||
+    /^(?:(?:[ivxlcdm]+|\d+) )?(?:encontro|congresso|seminario|simposio|forum|jornada) (?:de|do|da|dos|das|nacional|estadual|regional|internacional)\b/.test(normal);
+}
+
+// These headings can still be useful to investigate, but an institutional
+// slogan is not enough to identify a service or commercial search intent.
+export function rotuloInstitucional(valor, marcas = []) {
+  const texto = limpar(valor), normal = chave(texto);
+  if (['em destaque','nossos destaques'].includes(normal) ||
+      /^(?:economize|modernize|simplifique|impulsione|conte agora|flexibilidade para)\b/.test(normal) ||
+      /^(?:mais de )?\d+ (?:mil|milhao|milhoes|bilhao|bilhoes) (?:de )?(?:empresas|clientes|pessoas|profissionais|usuarios)\b/.test(normal) ||
+      /^(?:a|o) (?:maior|melhor) (?:empresa|plataforma|solucao) (?:de .+ )?(?:do brasil|do mundo|do mercado)$/.test(normal)) return true;
+  const prefixo = /^([^:]{2,60}):\s+\S/.exec(texto)?.[1];
+  if (!prefixo) return false;
+  const nomes = new Set([...marcas].map(chave).filter(Boolean));
+  return nomes.has(chave(prefixo));
+}
 
 function contextoComercial(url) {
-  let caminho;
-  try { caminho = chave(decodeURIComponent(new URL(url).pathname)); } catch { return null; }
-  if (/^(?:artistas?|shows?|atracoes|talentos|contratar)\s+\S/.test(caminho)) return 'entidade';
-  if (/^(?:produtos?|loja|catalogo|imoveis|empreendimentos)\s+\S/.test(caminho)) return 'produto';
-  if (/^(?:servicos?|solucoes|consultoria)\s+\S/.test(caminho)) return 'servico';
+  let partes;
+  try { partes = new URL(url).pathname.split('/').filter(Boolean).map(p => chave(decodeURIComponent(p))); } catch { return null; }
+  // A hyphen inside one slug is not a directory boundary: /servicos-noticia
+  // must not be treated as /servicos/noticia.
+  if (partes.length < 2) return null;
+  const secao = partes[0];
+  if (/^(?:artistas?|shows?|atracoes|talentos|contratar)$/.test(secao)) return 'entidade';
+  if (/^(?:produtos?|loja|catalogo|imoveis|empreendimentos)$/.test(secao)) return 'produto';
+  if (/^(?:servicos?|solucoes|consultoria)$/.test(secao)) return 'servico';
+  if (/^categorias?$/.test(secao)) return 'tema';
   return null;
+}
+
+// A heading is evidence of a topic, not necessarily of an offer. Explicit
+// schema, internal service paths and recognizable offer words remain stronger.
+export function cabecalhoSemOferta(valor, campo, url) {
+  if (!['title','h1','h2','h3'].includes(campo)) return false;
+  const normal = chave(valor);
+  if (contextoComercial(url) === 'tema') return true;
+  return !COMERCIAL.test(normal) && !PROCEDIMENTOS.has(normal) && contextoComercial(url) !== 'servico';
 }
 
 function pareceNomePessoal(termo) {
@@ -40,8 +109,10 @@ function aceitavel(texto) {
   const normal = chave(texto);
   return texto.length >= 3 && texto.length <= 90 && texto.split(/\s+/).length <= 10 && /\p{L}/u.test(texto) &&
     !['artistas', 'nossos artistas', 'catalogo', 'catalogo de artistas', 'ver todos', 'ver mais', 'equipe', 'nossa equipe', 'nossa missao', 'nossos valores', 'nossa visao', 'biografia'].includes(normal) &&
-    !GENERICOS.has(normal) && !/^(?:politica de |termos de |bem vind[oa]|todos os direitos|inscreva se|aceitar cookies|\d+ (?:encontrad|result|imoveis)|nenhum[a]? |nao ha |sem resultados)/.test(normal) &&
-    !/^(?:pront[oa]s? (?:para|pra)\b|(?:veja|assista|solicite|peca|agende|fale|clique|saiba|conheca|descubra|venha|transforme|realize|compre|confira|aproveite)\b|perguntas frequentes\b|entre em contato\b|(?:mais de )?\d+ anos\b)/.test(normal) &&
+    !GENERICOS.has(normal) && !chamadaDeNavegacao(texto) && !/^(?:politica de |termos de |bem vind[oa]|todos os direitos|inscreva se|aceitar cookies|\d+ (?:encontrad|result|imoveis)|nenhum[a]? |nao ha |sem resultados)/.test(normal) &&
+    !/^(?:pront[oa]s? (?:para|pra)\b|(?:veja|assista|solicite|peca|agende|fale|clique|saiba|conheca|descubra|venha|transforme|realize|compre|confira|aproveite|assine|baixe|converse|comece|selecione|defina|centralize)\b|perguntas frequentes\b|entre em contato\b|(?:mais de )?\d+ anos\b)/.test(normal) &&
+    !/^(?:mais de )?\d+(?:[.,]\d+)? (?:apps|usuarios|clientes|produtos|resultados|empresas) (?:disponiveis|encontrados|ativos|cadastrados)$/.test(normal) &&
+    !/^(?:mais de )?\d+ (?:mil|milhao|milhoes|bilhao|bilhoes)$/.test(normal) &&
     !/^(?:seu|sua|seus|suas)\b.*\b(?:comeca|comecam|merece|merecem|precisa|precisam|ganha|ganham|encontra|encontram|vai|vao|pode|podem)\b/.test(normal) &&
     !/^(?:o|a|os|as) melhor(?:es)?\b|^(?:excelencia|qualidade|inovacao|confianca) (?:que|para|em cada)\b/.test(normal) &&
     !/(?:\uFFFD|Ã[§£µ¡©­³ºª´€‰]|Â[©®\u00a0]|â€|ðŸ)/u.test(texto) &&
@@ -98,15 +169,37 @@ function localidades(no) {
   return [...new Set(saida)].slice(0, 3);
 }
 
+const classeExata = (no, classe) => (atributos(no).class || '').toLowerCase().split(/\s+/u).includes(classe);
+
+function cartaoDeEvento(ancora) {
+  for (let bloco = ancora.parentNode, nivel = 0; bloco && nivel < 4; bloco = bloco.parentNode, nivel++) {
+    if (!classeExata(bloco, 'event-description') && !classeExata(bloco, 'event-card')) continue;
+    return (bloco.childNodes || []).some(filho => classeExata(filho, 'event-date') || classeExata(filho, 'event-location'));
+  }
+  return false;
+}
+
+export function tituloDeEvento(no, pagina, dominio) {
+  let ancestral = no;
+  for (let nivel = 0; ancestral && nivel < 20; nivel++, ancestral = ancestral.parentNode) {
+    if (ancestral.tagName !== 'a') continue;
+    const alvo = destinoPermitido(atributos(ancestral).href, dominio, pagina.url);
+    if (!alvo) return false;
+    return /^(?:\/(?:pt|pt-br|en|es))?\/(?:event|eventos?|events)\/[^/]+/iu.test(alvo.pathname) ||
+      (alvo.pathname !== '/' && alvo.href !== pagina.url && classeExata(no, 'event-title') && cartaoDeEvento(ancestral));
+  }
+  return false;
+}
+
 function extrair(pagina, adicionar, marcas, locais, dominio) {
-  const raiz = parse(pagina.html), pilha = [raiz], cabecalhos = [];
+  const raiz = parse(pagina.html), pilha = [raiz], cabecalhos = [], setores = new Set();
   const contextoPagina = contextoComercial(pagina.url);
   const metadados = [raiz];
   let ancorasPermitidas = pagina.segueLinks !== false, visitados = 0;
   while (metadados.length && visitados++ < MAX_NOS) {
     const no = metadados.pop(), a = atributos(no);
     if (no.tagName === 'meta' && /^(?:robots|ConsultaVisibilidade)$/i.test(a.name || '') &&
-        /(?:^|[\s,])(?:nofollow|none)(?:$|[\s,])/i.test(a.content || '')) ancorasPermitidas = false;
+        metaTemNofollow(a.content || '')) ancorasPermitidas = false;
     if (!IGNORAR.has(no.tagName) && no.tagName !== 'script') metadados.push(...(no.childNodes || []));
   }
   let nos = 0, jsons = 0;
@@ -118,7 +211,13 @@ function extrair(pagina, adicionar, marcas, locais, dominio) {
         /(?:display\s*:\s*none|visibility\s*:\s*hidden)/i.test(a.style || '')) continue;
     if (['title', 'h1', 'h2', 'h3'].includes(no.tagName)) {
       const texto = textoVisivel(no);
-      for (const parte of fragmentos(texto)) cabecalhos.push({termo: parte, campo: no.tagName, trecho: parte,
+      const partes = fragmentos(texto);
+      if (tituloDeEvento(no, pagina, dominio)) {
+        // The title stays searchable with its full source. Sale labels and
+        // local/date fragments in event cards are not independent offers.
+        if (partes[0]) adicionar(partes[0], 'tema', no.tagName, texto, 55, pagina,
+          {rotulo:'Evento listado no site'});
+      } else for (const parte of partes) cabecalhos.push({termo: parte, campo: no.tagName, trecho: parte,
         contexto: ['title', 'h1'].includes(no.tagName) ? contextoPagina : null});
     }
     if (no.tagName === 'meta' && a.name?.toLowerCase() === 'description' && /[|｜;]|\s[–—-]\s/u.test(a.content || '')) {
@@ -128,9 +227,14 @@ function extrair(pagina, adicionar, marcas, locais, dominio) {
     }
     if (ancorasPermitidas && no.tagName === 'a' && a.href && !('download' in a) && !/(?:^|\s)nofollow(?:\s|$)/i.test(a.rel || '')) {
       const url = destinoPermitido(a.href, dominio, pagina.url), tipo = url && contextoComercial(url.href);
+      if (url && /^(?:\/(?:pt|pt-br|en|es))?\/(?:segmentos|setores|industrias|industries)\/[^/]+/iu.test(url.pathname)) {
+        const rotulo=chave(textoVisivel(no));
+        if (rotulo && !/^(?:ver|conheca|saiba|acesse)\b/u.test(rotulo)) setores.add(rotulo);
+      }
       if (tipo && !/\.[a-z0-9]{2,5}$/i.test(url.pathname)) for (const parte of fragmentos(textoVisivel(no))) {
         if (tipo === 'entidade' || tipo === 'produto' || cabecalhoDescritivo(parte) && !pareceNomePessoal(parte)) {
-          adicionar(parte, tipo, 'a.texto', parte, tipo === 'entidade' ? 75 : 65, pagina,
+          const classificado = tipo === 'produto' && (ancoraProdutoAmbigua(parte,'a.texto') || rotuloDeTema(parte,'a.texto')) ? 'tema' : tipo;
+          adicionar(parte, classificado, 'a.texto', parte, tipo === 'entidade' ? 75 : 65, pagina,
             tipo === 'entidade' ? {rotulo: 'Artista publicado no catálogo'} : {});
         }
       }
@@ -189,7 +293,7 @@ function extrair(pagina, adicionar, marcas, locais, dominio) {
     }
     pilha.push(...(no.childNodes || []).slice().reverse());
   }
-  return cabecalhos;
+  return cabecalhos.map(c=>['h2','h3'].includes(c.campo)&&setores.has(chave(c.termo))?{...c,contexto:'tema'}:c);
 }
 
 export function descobrirTermos({dominio, coletadoEm, paginas = [], falhas = [], cobertura: coberturaColeta} = {}) {
@@ -197,7 +301,7 @@ export function descobrirTermos({dominio, coletadoEm, paginas = [], falhas = [],
   const limites = [
     'As buscas são hipóteses extraídas do conteúdo publicado. Elas não representam todas as palavras do site nem comprovam procura, volume ou posição no Google.',
     'A extração usa títulos, H1, H2, H3, âncoras comerciais internas, fragmentos editoriais de descrições e declarações estruturadas do HTML inicial de até doze páginas; não executa scripts nem lê formulários.',
-    'Até cem buscas podem ser descobertas. Slogans, chamadas para ação, dados pessoais e rótulos isolados sem contexto comercial são descartados; o limite não é preenchido artificialmente.',
+    'Até cem buscas podem ser descobertas e o limite não é preenchido artificialmente. Algumas chamadas genéricas e dados pessoais são filtrados, mas ainda podem aparecer slogans ou termos pouco relevantes; revise os candidatos.',
     'Informações estruturadas são declarações do próprio site e podem estar incorretas ou desatualizadas. A posição exige uma consulta separada ao Google.',
   ];
   let alvo;
@@ -243,8 +347,12 @@ export function descobrirTermos({dominio, coletadoEm, paginas = [], falhas = [],
   const ehMarca = k => marcas.has(k) || (k.length >= 6 && k.split(' ').length >= 2 && [...marcas].some(m => m.startsWith(k + ' ')));
   for (const c of cabecalhos) {
     const k = chave(c.termo);
-    const tipo = ehMarca(k) ? 'marca' : c.contexto || ([...locais].some(local => k.endsWith(' em ' + local) || k.endsWith(' no ' + local) || k.endsWith(' na ' + local)) ? 'local' : 'servico');
-    if (!['marca', 'produto', 'entidade'].includes(tipo) && (!cabecalhoDescritivo(c.termo) || pareceNomePessoal(c.termo))) continue;
+    let tipo = ehMarca(k) ? 'marca' : c.contexto || ([...locais].some(local => k.endsWith(' em ' + local) || k.endsWith(' no ' + local) || k.endsWith(' na ' + local)) ? 'local' : 'servico');
+    if (tipo === 'servico' && rotuloDeAtendimento(c.termo)) tipo = 'atendimento';
+    else if (tipo === 'servico' && rotuloInstitucional(c.termo, marcas)) tipo = 'institucional';
+    else if (['servico','produto'].includes(tipo) && rotuloDeTema(c.termo,c.campo)) tipo = 'tema';
+    else if (tipo === 'servico' && cabecalhoSemOferta(c.termo,c.campo,c.pagina.url)) tipo = 'tema';
+    if (!['marca', 'produto', 'entidade', 'atendimento', 'institucional'].includes(tipo) && (!cabecalhoDescritivo(c.termo) || pareceNomePessoal(c.termo))) continue;
     adicionar(c.termo, tipo, c.campo, c.trecho, tipo === 'marca' ? 90 : c.campo === 'title' ? 85 : c.campo === 'h1' ? 80 : c.campo === 'h2' ? 70 : 60, c.pagina,
       tipo === 'entidade' ? {rotulo: 'Artista publicado no catálogo'} : {});
   }
@@ -257,17 +365,34 @@ export function descobrirTermos({dominio, coletadoEm, paginas = [], falhas = [],
   const ordenados = [...unicos.values()].sort((a, b) => b.peso - a.peso || a.ordem - b.ordem);
   const elegiveis = ordenados.filter(c => c.tipo !== 'marca' || c === ordenados.find(r => r.tipo === 'marca'));
   const escolhidos = ['servico', 'produto', 'entidade', 'marca', 'local'].map(tipo => elegiveis.find(c => c.tipo === tipo)).filter(Boolean);
-  const porPagina = new Map();
-  for (const candidato of elegiveis) if (!escolhidos.includes(candidato)) {
-    if (!porPagina.has(candidato.evidencia.url)) porPagina.set(candidato.evidencia.url, []);
-    porPagina.get(candidato.evidencia.url).push(candidato);
-  }
-  while (porPagina.size && escolhidos.length < MAX_TERMOS) for (const [url, candidatos] of porPagina) {
-    if (escolhidos.length >= MAX_TERMOS) break;
-    escolhidos.push(candidatos.shift());
-    if (!candidatos.length) porPagina.delete(url);
+  const categoria = c => c.tipo === 'atendimento' ? 3 : c.tipo === 'institucional' ? 2 : c.tipo === 'tema' ? 1 : 0;
+  for (const faixa of [0,1,2,3]) {
+    const porPagina = new Map();
+    for (const candidato of elegiveis) if (!escolhidos.includes(candidato) && categoria(candidato) === faixa) {
+      if (!porPagina.has(candidato.evidencia.url)) porPagina.set(candidato.evidencia.url, []);
+      porPagina.get(candidato.evidencia.url).push(candidato);
+    }
+    while (porPagina.size && escolhidos.length < MAX_TERMOS) for (const [url, candidatos] of porPagina) {
+      if (escolhidos.length >= MAX_TERMOS) break;
+      escolhidos.push(candidatos.shift());
+      if (!candidatos.length) porPagina.delete(url);
+    }
   }
   if (incompletas || falhas?.length) limites.push('Parte das páginas ficou fora da leitura; a descoberta de buscas também pode estar incompleta.');
+  if (!paginasLidas && Array.isArray(falhas)) {
+    // Only expose messages generated by our reader, never an arbitrary remote
+    // response or URL that might contain private data.
+    const explicacoes = new Map([
+      ['Não foi possível confirmar a permissão de leitura em robots.txt.', 'Não foi possível confirmar a permissão de leitura em robots.txt; a coleta não prosseguiu.'],
+      ['A leitura desta página não é permitida pelo robots.txt do site.', 'O robots.txt não permitiu a leitura da página solicitada.'],
+      ['O site apresentou uma verificação de acesso e não liberou a página para esta consulta automática.', 'O site apresentou uma verificação de acesso e não liberou a leitura automática.'],
+      ['A página não liberou o conteúdo para esta consulta (HTTP 403).', 'O site recusou a leitura da página inicial (HTTP 403).'],
+      ['A página não liberou o conteúdo para esta consulta (HTTP 429).', 'O site limitou a leitura da página inicial (HTTP 429).'],
+      ['O site demorou além do limite desta consulta. Tente novamente mais tarde.', 'O site não respondeu dentro do prazo de leitura.'],
+    ]);
+    const motivo = falhas.map(f => explicacoes.get(f?.motivo)).find(Boolean);
+    if (motivo) limites.push(motivo);
+  }
   if (!escolhidos.length) limites.push('Não houve conteúdo suficiente para sugerir buscas com evidência. Nenhum termo foi inferido apenas do domínio.');
   const limitada = truncada || Boolean(incompletas || falhas?.length || coberturaColeta?.limitada || paginas.length > MAX_PAGINAS || elegiveis.length > MAX_TERMOS);
   if (limitada) limites.push('Os limites de páginas, conteúdo ou termos e eventuais falhas deixam esta descoberta parcial; ela não é um inventário completo do Google.');

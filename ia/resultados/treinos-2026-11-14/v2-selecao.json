@@ -1,0 +1,124 @@
+{
+  "versao": 2,
+  "congelado_em": "2026-11-15T02:13:15.069194+00:00",
+  "politica": "Maior acerto simultâneo em ação e referências; desempate por ação, referências, menor passo e ordem listada.",
+  "manifesto_sha256": "7834b892680d556739e00655c8892fbe6851f97227c0c7f78f2a751283895eb0",
+  "codigo_sha256": {
+    "contrato_v2.py": "26ecf8ad50a06621f8d47d651038236a62783424a9ebfc5c85cc95997eeef6ff",
+    "decodificar.py": "f871b8435e18c22e27c9321e74524dfdec619d85dfabca62d2277380567a75f2",
+    "avaliar_v2.py": "e9f663cf46c912d90a4447ba32b3a5deb00bde205ceeb6a930aa11a772e49130"
+  },
+  "adaptador_sha256": "c15001dda879d58b45afd0bb60d07d40e6e58234824c43eb386042477ffa41f4",
+  "candidato": {
+    "pasta": "data/ia/v2b-a-240",
+    "passo": 240,
+    "manifesto_treino_sha256": "2097df499a87554f3412d8d9f983a34d568e7f84a85b469a08fff0c0860d1532",
+    "adaptador_sha256": "c15001dda879d58b45afd0bb60d07d40e6e58234824c43eb386042477ffa41f4",
+    "validacao_sha256": "095073b268976152346fccdec5f20c7fd39c3366cc2290ecd3a9af2c930680bb",
+    "config_adaptador_sha256": "650f541cd3e5406937dd9a2e9d1b764a6fc72b0bcab6ecb5beff4cf2aa2f9251",
+    "ambos": 22,
+    "acao": 24,
+    "referencias": 22,
+    "total": 24
+  },
+  "candidatos": [
+    {
+      "pasta": "data/ia/v2b-a-60",
+      "passo": 60,
+      "manifesto_treino_sha256": "2097df499a87554f3412d8d9f983a34d568e7f84a85b469a08fff0c0860d1532",
+      "adaptador_sha256": "ce941b53011eafb9e5e7308711e106321f6833ef05f643666084e6f13a12e571",
+      "validacao_sha256": "364500c9becf784eb57a5749298a0dc8233e9b82bec810c1a92510e36d328dad",
+      "config_adaptador_sha256": "650f541cd3e5406937dd9a2e9d1b764a6fc72b0bcab6ecb5beff4cf2aa2f9251",
+      "ambos": 17,
+      "acao": 20,
+      "referencias": 19,
+      "total": 24
+    },
+    {
+      "pasta": "data/ia/v2b-a-120",
+      "passo": 120,
+      "manifesto_treino_sha256": "2097df499a87554f3412d8d9f983a34d568e7f84a85b469a08fff0c0860d1532",
+      "adaptador_sha256": "3e9b8e7993b870e6ab6761bfb48cdf0a6fe4d5db70f4f3262f6a4a69f08cf33e",
+      "validacao_sha256": "1f333be76d540912420b9dbf1913f4ee6ffb32aa7f231c14e9c9d7728822b36a",
+      "config_adaptador_sha256": "650f541cd3e5406937dd9a2e9d1b764a6fc72b0bcab6ecb5beff4cf2aa2f9251",
+      "ambos": 21,
+      "acao": 24,
+      "referencias": 21,
+      "total": 24
+    },
+    {
+      "pasta": "data/ia/v2b-a-240",
+      "passo": 240,
+      "manifesto_treino_sha256": "2097df499a87554f3412d8d9f983a34d568e7f84a85b469a08fff0c0860d1532",
+      "adaptador_sha256": "c15001dda879d58b45afd0bb60d07d40e6e58234824c43eb386042477ffa41f4",
+      "validacao_sha256": "095073b268976152346fccdec5f20c7fd39c3366cc2290ecd3a9af2c930680bb",
+      "config_adaptador_sha256": "650f541cd3e5406937dd9a2e9d1b764a6fc72b0bcab6ecb5beff4cf2aa2f9251",
+      "ambos": 22,
+      "acao": 24,
+      "referencias": 22,
+      "total": 24
+    },
+    {
+      "pasta": "data/ia/v2b-a-360",
+      "passo": 360,
+      "manifesto_treino_sha256": "2097df499a87554f3412d8d9f983a34d568e7f84a85b469a08fff0c0860d1532",
+      "adaptador_sha256": "f2f208e460bd59034fb6e4ad141f95f9130901a412c6adb7a5f6aab9444cf68b",
+      "validacao_sha256": "07bb012b2d834390a584747c374de17914e7bcafda8f4c346262b92864902113",
+      "config_adaptador_sha256": "650f541cd3e5406937dd9a2e9d1b764a6fc72b0bcab6ecb5beff4cf2aa2f9251",
+      "ambos": 22,
+      "acao": 24,
+      "referencias": 22,
+      "total": 24
+    },
+    {
+      "pasta": "data/ia/v2b-b-60",
+      "passo": 60,
+      "manifesto_treino_sha256": "7834b892680d556739e00655c8892fbe6851f97227c0c7f78f2a751283895eb0",
+      "adaptador_sha256": "50faac87751a0001b4ae684babdc4a6a1df2d87324b6dec0b16f65b202c54412",
+      "validacao_sha256": "003397a96f7204852e2dfcfeb22cf8625bac7fe87e022e097f8af15dd0006735",
+      "config_adaptador_sha256": "56cef35858cc50fdeed32ee0e12de189fcc373e6e0b2460ca9334e9fc8a79b1c",
+      "ambos": 16,
+      "acao": 17,
+      "referencias": 18,
+      "total": 24
+    },
+    {
+      "pasta": "data/ia/v2b-b-120",
+      "passo": 120,
+      "manifesto_treino_sha256": "7834b892680d556739e00655c8892fbe6851f97227c0c7f78f2a751283895eb0",
+      "adaptador_sha256": "265bec5c25c5df9ec2918fa73273a7cac2f04619df2fcfc710d5819c15d736ef",
+      "validacao_sha256": "992aaa53a89936067ee5c0f19bbdc7e3e60386f8085c6f114ea218ef66a56bb2",
+      "config_adaptador_sha256": "56cef35858cc50fdeed32ee0e12de189fcc373e6e0b2460ca9334e9fc8a79b1c",
+      "ambos": 21,
+      "acao": 24,
+      "referencias": 21,
+      "total": 24
+    },
+    {
+      "pasta": "data/ia/v2b-b-240",
+      "passo": 240,
+      "manifesto_treino_sha256": "7834b892680d556739e00655c8892fbe6851f97227c0c7f78f2a751283895eb0",
+      "adaptador_sha256": "384827cc807329c0190dbb8adc55908aec7fb069fffdae2b8b0fc72f1f562de3",
+      "validacao_sha256": "67679dda6e65a84cc9d752ae501780246fe2fd928b3f979ea08a101e7f855e11",
+      "config_adaptador_sha256": "56cef35858cc50fdeed32ee0e12de189fcc373e6e0b2460ca9334e9fc8a79b1c",
+      "ambos": 21,
+      "acao": 23,
+      "referencias": 22,
+      "total": 24
+    },
+    {
+      "pasta": "data/ia/v2b-b-360",
+      "passo": 360,
+      "manifesto_treino_sha256": "7834b892680d556739e00655c8892fbe6851f97227c0c7f78f2a751283895eb0",
+      "adaptador_sha256": "caec52da873e8eccbe5bdc9d393a70709de96133e6926a348f23605077fc6ef0",
+      "validacao_sha256": "e76b087c6f2067b0af46648a5f1bbeae7c51604d12f14bd04868432994e622f9",
+      "config_adaptador_sha256": "56cef35858cc50fdeed32ee0e12de189fcc373e6e0b2460ca9334e9fc8a79b1c",
+      "ambos": 22,
+      "acao": 24,
+      "referencias": 22,
+      "total": 24
+    }
+  ],
+  "revisao_humana": "pendente",
+  "aprovado_para_clientes": false
+}

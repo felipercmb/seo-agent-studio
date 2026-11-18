@@ -30,6 +30,7 @@ test('exporta fatos e diagnóstico da mesma página, sem copiar a recomendação
   assert.equal(e[0].posicao, 12); assert.equal(e[0].atual, true);
   assert.ok(e.every(v => v.observado_em === DATA));
   assert.equal(e[0].concorrentes[0].posicao, 5);
+  assert.deepEqual(e[0].fontes_serp,[{id:'fonte_12345',sha256:hash,observado_em:DATA,descricao:''}]);
   assert.match(e[0].descricao, /não foi analisado/);
   assert.equal(e[2].descricao, 'Nenhum title com texto foi identificado.');
   assert.doesNotMatch(JSON.stringify(r), /priorizar|comercial"|Não deve vazar|Orientação não/);
@@ -44,6 +45,7 @@ test('posição ausente, sem fonte ou vencida não recebe atual nem concorrentes
     const r = relatorio(); alterar(r.oportunidades[0]);
     const serp = converter(r).entradas[0].evidencias[0];
     assert.equal(serp.posicao, null); assert.equal(serp.atual, false); assert.equal(serp.concorrentes, undefined);
+    assert.equal(serp.fontes_serp, undefined);
   }
 });
 
@@ -64,6 +66,20 @@ test('agrupa páginas pela ordem recebida e limita entradas e evidências', () =
   assert.deepEqual(saida.entradas.map(e => e.evidencias[0].termo), ['Contratar uma oferta', 'Segunda página', 'Terceira']);
   assert.ok(saida.entradas.every(e => e.evidencias.length <= 3));
   assert.ok(saida.entradas[1].evidencias.every(e => e.id !== 'd1'));
+});
+
+test('uma diretiva observada não fica de fora quando as primeiras oportunidades são de outras páginas', () => {
+  const bloqueada='https://example.org/reservada';
+  const r=relatorio([oportunidade('Primeira','https://example.org/primeira'),
+    oportunidade('Segunda','https://example.org/segunda'),oportunidade('Terceira','https://example.org/terceira'),
+    oportunidade('Quarta',bloqueada)]);
+  r.melhorias=[{paginaAlvo:bloqueada,verificacaoId:'diretiva-noindex-html',sha256Pagina:hash,
+    evidencia:'O HTML inicial contém noindex; a intenção é desconhecida.',coletadoEm:DATA}];
+  const saida=converter(r);
+  assert.equal(saida.entradas.length,3);
+  const e=saida.entradas.flatMap(c=>c.evidencias).find(x=>x.verificacao?.tipo==='meta_robots_noindex');
+  assert.equal(e?.pagina,bloqueada);
+  assert.match(saida.entradas.find(c=>c.evidencias.includes(e)).objetivo,/diretiva/);
 });
 
 test('sem relatório não fabrica fatos; diagnóstico sozinho é exportável', () => {

@@ -1,0 +1,897 @@
+{
+  "versao": 3,
+  "tipo": "base",
+  "split": "test",
+  "modelo": "mlx-community/Qwen2.5-1.5B-Instruct-4bit",
+  "revisao": "8b403126fc14f14cfc99bb4cfa72ecbc129ea677",
+  "versoes": {
+    "mlx": "0.32.4",
+    "mlx-lm": "0.32.2",
+    "transformers": "5.23.0",
+    "tokenizers": "0.23.3",
+    "huggingface-hub": "2.4.0"
+  },
+  "temperatura": 0,
+  "adaptador_sha256": null,
+  "config_adaptador_sha256": null,
+  "manifesto_sha256": "17ab9cf6c445a0dce432508c320f452b1b021746c3a0ce60993ad2c7e31d2df4",
+  "casos_sha256": "060d8457bdf2f72b002db5e151fbe5886a5667213bd085ff325c0eadd75d67c8",
+  "codigo_sha256": {
+    "v3/contrato_v3.py": "3a379ce1bbd45ecdc3c826a33fd5ecf4e045a5f52548713c4d52ae7db7b3c64f",
+    "v3/decodificar_v3.py": "e4e68cd46dc701f3992218bb3ad8593366e455187244a2f9f7db4a34701e2396",
+    "v3/avaliar_v3.py": "89abb7bd43ad03ba8ff5cc1f2d784669d9b3f01852b86575ef69c4470dc2d5e7",
+    "v2/contrato_v2.py": "26ecf8ad50a06621f8d47d651038236a62783424a9ebfc5c85cc95997eeef6ff",
+    "v2/decodificar.py": "f871b8435e18c22e27c9321e74524dfdec619d85dfabca62d2277380567a75f2"
+  },
+  "duracao_segundos": 17.28061474999413,
+  "metricas": {
+    "contrato_valido": {
+      "quantidade": 30,
+      "total": 30
+    },
+    "acao_esperada": {
+      "quantidade": 9,
+      "total": 30
+    },
+    "referencias_exatas": {
+      "quantidade": 26,
+      "total": 30
+    },
+    "acao_e_referencias": {
+      "quantidade": 8,
+      "total": 30
+    },
+    "falha_grave": {
+      "quantidade": 2,
+      "total": 30
+    }
+  },
+  "por_acao": {
+    "acompanhar": {
+      "acao": 0,
+      "ambos": 0,
+      "falhas_graves": 0,
+      "total": 1
+    },
+    "atualizar_coleta": {
+      "acao": 0,
+      "ambos": 0,
+      "falhas_graves": 0,
+      "total": 4
+    },
+    "comparar_concorrentes": {
+      "acao": 0,
+      "ambos": 0,
+      "falhas_graves": 0,
+      "total": 4
+    },
+    "confirmar_publicacao": {
+      "acao": 1,
+      "ambos": 1,
+      "falhas_graves": 2,
+      "total": 3
+    },
+    "corrigir_indexacao": {
+      "acao": 0,
+      "ambos": 0,
+      "falhas_graves": 0,
+      "total": 3
+    },
+    "medir_conversao": {
+      "acao": 1,
+      "ambos": 1,
+      "falhas_graves": 0,
+      "total": 4
+    },
+    "melhorar_pagina": {
+      "acao": 0,
+      "ambos": 0,
+      "falhas_graves": 0,
+      "total": 3
+    },
+    "preservar_exclusao": {
+      "acao": 3,
+      "ambos": 3,
+      "falhas_graves": 0,
+      "total": 3
+    },
+    "validar_demanda": {
+      "acao": 3,
+      "ambos": 3,
+      "falhas_graves": 0,
+      "total": 3
+    },
+    "validar_intencao": {
+      "acao": 1,
+      "ambos": 0,
+      "falhas_graves": 0,
+      "total": 2
+    }
+  },
+  "resultados": [
+    {
+      "id": "v3-test-5-0",
+      "grupo": "v3/test/5",
+      "esperado": {
+        "acao": "confirmar_publicacao",
+        "evidencias": [
+          "e2"
+        ]
+      },
+      "escolha": {
+        "acao": "preservar_exclusao",
+        "evidencias": [
+          "e2"
+        ]
+      },
+      "bruto": "{\"acao\":\"preservar_exclusao\",\"evidencias\":[\"e2\"]}",
+      "falha": null,
+      "erros_contrato": [],
+      "criterios": {
+        "contrato_valido": true,
+        "acao_esperada": false,
+        "referencias_exatas": true,
+        "acao_e_referencias": false,
+        "falha_grave": true
+      }
+    },
+    {
+      "id": "v3-test-6-0",
+      "grupo": "v3/test/6",
+      "esperado": {
+        "acao": "corrigir_indexacao",
+        "evidencias": [
+          "p1"
+        ]
+      },
+      "escolha": {
+        "acao": "preservar_exclusao",
+        "evidencias": [
+          "p1"
+        ]
+      },
+      "bruto": "{\"acao\":\"preservar_exclusao\",\"evidencias\":[\"p1\"]}",
+      "falha": null,
+      "erros_contrato": [],
+      "criterios": {
+        "contrato_valido": true,
+        "acao_esperada": false,
+        "referencias_exatas": true,
+        "acao_e_referencias": false,
+        "falha_grave": false
+      }
+    },
+    {
+      "id": "v3-test-14-0",
+      "grupo": "v3/test/14",
+      "esperado": {
+        "acao": "validar_demanda",
+        "evidencias": [
+          "d1"
+        ]
+      },
+      "escolha": {
+        "acao": "validar_demanda",
+        "evidencias": [
+          "d1"
+        ]
+      },
+      "bruto": "{\"acao\":\"validar_demanda\",\"evidencias\":[\"d1\"]}",
+      "falha": null,
+      "erros_contrato": [],
+      "criterios": {
+        "contrato_valido": true,
+        "acao_esperada": true,
+        "referencias_exatas": true,
+        "acao_e_referencias": true,
+        "falha_grave": false
+      }
+    },
+    {
+      "id": "v3-test-7-0",
+      "grupo": "v3/test/7",
+      "esperado": {
+        "acao": "corrigir_indexacao",
+        "evidencias": [
+          "e3"
+        ]
+      },
+      "escolha": {
+        "acao": "preservar_exclusao",
+        "evidencias": [
+          "e3"
+        ]
+      },
+      "bruto": "{\"acao\":\"preservar_exclusao\",\"evidencias\":[\"e3\"]}",
+      "falha": null,
+      "erros_contrato": [],
+      "criterios": {
+        "contrato_valido": true,
+        "acao_esperada": false,
+        "referencias_exatas": true,
+        "acao_e_referencias": false,
+        "falha_grave": false
+      }
+    },
+    {
+      "id": "v3-test-8-0",
+      "grupo": "v3/test/8",
+      "esperado": {
+        "acao": "corrigir_indexacao",
+        "evidencias": [
+          "e2"
+        ]
+      },
+      "escolha": {
+        "acao": "preservar_exclusao",
+        "evidencias": [
+          "e2"
+        ]
+      },
+      "bruto": "{\"acao\":\"preservar_exclusao\",\"evidencias\":[\"e2\"]}",
+      "falha": null,
+      "erros_contrato": [],
+      "criterios": {
+        "contrato_valido": true,
+        "acao_esperada": false,
+        "referencias_exatas": true,
+        "acao_e_referencias": false,
+        "falha_grave": false
+      }
+    },
+    {
+      "id": "v3-test-25-0",
+      "grupo": "v3/test/25",
+      "esperado": {
+        "acao": "melhorar_pagina",
+        "evidencias": [
+          "p1"
+        ]
+      },
+      "escolha": {
+        "acao": "preservar_exclusao",
+        "evidencias": [
+          "p1"
+        ]
+      },
+      "bruto": "{\"acao\":\"preservar_exclusao\",\"evidencias\":[\"p1\"]}",
+      "falha": null,
+      "erros_contrato": [],
+      "criterios": {
+        "contrato_valido": true,
+        "acao_esperada": false,
+        "referencias_exatas": true,
+        "acao_e_referencias": false,
+        "falha_grave": false
+      }
+    },
+    {
+      "id": "v3-test-11-0",
+      "grupo": "v3/test/11",
+      "esperado": {
+        "acao": "atualizar_coleta",
+        "evidencias": [
+          "e2"
+        ]
+      },
+      "escolha": {
+        "acao": "confirmar_publicacao",
+        "evidencias": [
+          "e2"
+        ]
+      },
+      "bruto": "{\"acao\":\"confirmar_publicacao\",\"evidencias\":[\"e2\"]}",
+      "falha": null,
+      "erros_contrato": [],
+      "criterios": {
+        "contrato_valido": true,
+        "acao_esperada": false,
+        "referencias_exatas": true,
+        "acao_e_referencias": false,
+        "falha_grave": false
+      }
+    },
+    {
+      "id": "v3-test-19-0",
+      "grupo": "v3/test/19",
+      "esperado": {
+        "acao": "medir_conversao",
+        "evidencias": [
+          "d1"
+        ]
+      },
+      "escolha": {
+        "acao": "validar_demanda",
+        "evidencias": [
+          "d1"
+        ]
+      },
+      "bruto": "{\"acao\":\"validar_demanda\",\"evidencias\":[\"d1\"]}",
+      "falha": null,
+      "erros_contrato": [],
+      "criterios": {
+        "contrato_valido": true,
+        "acao_esperada": false,
+        "referencias_exatas": true,
+        "acao_e_referencias": false,
+        "falha_grave": false
+      }
+    },
+    {
+      "id": "v3-test-10-0",
+      "grupo": "v3/test/10",
+      "esperado": {
+        "acao": "atualizar_coleta",
+        "evidencias": [
+          "d1"
+        ]
+      },
+      "escolha": {
+        "acao": "confirmar_publicacao",
+        "evidencias": [
+          "d1"
+        ]
+      },
+      "bruto": "{\"acao\":\"confirmar_publicacao\",\"evidencias\":[\"d1\"]}",
+      "falha": null,
+      "erros_contrato": [],
+      "criterios": {
+        "contrato_valido": true,
+        "acao_esperada": false,
+        "referencias_exatas": true,
+        "acao_e_referencias": false,
+        "falha_grave": false
+      }
+    },
+    {
+      "id": "v3-test-26-0",
+      "grupo": "v3/test/26",
+      "esperado": {
+        "acao": "melhorar_pagina",
+        "evidencias": [
+          "e2"
+        ]
+      },
+      "escolha": {
+        "acao": "preservar_exclusao",
+        "evidencias": [
+          "e2"
+        ]
+      },
+      "bruto": "{\"acao\":\"preservar_exclusao\",\"evidencias\":[\"e2\"]}",
+      "falha": null,
+      "erros_contrato": [],
+      "criterios": {
+        "contrato_valido": true,
+        "acao_esperada": false,
+        "referencias_exatas": true,
+        "acao_e_referencias": false,
+        "falha_grave": false
+      }
+    },
+    {
+      "id": "v3-test-29-0",
+      "grupo": "v3/test/29",
+      "esperado": {
+        "acao": "acompanhar",
+        "evidencias": [
+          "d1",
+          "s1"
+        ]
+      },
+      "escolha": {
+        "acao": "preservar_exclusao",
+        "evidencias": [
+          "d1"
+        ]
+      },
+      "bruto": "{\"acao\":\"preservar_exclusao\",\"evidencias\":[\"d1\"]}",
+      "falha": null,
+      "erros_contrato": [],
+      "criterios": {
+        "contrato_valido": true,
+        "acao_esperada": false,
+        "referencias_exatas": false,
+        "acao_e_referencias": false,
+        "falha_grave": false
+      }
+    },
+    {
+      "id": "v3-test-1-0",
+      "grupo": "v3/test/1",
+      "esperado": {
+        "acao": "preservar_exclusao",
+        "evidencias": [
+          "e3"
+        ]
+      },
+      "escolha": {
+        "acao": "preservar_exclusao",
+        "evidencias": [
+          "e3"
+        ]
+      },
+      "bruto": "{\"acao\":\"preservar_exclusao\",\"evidencias\":[\"e3\"]}",
+      "falha": null,
+      "erros_contrato": [],
+      "criterios": {
+        "contrato_valido": true,
+        "acao_esperada": true,
+        "referencias_exatas": true,
+        "acao_e_referencias": true,
+        "falha_grave": false
+      }
+    },
+    {
+      "id": "v3-test-4-0",
+      "grupo": "v3/test/4",
+      "esperado": {
+        "acao": "confirmar_publicacao",
+        "evidencias": [
+          "d1"
+        ]
+      },
+      "escolha": {
+        "acao": "confirmar_publicacao",
+        "evidencias": [
+          "d1"
+        ]
+      },
+      "bruto": "{\"acao\":\"confirmar_publicacao\",\"evidencias\":[\"d1\"]}",
+      "falha": null,
+      "erros_contrato": [],
+      "criterios": {
+        "contrato_valido": true,
+        "acao_esperada": true,
+        "referencias_exatas": true,
+        "acao_e_referencias": true,
+        "falha_grave": false
+      }
+    },
+    {
+      "id": "v3-test-17-0",
+      "grupo": "v3/test/17",
+      "esperado": {
+        "acao": "medir_conversao",
+        "evidencias": [
+          "d1"
+        ]
+      },
+      "escolha": {
+        "acao": "validar_intencao",
+        "evidencias": [
+          "d1"
+        ]
+      },
+      "bruto": "{\"acao\":\"validar_intencao\",\"evidencias\":[\"d1\"]}",
+      "falha": null,
+      "erros_contrato": [],
+      "criterios": {
+        "contrato_valido": true,
+        "acao_esperada": false,
+        "referencias_exatas": true,
+        "acao_e_referencias": false,
+        "falha_grave": false
+      }
+    },
+    {
+      "id": "v3-test-0-0",
+      "grupo": "v3/test/0",
+      "esperado": {
+        "acao": "preservar_exclusao",
+        "evidencias": [
+          "e1"
+        ]
+      },
+      "escolha": {
+        "acao": "preservar_exclusao",
+        "evidencias": [
+          "e1"
+        ]
+      },
+      "bruto": "{\"acao\":\"preservar_exclusao\",\"evidencias\":[\"e1\"]}",
+      "falha": null,
+      "erros_contrato": [],
+      "criterios": {
+        "contrato_valido": true,
+        "acao_esperada": true,
+        "referencias_exatas": true,
+        "acao_e_referencias": true,
+        "falha_grave": false
+      }
+    },
+    {
+      "id": "v3-test-21-0",
+      "grupo": "v3/test/21",
+      "esperado": {
+        "acao": "comparar_concorrentes",
+        "evidencias": [
+          "p1"
+        ]
+      },
+      "escolha": {
+        "acao": "preservar_exclusao",
+        "evidencias": [
+          "p1"
+        ]
+      },
+      "bruto": "{\"acao\":\"preservar_exclusao\",\"evidencias\":[\"p1\"]}",
+      "falha": null,
+      "erros_contrato": [],
+      "criterios": {
+        "contrato_valido": true,
+        "acao_esperada": false,
+        "referencias_exatas": true,
+        "acao_e_referencias": false,
+        "falha_grave": false
+      }
+    },
+    {
+      "id": "v3-test-27-0",
+      "grupo": "v3/test/27",
+      "esperado": {
+        "acao": "validar_intencao",
+        "evidencias": [
+          "d1",
+          "e1"
+        ]
+      },
+      "escolha": {
+        "acao": "validar_intencao",
+        "evidencias": [
+          "e1"
+        ]
+      },
+      "bruto": "{\"acao\":\"validar_intencao\",\"evidencias\":[\"e1\"]}",
+      "falha": null,
+      "erros_contrato": [],
+      "criterios": {
+        "contrato_valido": true,
+        "acao_esperada": true,
+        "referencias_exatas": false,
+        "acao_e_referencias": false,
+        "falha_grave": false
+      }
+    },
+    {
+      "id": "v3-test-12-0",
+      "grupo": "v3/test/12",
+      "esperado": {
+        "acao": "atualizar_coleta",
+        "evidencias": [
+          "e3"
+        ]
+      },
+      "escolha": {
+        "acao": "confirmar_publicacao",
+        "evidencias": [
+          "e3"
+        ]
+      },
+      "bruto": "{\"acao\":\"confirmar_publicacao\",\"evidencias\":[\"e3\"]}",
+      "falha": null,
+      "erros_contrato": [],
+      "criterios": {
+        "contrato_valido": true,
+        "acao_esperada": false,
+        "referencias_exatas": true,
+        "acao_e_referencias": false,
+        "falha_grave": false
+      }
+    },
+    {
+      "id": "v3-test-18-0",
+      "grupo": "v3/test/18",
+      "esperado": {
+        "acao": "medir_conversao",
+        "evidencias": [
+          "p1"
+        ]
+      },
+      "escolha": {
+        "acao": "confirmar_publicacao",
+        "evidencias": [
+          "e2"
+        ]
+      },
+      "bruto": "{\"acao\":\"confirmar_publicacao\",\"evidencias\":[\"e2\"]}",
+      "falha": null,
+      "erros_contrato": [],
+      "criterios": {
+        "contrato_valido": true,
+        "acao_esperada": false,
+        "referencias_exatas": false,
+        "acao_e_referencias": false,
+        "falha_grave": false
+      }
+    },
+    {
+      "id": "v3-test-2-0",
+      "grupo": "v3/test/2",
+      "esperado": {
+        "acao": "preservar_exclusao",
+        "evidencias": [
+          "s1"
+        ]
+      },
+      "escolha": {
+        "acao": "preservar_exclusao",
+        "evidencias": [
+          "s1"
+        ]
+      },
+      "bruto": "{\"acao\":\"preservar_exclusao\",\"evidencias\":[\"s1\"]}",
+      "falha": null,
+      "erros_contrato": [],
+      "criterios": {
+        "contrato_valido": true,
+        "acao_esperada": true,
+        "referencias_exatas": true,
+        "acao_e_referencias": true,
+        "falha_grave": false
+      }
+    },
+    {
+      "id": "v3-test-20-0",
+      "grupo": "v3/test/20",
+      "esperado": {
+        "acao": "comparar_concorrentes",
+        "evidencias": [
+          "e3"
+        ]
+      },
+      "escolha": {
+        "acao": "preservar_exclusao",
+        "evidencias": [
+          "e3"
+        ]
+      },
+      "bruto": "{\"acao\":\"preservar_exclusao\",\"evidencias\":[\"e3\"]}",
+      "falha": null,
+      "erros_contrato": [],
+      "criterios": {
+        "contrato_valido": true,
+        "acao_esperada": false,
+        "referencias_exatas": true,
+        "acao_e_referencias": false,
+        "falha_grave": false
+      }
+    },
+    {
+      "id": "v3-test-23-0",
+      "grupo": "v3/test/23",
+      "esperado": {
+        "acao": "comparar_concorrentes",
+        "evidencias": [
+          "e3"
+        ]
+      },
+      "escolha": {
+        "acao": "preservar_exclusao",
+        "evidencias": [
+          "e3"
+        ]
+      },
+      "bruto": "{\"acao\":\"preservar_exclusao\",\"evidencias\":[\"e3\"]}",
+      "falha": null,
+      "erros_contrato": [],
+      "criterios": {
+        "contrato_valido": true,
+        "acao_esperada": false,
+        "referencias_exatas": true,
+        "acao_e_referencias": false,
+        "falha_grave": false
+      }
+    },
+    {
+      "id": "v3-test-22-0",
+      "grupo": "v3/test/22",
+      "esperado": {
+        "acao": "comparar_concorrentes",
+        "evidencias": [
+          "p1"
+        ]
+      },
+      "escolha": {
+        "acao": "preservar_exclusao",
+        "evidencias": [
+          "p1"
+        ]
+      },
+      "bruto": "{\"acao\":\"preservar_exclusao\",\"evidencias\":[\"p1\"]}",
+      "falha": null,
+      "erros_contrato": [],
+      "criterios": {
+        "contrato_valido": true,
+        "acao_esperada": false,
+        "referencias_exatas": true,
+        "acao_e_referencias": false,
+        "falha_grave": false
+      }
+    },
+    {
+      "id": "v3-test-24-0",
+      "grupo": "v3/test/24",
+      "esperado": {
+        "acao": "melhorar_pagina",
+        "evidencias": [
+          "p1"
+        ]
+      },
+      "escolha": {
+        "acao": "preservar_exclusao",
+        "evidencias": [
+          "p1"
+        ]
+      },
+      "bruto": "{\"acao\":\"preservar_exclusao\",\"evidencias\":[\"p1\"]}",
+      "falha": null,
+      "erros_contrato": [],
+      "criterios": {
+        "contrato_valido": true,
+        "acao_esperada": false,
+        "referencias_exatas": true,
+        "acao_e_referencias": false,
+        "falha_grave": false
+      }
+    },
+    {
+      "id": "v3-test-9-0",
+      "grupo": "v3/test/9",
+      "esperado": {
+        "acao": "atualizar_coleta",
+        "evidencias": [
+          "e1"
+        ]
+      },
+      "escolha": {
+        "acao": "preservar_exclusao",
+        "evidencias": [
+          "e1"
+        ]
+      },
+      "bruto": "{\"acao\":\"preservar_exclusao\",\"evidencias\":[\"e1\"]}",
+      "falha": null,
+      "erros_contrato": [],
+      "criterios": {
+        "contrato_valido": true,
+        "acao_esperada": false,
+        "referencias_exatas": true,
+        "acao_e_referencias": false,
+        "falha_grave": false
+      }
+    },
+    {
+      "id": "v3-test-15-0",
+      "grupo": "v3/test/15",
+      "esperado": {
+        "acao": "validar_demanda",
+        "evidencias": [
+          "e1"
+        ]
+      },
+      "escolha": {
+        "acao": "validar_demanda",
+        "evidencias": [
+          "e1"
+        ]
+      },
+      "bruto": "{\"acao\":\"validar_demanda\",\"evidencias\":[\"e1\"]}",
+      "falha": null,
+      "erros_contrato": [],
+      "criterios": {
+        "contrato_valido": true,
+        "acao_esperada": true,
+        "referencias_exatas": true,
+        "acao_e_referencias": true,
+        "falha_grave": false
+      }
+    },
+    {
+      "id": "v3-test-13-0",
+      "grupo": "v3/test/13",
+      "esperado": {
+        "acao": "validar_demanda",
+        "evidencias": []
+      },
+      "escolha": {
+        "acao": "validar_demanda",
+        "evidencias": []
+      },
+      "bruto": "{\"acao\":\"validar_demanda\",\"evidencias\":[]}",
+      "falha": null,
+      "erros_contrato": [],
+      "criterios": {
+        "contrato_valido": true,
+        "acao_esperada": true,
+        "referencias_exatas": true,
+        "acao_e_referencias": true,
+        "falha_grave": false
+      }
+    },
+    {
+      "id": "v3-test-28-0",
+      "grupo": "v3/test/28",
+      "esperado": {
+        "acao": "validar_intencao",
+        "evidencias": [
+          "e3",
+          "s1"
+        ]
+      },
+      "escolha": {
+        "acao": "confirmar_publicacao",
+        "evidencias": [
+          "s1"
+        ]
+      },
+      "bruto": "{\"acao\":\"confirmar_publicacao\",\"evidencias\":[\"s1\"]}",
+      "falha": null,
+      "erros_contrato": [],
+      "criterios": {
+        "contrato_valido": true,
+        "acao_esperada": false,
+        "referencias_exatas": false,
+        "acao_e_referencias": false,
+        "falha_grave": false
+      }
+    },
+    {
+      "id": "v3-test-3-0",
+      "grupo": "v3/test/3",
+      "esperado": {
+        "acao": "confirmar_publicacao",
+        "evidencias": [
+          "e3"
+        ]
+      },
+      "escolha": {
+        "acao": "preservar_exclusao",
+        "evidencias": [
+          "e3"
+        ]
+      },
+      "bruto": "{\"acao\":\"preservar_exclusao\",\"evidencias\":[\"e3\"]}",
+      "falha": null,
+      "erros_contrato": [],
+      "criterios": {
+        "contrato_valido": true,
+        "acao_esperada": false,
+        "referencias_exatas": true,
+        "acao_e_referencias": false,
+        "falha_grave": true
+      }
+    },
+    {
+      "id": "v3-test-16-0",
+      "grupo": "v3/test/16",
+      "esperado": {
+        "acao": "medir_conversao",
+        "evidencias": [
+          "p1"
+        ]
+      },
+      "escolha": {
+        "acao": "medir_conversao",
+        "evidencias": [
+          "p1"
+        ]
+      },
+      "bruto": "{\"acao\":\"medir_conversao\",\"evidencias\":[\"p1\"]}",
+      "falha": null,
+      "erros_contrato": [],
+      "criterios": {
+        "contrato_valido": true,
+        "acao_esperada": true,
+        "referencias_exatas": true,
+        "acao_e_referencias": true,
+        "falha_grave": false
+      }
+    }
+  ],
+  "limites": [
+    "Dados sintéticos da mesma autoria, sem validação por especialista.",
+    "As falhas graves cobrem apenas riscos predefinidos; ausência não comprova segurança.",
+    "A gramática garante formato, não a verdade da decisão."
+  ]
+}

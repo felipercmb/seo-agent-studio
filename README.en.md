@@ -1,18 +1,22 @@
 # Visibilidade Aberta
 
-An optional **local AI training pilot** is available separately from the rules-based interface. It fine-tunes Qwen2.5-1.5B with QLoRA on controlled synthetic cases, compares the base model and adapter on reserved cases, and can read evidence exported from the local app. Training currently targets Apple Silicon Macs. Outputs require human review; the benchmark does not establish SEO or revenue gains. See the [training guide (Portuguese)](docs/TREINAR-IA.md).
+An optional **local AI training pilot** fine-tunes Qwen2.5-1.5B with QLoRA and can review up to three contexts from a local report. Once a compatible environment, model and locally selected adapter are present, the experimental option appears in the interface. Experiments include synthetic cases and public website captures with weak technical labels, not independent expert review. Training currently targets Apple Silicon Macs. Outputs require human review; the benchmark does not establish SEO or revenue gains. See the [training guide (Portuguese)](docs/TREINAR-IA.md).
 
 The first run passed all mechanical criteria on only **3 of 16 reserved cases** and is not ready for autonomous client recommendations. [Full results and failures](ia/resultados/piloto-v1/README.md) are included.
+
+A [second local experiment (Portuguese)](docs/EXPERIMENTOS-IA-V2.md) adds cautionary scenarios, constrained decision output, and an experimental comparison of opportunities. It does not estimate financial returns.
 
 [![Testes](https://github.com/felipercmb/visibilidade-aberta/actions/workflows/ci.yml/badge.svg)](https://github.com/felipercmb/visibilidade-aberta/actions/workflows/ci.yml)
 
 An open-source, local application for discovering search terms from a website, checking Google results and identifying practical accessibility and contact improvements.
 
-**Start with a domain.** Website discovery and diagnostics work without an API key. Google ranking checks are optional and require your own compatible SerpApi Free account.
+**Start with a domain.** Website discovery and diagnostics work without an API key. An [assisted browser capture](docs/GOOGLE-LOCAL.md) can import links from a Google page you have opened, without a provider account. It reports recognized order within that page, not an absolute Google position. The optional ranking connector requires your own compatible SerpApi Free account.
 
 [Português](README.md) · [Methodology, in Portuguese](docs/METODOLOGIA.md) · [Opportunity agent](docs/AGENTE.md) · [Enable ranking checks](docs/ATIVAR-POSICOES.md)
 
 ## Run locally
+
+Download the [r4.3.3 local ZIP](https://github.com/felipercmb/visibilidade-aberta/releases/tag/r4.3.3) and follow the [quick start guide](COMECE-AQUI.md), in Portuguese.
 
 Install [Node.js](https://nodejs.org/) **22, starting at 22.13, or 24 LTS**, and Git. Other major versions are not part of the declared compatibility range.
 
@@ -35,6 +39,12 @@ The agent runs locally with open, deterministic rules. It does not use a generat
 
 ## Optional Google results
 
+The local [capture guide](http://127.0.0.1:8794/google-local) provides a Chrome/Edge extension ZIP. Click to capture an already-open Web results page, then import its JSON or send it directly to the local app with a temporary project-scoped code. Extension 0.4.1 requests optional loopback access for direct delivery; download-only capture remains available. Pages are grouped by requested context and preserved continuation links, with gaps and repeats shown explicitly. This does not automate searches, turn pagination offsets into ranks or authenticate the operator's observation. Imported evidence stays in `DATA_DIR/google-local/capturas`; it has no automatic cleanup and does not enter training or spending recommendations. See the [format and limitations](docs/GOOGLE-LOCAL.md), in Portuguese.
+
+The parser records domains shown in result citations and keeps opaque redirect destinations unknown. The [local project workflow](docs/USO-LOCAL-INTEGRADO.md) connects these observations to a reviewed offer, with source excerpts for the roles, deadlines and conditions a person needs to verify. Optional local AI readers are experimental and require human review.
+
+For the separate ranking connector:
+
 Copy `.env.example` to `.env`, set `SERPAPI_KEY` to your own key and restart the server. Leave it empty to use website discovery and diagnostics only.
 
 ```sh
@@ -51,15 +61,15 @@ Copy-Item .env.example .env
 
 Local execution is not offline. Collection uses external DNS services (Google/Cloudflare), the system resolver and requests to the target website. When enabled, SerpApi receives the search terms, context and authentication key. Those services may log requests under their own policies.
 
-SQLite also stores the structured diagnostic reports and evidence excerpts used by the agent, reusable for up to seven days with freshness checked at analysis time. Full HTML is not persisted. The browser keeps a separate, minimal diagnostic comparison history; clearing that browser history does not remove the local database.
+SQLite stores profiles, declared assumptions, task history, structured diagnostic reports and evidence excerpts. The modular local workflow also preserves complete public HTML captures and AI job artifacts under `DATA_DIR/evidencias-negocio/`, even when the optional model is not installed. These files have no automatic cleanup; deleting a project from the interface removes its database record but leaves the evidence files on disk. Keeping a file does not renew the validity of its observations. The browser keeps a separate, minimal diagnostic comparison history; clearing it does not remove the local database or snapshots. See the [integrated local workflow and retention guide](docs/USO-LOCAL-INTEGRADO.md).
 
-Visitors do not need an account. The person running the application needs a provider account for Google checks. The default code refuses paid plans and extra credits; it does not switch to a paid fallback.
+Visitors do not need an account. The person running the application needs a provider account for the ranking connector. The default code refuses paid plans and extra credits; it does not switch to a paid fallback. Assisted capture does not use that connector.
 
 ## Scope and limits
 
 - Discover up to 100 candidate terms from up to 12 public pages. Candidates are not proof of search demand or ranking.
-- Read up to five Google pages per term, in batches of up to four pages. The actual coverage may be smaller.
-- Preserve each page's source, observation time and context. The displayed position adds the confirmed pagination offset to the page-local position; it is not a universal ranking.
+- With the optional connector, read up to five Google pages per term, in batches of up to four pages. The actual coverage may be smaller.
+- Preserve each page's source, observation time and context. Connector positions use the source's confirmed pagination context; assisted captures show only recognized page-local order. Neither is a universal ranking.
 - Pause and resume while following the report. Hiding or closing the page stops automatic continuation; an already submitted batch may finish.
 - Print or save the loaded report as PDF without making more search requests.
 

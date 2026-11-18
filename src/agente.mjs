@@ -1,5 +1,5 @@
 import {createHash} from 'node:crypto';
-import {normalizarSite} from './consulta.mjs';
+import {normalizarSite, redirecionamentoGoogleOpaco} from './consulta.mjs';
 
 const HORA = 3600_000, DIA = 24 * HORA;
 const CONTEXTO = {pais:'Brasil', idioma:'Português', dispositivo:'Computador', localidade:'Brasil'};
@@ -32,6 +32,8 @@ function urlSegura(valor, dominio = null) {
 function intencao(candidato) {
   const termo = normal(candidato.termo);
   if (candidato.tipo === 'marca') return {tipo:'marca',rotulo:'Procura pela marca',motivo:'O termo foi classificado como marca na descoberta; não mede novos clientes.'};
+  if (candidato.tipo === 'atendimento') return {tipo:'atendimento',rotulo:'Atendimento — hipótese',motivo:'A frase parece identificar apoio ou contato. Pode ser útil ao público, mas não comprova intenção de contratação.'};
+  if (candidato.tipo === 'institucional') return {tipo:'institucional',rotulo:'Institucional — hipótese',motivo:'A frase parece apresentar a empresa ou um slogan; não comprova intenção de contratação.'};
   if (/^(?:como|o que|por que|porque|quando|guia|tutorial|what|how)\b/.test(termo)) {
     return {tipo:'informativa',rotulo:'Informação — hipótese',motivo:'A formulação sugere uma dúvida ou aprendizado; a intenção real precisa ser conferida nos resultados.'};
   }
@@ -81,11 +83,17 @@ function verificarConsulta(q, termo, dominio, agora) {
   const resultados = [], evidencias = [], ids = new Set(), paginasVistas = new Set();
   let inicio = 0;
   for (const [indice,p] of q.paginas.entries()) {
+    // Uma continuação recusada não invalida a própria página que já contém
+    // o domínio. Páginas anteriores, porém, precisam de sequência íntegra.
+    const alvoNaUltima = indice === q.paginas.length-1 && q.estado === 'encontrado' &&
+      Array.isArray(p?.resultados) && p.resultados.some(r => typeof r?.dominio === 'string' && pertence(r.dominio,dominio));
     if (!objeto(p) || chave(p.termo) !== chave(termo) || !recente(p.coletadoEm,agora,HORA) ||
         p.pagina !== indice+1 || p.inicio !== inicio || !contextoValido(p.contexto) ||
         p.fonte?.nome !== 'SerpApi' || !fonteId(p.fonte.id) || ids.has(p.fonte.id) ||
         p.hashEscopo !== 'captura-google-pagina-v1' || !hashValido(p.sha256) ||
-        p.paginacaoInterrompida !== false || p.paginacaoComLacuna !== false ||
+        typeof p.paginacaoInterrompida !== 'boolean' || typeof p.paginacaoComLacuna !== 'boolean' ||
+        p.paginacaoComLacuna && !p.paginacaoInterrompida ||
+        (p.paginacaoInterrompida || p.paginacaoComLacuna) && !alvoNaUltima ||
         typeof p.limiteAtingido !== 'boolean' || !Array.isArray(p.relacionadas) || p.relacionadas.length > 10 ||
         !Array.isArray(p.resultados) || p.resultados.length < 1 || p.resultados.length > 10 ||
         p.profundidadeObservada !== p.resultados.length || hashPagina(p) !== p.sha256) {
@@ -97,13 +105,14 @@ function verificarConsulta(q, termo, dominio, agora) {
     paginasVistas.add(identidade);
     for (const [i,r] of p.resultados.entries()) {
       const url = urlSegura(r?.url);
-      if (!objeto(r) || !url || r.pagina !== p.pagina || r.inicio !== p.inicio ||
+      if (!objeto(r) || !url || redirecionamentoGoogleOpaco(url) || r.pagina !== p.pagina || r.inicio !== p.inicio ||
           r.posicaoNaPagina !== i+1 || r.posicao !== p.inicio+i+1 || r.posicao > 100 ||
           r.dominio !== normalizarSite(url)) return invalida('A posição não corresponde aos resultados da página de origem.');
       resultados.push({...r,url,coletadoEm:p.coletadoEm,fonteId:p.fonte.id});
     }
     evidencias.push({tipo:'google',coletadoEm:p.coletadoEm,fonte:p.fonte.nome,fonteId:p.fonte.id,sha256:p.sha256,
-      trecho:`Página ${p.pagina}; deslocamento ${p.inicio}; ${p.resultados.length} resultados orgânicos. Brasil, português, computador.`});
+      trecho:`Página ${p.pagina}; deslocamento ${p.inicio}; ${p.resultados.length} resultados orgânicos. Brasil, português, computador.`+
+        (p.paginacaoInterrompida?' Continuação não confirmada; a posição consta nesta página.':'')});
     inicio = p.inicio+p.resultados.length;
     if (indice < q.paginas.length-1 && p.proximoInicio !== inicio) return invalida('Há uma lacuna entre as páginas consultadas.');
   }
@@ -145,12 +154,17 @@ function melhoriasDoSite(diagnostico, dominio, agora) {
     // The aggregate diagnosis carries an actual excerpt only for this URL.
     // Do not copy that excerpt to every page in paginasAfetadas.
     if (!pagina || !v.paginasAfetadas.some(u => urlSegura(u,dominio) === url) || !texto(v.titulo) || !texto(v.evidencia.trecho)) continue;
+    const cabecalho=pagina.cabecalhoRobots;
+    if (v.id==='diretiva-noindex-http' && (!objeto(cabecalho) || cabecalho.estado!=='noindex' ||
+      !hashValido(cabecalho.sha256) || cabecalho.sha256!==v.evidencia.sha256Cabecalho ||
+      typeof cabecalho.valor!=='string' || cabecalho.valor!==v.evidencia.valorCabecalho)) continue;
     const identificador = id(texto(v.id,80)+'|'+url);
     if (vistos.has(identificador)) continue;
     vistos.add(identificador);
-    saida.push({id:identificador,titulo:texto(v.titulo),paginaAlvo:url,categoria:texto(v.categoria,80),
+    saida.push({id:identificador,verificacaoId:texto(v.id,80),sha256Pagina:pagina.sha256,titulo:texto(v.titulo),paginaAlvo:url,categoria:texto(v.categoria,80),
       orientacao:texto(v.orientacao,600),passos:(Array.isArray(v.passos) ? v.passos : []).slice(0,5).map(p=>texto(p,400)).filter(Boolean),
-      coletadoEm:pagina.coletadoEm,evidencia:texto(v.evidencia.trecho)});
+      coletadoEm:pagina.coletadoEm,evidencia:texto(v.evidencia.trecho),
+      ...(v.id==='diretiva-noindex-http' ? {sha256Cabecalho:cabecalho.sha256,valorCabecalho:cabecalho.valor} : {})});
     if (saida.length === 6) break;
   }
   return saida;
@@ -184,6 +198,8 @@ function recomendar(c, origemTermo, consulta, melhorias) {
   if (origemTermo.motivo) faltam.push(origemTermo.motivo);
   if (consulta.motivo) faltam.push(consulta.motivo);
   if (int.tipo === 'oferta' || int.tipo === 'indefinida') faltam.push('Confirmar a relação do termo com a oferta e o público real.');
+  if (int.tipo === 'atendimento') faltam.push('Confirmar se a busca é de apoio ao público ou contratação de serviço.');
+  if (int.tipo === 'institucional') faltam.push('Confirmar se esta frase institucional corresponde a uma busca relevante para o público.');
   return {id:id(chave(c.termo)),termo:c.termo,paginaAlvo,decisao,intencao:int,posicao,marco,motivo,
     potencial:decisao === 'priorizar' || decisao === 'desenvolver'
       ? 'Potencial qualitativo de visibilidade relevante, condicionado à existência de procura e à conversão da página. O retorno não foi estimado.'
@@ -219,6 +235,7 @@ export function analisarOportunidades(entrada = {}, opcoes = {}) {
   }
   oportunidades.sort((a,b) => ORDEM[a.decisao]-ORDEM[b.decisao] ||
     (a.intencao.tipo === 'comercial' ? 0 : 1)-(b.intencao.tipo === 'comercial' ? 0 : 1) ||
+    (['atendimento','institucional'].includes(a.intencao.tipo) ? 1 : 0)-(['atendimento','institucional'].includes(b.intencao.tipo) ? 1 : 0) ||
     (a.posicao??Infinity)-(b.posicao??Infinity) || (chave(a.termo)<chave(b.termo) ? -1 : chave(a.termo)>chave(b.termo) ? 1 : 0));
   const porPagina=new Map();
   for (const o of oportunidades) if (o.paginaAlvo) {
@@ -238,7 +255,10 @@ export function analisarOportunidades(entrada = {}, opcoes = {}) {
   const temLeitura = paginasDoDiagnostico(dados.diagnostico,dominio,agora).size > 0 ||
     posicoes?.descoberta?.paginasLidas > 0 && recente(posicoes.descoberta.coletadoEm,agora,DIA);
   const semRecomendacoes = !oportunidades.length && !melhorias.length;
+  const estadoFonte = posicoes?.estado === 'fonte_nao_configurada' ? 'nao_configurada' :
+    posicoes?.estado === 'cota_esgotada' ? 'cota_esgotada' : posicoes ? 'consultavel_ou_parcial' : 'sem_relatorio';
   return {versao:1,dominio,geradoEm:new Date(agora).toISOString(),metodo:'regras-abertas-v1',
+    fontePosicoes:{estado:estadoFonte},
     estado:semRecomendacoes && !temLeitura ? 'sem_dados' : resumo.investigar || !resumo.posicoesAtuais ||
       posicoes?.descoberta?.limitada || dados.diagnostico?.estado === 'parcial' ? 'parcial' : 'disponivel',
     resumo,oportunidades,frentes:[...porPagina.values()].slice(0,12),melhorias,

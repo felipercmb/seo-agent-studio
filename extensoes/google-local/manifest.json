@@ -1,0 +1,19 @@
+{
+  "manifest_version": 3,
+  "name": "Visibilidade Aberta — captura local",
+  "version": "0.4.1",
+  "minimum_chrome_version": "120",
+  "description": "Salva um trecho dos resultados já abertos na aba Web do Google, por ação do usuário. Não envia consultas.",
+  "permissions": [
+    "activeTab",
+    "scripting",
+    "storage"
+  ],
+  "optional_host_permissions": [
+    "http://127.0.0.1/*"
+  ],
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "Salvar captura local de resultados"
+  }
+}

@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {createHash} from 'node:crypto';
 import {analisarOportunidades} from '../src/agente.mjs';
+import {prepararEntradasIA} from '../src/entrada-ia.mjs';
 import {consultarGoogle} from '../src/serpapi.mjs';
 
 const INSTANTE=Date.parse('2026-11-14T15:00:00Z'), HORA=3600_000;
@@ -17,7 +18,7 @@ function relatorio(candidatos=[],consultas=[]) {
 const analisar=(posicoes,diagnostico=null)=>analisarOportunidades({dominio:DOMINIO,posicoes,diagnostico},{agora:()=>INSTANTE});
 
 // Real provider parser, simulated HTTP responses: no live key/network/cost.
-async function consulta(termo='Contratar consultoria ambiental',posicao=12,url='https://cliente.com.br/consultoria') {
+async function consulta(termo='Contratar consultoria ambiental',posicao=12,url='https://cliente.com.br/consultoria',opcoes={}) {
   const paginas=[];
   const ultima=posicao==null ? 2 : Math.ceil(posicao/10);
   for(let pagina=1;pagina<=ultima;pagina++) {
@@ -36,7 +37,8 @@ async function consulta(termo='Contratar consultoria ambiental',posicao=12,url='
           search_information:{page_number:pagina,query_displayed:termo,organic_results_state:'Results for exact spelling'},
           organic_results:Array.from({length:10},(_,i)=>({position:i+1,title:'Resultado '+(inicio+i+1),
             link:inicio+i+1===posicao ? url : 'https://concorrente'+(inicio+i+1)+'.com.br/servico'})),
-          ...(pagina<ultima?{serpapi_pagination:{current:pagina,next:next.href}}:{}),related_searches:[]});
+          ...(pagina<ultima?{serpapi_pagination:{current:pagina,next:next.href}}:
+            opcoes.continuacaoInvalida?{serpapi_pagination:{current:pagina,next:'https://externo.com/search?start=999'}}:{}),related_searches:[]});
       }});
     // Same bounded page contract persisted by posicoes-atuais.mjs.
     const nomes=['termo','inicio','pagina','proximoInicio','paginacaoInterrompida','paginacaoComLacuna','limiteAtingido',
@@ -97,11 +99,77 @@ test('posição37 mantém posição observada, aponta desenvolvimento e não pro
   assert.match(r.oportunidades[0].motivo,/dificuldade não foi medida/);
 });
 
+test('continuação inválida preserva posição encontrada na página, mas não valida sequência interrompida antes dela',async()=>{
+  const c=candidato(),q=await consulta(c.termo,12,c.evidencia.url,{continuacaoInvalida:true});
+  assert.equal(q.paginas.at(-1).paginacaoInterrompida,true);
+  const rel=analisar(relatorio([c],[q])),o=rel.oportunidades[0];
+  assert.equal(o.posicao,12);assert.match(o.evidencias.at(-1).trecho,/Continuação não confirmada/);
+  const serp=prepararEntradasIA(rel,{agora:()=>INSTANTE}).entradas[0].evidencias.find(e=>e.id==='s1');
+  assert.equal(serp.posicao,12);assert.equal(serp.fontes_serp.length,2);assert.ok(serp.concorrentes.length);
+  const alterada=structuredClone(q),p=alterada.paginas[0];p.paginacaoInterrompida=true;
+  const captura={termo:p.termo,resultados:p.resultados,inicio:p.inicio,pagina:p.pagina,
+    contexto:p.contexto,fonte:p.fonte,coletadoEm:p.coletadoEm,profundidadeObservada:p.profundidadeObservada,
+    proximoInicio:p.proximoInicio,paginacaoInterrompida:p.paginacaoInterrompida,
+    paginacaoComLacuna:p.paginacaoComLacuna,limiteAtingido:p.limiteAtingido,relacionadas:p.relacionadas};
+  p.sha256=hash(JSON.stringify(captura));
+  assert.equal(analisar(relatorio([c],[alterada])).oportunidades[0].posicao,null);
+});
+
+test('posição simulada além da primeira página chega à IA com concorrentes e capturas verificáveis',async()=>{
+  const q=await consulta(undefined,37),rel=analisar(relatorio([candidato()],[q]));
+  const contexto=prepararEntradasIA(rel,{agora:()=>INSTANTE}).entradas[0];
+  const serp=contexto.evidencias.find(e=>e.tipo==='serp');
+  assert.equal(serp.posicao,37);assert.equal(serp.atual,true);assert.equal(serp.concorrentes.length,2);
+  assert.deepEqual(serp.fontes_serp.map(f=>[f.id,f.sha256]),q.paginas.map(p=>[p.fonte.id,p.sha256]));
+  assert.ok(serp.concorrentes.every(c=>c.posicao<37));
+});
+
+test('captura antiga com redirecionamento opaco não vira posição nem concorrente mesmo com hash válido',async()=>{
+  const c=candidato(),q=await consulta(c.termo,12,c.evidencia.url),p=q.paginas[0];
+  p.resultados[0].url='https://google.com/goto?opaque=1';
+  p.resultados[0].dominio='google.com';
+  const captura={termo:p.termo,resultados:p.resultados,inicio:p.inicio,pagina:p.pagina,
+    contexto:p.contexto,fonte:p.fonte,coletadoEm:p.coletadoEm,profundidadeObservada:p.profundidadeObservada,
+    proximoInicio:p.proximoInicio,paginacaoInterrompida:p.paginacaoInterrompida,
+    paginacaoComLacuna:p.paginacaoComLacuna,limiteAtingido:p.limiteAtingido,relacionadas:p.relacionadas};
+  p.sha256=hash(JSON.stringify(captura));
+  const o=analisar(relatorio([c],[q])).oportunidades[0];
+  assert.equal(o.posicao,null);assert.deepEqual(o.concorrentes,[]);
+  assert.equal(o.decisao,'investigar');
+});
+
+test('ausência no recorte preserva fontes examinadas para a IA sem atribuir posição',async()=>{
+  const c=candidato(),q=await consulta(c.termo,null,c.evidencia.url);
+  const rel=analisar(relatorio([c],[q]));
+  const s=prepararEntradasIA(rel,{agora:()=>INSTANTE}).entradas[0].evidencias.find(e=>e.id==='s1');
+  assert.equal(s.posicao,null);assert.equal(s.atual,false);assert.equal(s.estado_fonte,'nao_observado_recorte');
+  assert.deepEqual(s.recorte_serp.map(f=>[f.id,f.sha256]),q.paginas.map(p=>[p.fonte.id,p.sha256]));
+  assert.equal(s.concorrentes,undefined);assert.equal(s.fontes_serp,undefined);
+});
+
 test('busca informativa não vira intenção comercial pelo tipo extraído',async()=>{
   const c=candidato('Como contratar consultoria ambiental');
   const r=analisar(relatorio([c],[await consulta(c.termo)]));
   assert.equal(r.oportunidades[0].intencao.tipo,'informativa');assert.equal(r.oportunidades[0].decisao,'investigar');
   assert.equal(r.oportunidades[0].posicao,12);
+});
+
+test('busca de atendimento segue disponível sem ser tratada como aquisição',async()=>{
+  const suporte=candidato('Data Privacy enquiries','atendimento'),oferta=candidato();
+  const r=analisar(relatorio([suporte,oferta],[await consulta(suporte.termo),await consulta(oferta.termo)]));
+  const o=r.oportunidades.find(x=>x.termo===suporte.termo);
+  assert.equal(o.intencao.tipo,'atendimento');assert.equal(o.decisao,'investigar');assert.equal(o.posicao,12);
+  assert.match(o.faltam.join(' '),/apoio ao público ou contratação/);
+  assert.equal(r.oportunidades[0].termo,oferta.termo);
+});
+
+test('rótulo institucional continua investigável, sem virar intenção de oferta',async()=>{
+  const frase=candidato('Suzano: nós plantamos o futuro','institucional'),oferta=candidato();
+  const r=analisar(relatorio([frase,oferta],[await consulta(frase.termo,12,frase.evidencia.url),await consulta(oferta.termo)]));
+  const o=r.oportunidades.find(x=>x.termo===frase.termo);
+  assert.equal(o.intencao.tipo,'institucional');assert.equal(o.decisao,'investigar');
+  assert.match(o.faltam.join(' '),/frase institucional/);
+  assert.equal(r.oportunidades[0].termo,oferta.termo);
 });
 
 test('ausência em páginas válidas não se transforma em posição101 ou oportunidade comprovada',async()=>{

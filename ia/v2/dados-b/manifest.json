@@ -1,0 +1,44 @@
+{
+  "arquivos": {
+    "casos-test.jsonl": {
+      "bytes": 27040,
+      "sha256": "4044c89f020398b60cf81fbc434bbe5101a299b2e26e969d3c8eac012f55bacf"
+    },
+    "casos-train.jsonl": {
+      "bytes": 352512,
+      "sha256": "151bac2d9ef72b6d53049d812ffd15cc2ad07cca5f78d9c51f54a6c16fc0a15c"
+    },
+    "casos-valid.jsonl": {
+      "bytes": 17647,
+      "sha256": "0addbd12509fb4f6765a4d3e46c5c422b4ee90b2ebd7f563584ba705fe135371"
+    },
+    "desenvolvimento/train.jsonl": {
+      "bytes": 608734,
+      "sha256": "bc2eafbd5370601f0fa6226035196cd5264a3459445cf67bfef329d16a7bf7e1"
+    },
+    "desenvolvimento/valid.jsonl": {
+      "bytes": 32337,
+      "sha256": "0997233bb8d9bc10e5dd52f09b557b401e89ea54fc022c41f9c252399fdfb768"
+    },
+    "holdout/test.jsonl": {
+      "bytes": 46640,
+      "sha256": "1217f8979ea1ca75012f5f7fc820c8148ce73770039a2b5aa93ce6ab6e9c2cad"
+    }
+  },
+  "base_manifest_sha256": "2097df499a87554f3412d8d9f983a34d568e7f84a85b469a08fff0c0860d1532",
+  "contagens": {
+    "test": 32,
+    "train": 418,
+    "valid": 24
+  },
+  "familias": {
+    "test": 32,
+    "train": 90,
+    "valid": 24
+  },
+  "limitacao": "Os conjuntos continuam criados pela mesma autoria e compartilham vocabulário e conceitos.",
+  "origem": "Casos sintéticos v2, mais contrafactuais; sem dados reais ou revisão especializada.",
+  "seed": 20261115,
+  "separacao": "Famílias e setores de teste v2 permanecem isolados; teste e estresse não são usados no treinamento ou na seleção.",
+  "versao": "2b"
+}

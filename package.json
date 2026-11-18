@@ -10,6 +10,8 @@
   },
   "scripts": {
     "start": "node server.mjs",
+    "pesquisa": "node scripts/iniciar-pesquisa.mjs",
+    "diagnosticar": "node scripts/diagnosticar-local.mjs",
     "test": "node scripts/testar.mjs",
     "check": "node scripts/verificar-sintaxe.mjs"
   },

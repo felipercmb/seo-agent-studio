@@ -94,6 +94,121 @@ test('primeira consulta só descobre; continuar explícito executa até quatro p
   assert.ok(!JSON.stringify(segundo).includes(CHAVE));assert.ok(!JSON.stringify(segundo).includes('<html'));
 });
 
+test('resultado opaco não atribui posição ou concorrentes e não é armazenado como captura',async t=>{
+  const a=ambiente(t,{fonte:{resultados:()=>['https://google.com/goto?opaque=1','https://cliente.com.br/']}});
+  await a.inicial();
+  const r=await a.lote();
+  assert.equal(r.consultas[0].estado,'indisponivel');
+  assert.equal(r.consultas[0].posicao,null);
+  assert.deepEqual(r.consultas[0].acima,[]);
+  assert.deepEqual(r.consultas[0].resultados,[]);
+  assert.equal(a.sqlite.prepare("SELECT COUNT(*) AS n FROM rank_resultados WHERE chave LIKE 'google-pagina-v2:%'").get().n,0);
+  assert.equal(a.creditos(),1);
+});
+
+test('captura opaca de versão anterior é descartada do relatório e do cache',async t=>{
+  const a=ambiente(t);await a.inicial();await a.lote();
+  const linhas=a.sqlite.prepare("SELECT chave,payload FROM rank_resultados WHERE chave LIKE 'ranking-plano-v2:%' OR chave LIKE 'google-pagina-v2:%'").all();
+  assert.equal(linhas.length,2);
+  for(const linha of linhas) {
+    const valor=JSON.parse(linha.payload);
+    const paginas=linha.chave.startsWith('google-pagina-v2:')?[valor]:Object.values(valor.termos).flatMap(q=>q.paginas);
+    assert.equal(paginas.length,1);
+    paginas[0].resultados[0].url='https://google.com/goto?opaque=1';
+    paginas[0].resultados[0].dominio='google.com';
+    a.sqlite.prepare('UPDATE rank_resultados SET payload = ? WHERE chave = ?').run(JSON.stringify(valor),linha.chave);
+  }
+  const reaberto=await a.inicial();
+  assert.equal(reaberto.cobertura.verificadas,0);assert.deepEqual(reaberto.consultas,[]);
+  const nova=await a.lote();
+  assert.equal(nova.consultas[0].posicao,3);assert.equal(a.creditos(),2);
+  assert.equal(nova.progresso.paginasReutilizadasNesteLote,0);
+});
+
+test('relatório antigo descarta chamada de cadastro sem perder candidatos válidos ou recobrar o site',async t=>{
+  const a=ambiente(t);await a.inicial();
+  const chave='ranking-plano-v2:cliente.com.br';
+  const linha=a.sqlite.prepare('SELECT payload FROM rank_resultados WHERE chave = ?').get(chave);
+  const job=JSON.parse(linha.payload);
+  job.candidatos.unshift({termo:'Cadastre-se',tipo:'servico',evidencia:{url:'https://cliente.com.br/',
+    campo:'h1',trecho:'Cadastre-se',coletadoEm:new Date(a.agora()).toISOString(),sha256:'a'.repeat(64)}});
+  job.termos['t:cadastre-se']={termo:'Cadastre-se',paginas:[],concluida:false,tentadaEm:0};
+  job.ativos.push('t:cadastre-se');job.descoberta.termosDescobertos++;
+  a.sqlite.prepare('UPDATE rank_resultados SET payload = ? WHERE chave = ?').run(JSON.stringify(job),chave);
+  const r=await a.inicial();
+  assert.ok(!r.candidatos.some(c=>c.termo==='Cadastre-se'));
+  assert.ok(r.candidatos.some(c=>c.termo===TERMOS[0]));
+  assert.equal(a.coletas(),1);assert.equal(a.creditos(),0);
+  const salvo=JSON.parse(a.sqlite.prepare('SELECT payload FROM rank_resultados WHERE chave = ?').get(chave).payload);
+  assert.equal(salvo.termos['t:cadastre-se'],undefined);
+});
+
+test('relatório antigo reclassifica slogan institucional e adia sua pesquisa',async t=>{
+  const a=ambiente(t);await a.inicial();
+  const chave='ranking-plano-v2:cliente.com.br';
+  const job=JSON.parse(a.sqlite.prepare('SELECT payload FROM rank_resultados WHERE chave = ?').get(chave).payload);
+  const e={url:'https://cliente.com.br/',campo:'title',trecho:'Cliente: nós cuidamos do futuro',
+    coletadoEm:new Date(a.agora()).toISOString(),sha256:'a'.repeat(64)};
+  job.candidatos.unshift({termo:'Cliente: nós cuidamos do futuro',tipo:'servico',evidencia:e});
+  job.candidatos.push({termo:'Cliente',tipo:'marca',evidencia:e});
+  job.termos['t:cliente: nós cuidamos do futuro']={termo:'Cliente: nós cuidamos do futuro',paginas:[],concluida:false,tentadaEm:0};
+  job.ativos.unshift('t:cliente: nós cuidamos do futuro');job.descoberta.termosDescobertos+=2;
+  a.sqlite.prepare('UPDATE rank_resultados SET payload = ? WHERE chave = ?').run(JSON.stringify(job),chave);
+  const r=await a.inicial(),slogan=r.candidatos.find(c=>c.termo==='Cliente: nós cuidamos do futuro');
+  assert.equal(slogan.tipo,'institucional');
+  assert.ok(r.candidatos.findIndex(c=>c.termo===TERMOS[0])<r.candidatos.indexOf(slogan));
+  assert.equal(a.coletas(),1);assert.equal(a.creditos(),0);
+});
+
+test('relatório antigo conserva tema sem oferta explícita, mas o consulta depois dos serviços',async t=>{
+  const a=ambiente(t);await a.inicial();
+  const chave='ranking-plano-v2:cliente.com.br';
+  const job=JSON.parse(a.sqlite.prepare('SELECT payload FROM rank_resultados WHERE chave = ?').get(chave).payload);
+  const termo='Reforma tributária em contagem regressiva';
+  job.candidatos.unshift({termo,tipo:'servico',evidencia:{url:'https://cliente.com.br/',campo:'title',trecho:termo,
+    coletadoEm:new Date(a.agora()).toISOString(),sha256:'a'.repeat(64)}});
+  job.termos['t:reforma tributária em contagem regressiva']={termo,paginas:[],concluida:false,tentadaEm:0};
+  job.ativos.unshift('t:reforma tributária em contagem regressiva');job.descoberta.termosDescobertos++;
+  a.sqlite.prepare('UPDATE rank_resultados SET payload = ? WHERE chave = ?').run(JSON.stringify(job),chave);
+  const r=await a.inicial(),tema=r.candidatos.find(c=>c.termo===termo);
+  assert.equal(tema.tipo,'tema');assert.ok(r.candidatos.findIndex(c=>c.termo===TERMOS[0])<r.candidatos.indexOf(tema));
+  assert.equal(a.coletas(),1);assert.equal(a.creditos(),0);
+});
+
+test('relatório antigo reclassifica coleções e eventos sem alterar produto estruturado',async t=>{
+  const a=ambiente(t);await a.inicial();
+  const chave='ranking-plano-v2:cliente.com.br';
+  const job=JSON.parse(a.sqlite.prepare('SELECT payload FROM rank_resultados WHERE chave = ?').get(chave).payload);
+  for (const [termo,tipo,campo] of [['Produtos com até 70%OFF','servico','title'],
+    ['Produtos de cuidado corporal','produto','h1'],['II Encontro de Gestão de Pessoas','servico','h3'],
+    ['Produtos especiais','produto','jsonld.Product.name'],['Corpo Leia mais','produto','a.texto']]) {
+    job.candidatos.unshift({termo,tipo,evidencia:{url:'https://cliente.com.br/',campo,trecho:termo,
+      coletadoEm:new Date(a.agora()).toISOString(),sha256:'a'.repeat(64)}});
+  }
+  a.sqlite.prepare('UPDATE rank_resultados SET payload = ? WHERE chave = ?').run(JSON.stringify(job),chave);
+  const r=await a.inicial();
+  for (const termo of ['Produtos com até 70%OFF','Produtos de cuidado corporal','II Encontro de Gestão de Pessoas'])
+    assert.equal(r.candidatos.find(c=>c.termo===termo)?.tipo,'tema');
+  assert.equal(r.candidatos.find(c=>c.termo==='Produtos especiais')?.tipo,'produto');
+  assert.equal(r.candidatos.some(c=>c.termo==='Corpo Leia mais'),false);
+  assert.equal(a.coletas(),1);assert.equal(a.creditos(),0);
+});
+
+test('site inicialmente indisponível pode ser relido após intervalo sem repetir a cada abertura',async t=>{
+  let vezes=0;
+  const a=ambiente(t,{coletar:(d,_o,relogio)=>{
+    vezes++;
+    if(vezes===1)return {dominio:d,coletadoEm:new Date(relogio.agora()).toISOString(),paginas:[],
+      falhas:[{motivo:'A página não liberou o conteúdo para esta consulta (HTTP 403).'}]};
+    return coleta(d,[TERMOS[0]],relogio.agora());
+  }});
+  const primeiro=await a.inicial();assert.equal(primeiro.candidatos.length,0);
+  assert.ok(primeiro.limites.some(l=>l.includes('HTTP 403')));
+  a.avancar(899_999);await a.inicial();assert.equal(vezes,1);
+  a.avancar(1);const retry=await a.inicial();assert.equal(vezes,2);
+  assert.ok(retry.candidatos.some(c=>c.termo===TERMOS[0]));assert.equal(a.creditos(),0);
+});
+
 test('agente usa a captura paginada validada pelo conector e não chama a fonte ao recomendar',async t=>{
   const a=ambiente(t,{termos:['Orçamento de consultoria ambiental'],fonte:{continuar:true,
     resultados:({inicio})=>Array.from({length:10},(_,i)=>
@@ -351,6 +466,21 @@ test('paginação inconsistente ou repetida conserva evidência sem contar termo
     assert.equal(r.cobertura.verificadas,1);assert.equal(r.cobertura.finalizadas,0);assert.equal(r.cobertura.pendentes,1);
     assert.equal(a.provedor.buscas.length,repetida?2:1);
   });
+});
+
+test('continuação recusada não apaga posição já encontrada nem consome outra busca',async t=>{
+  const a=ambiente(t,{termos:['Orçamento de consultoria ambiental'],fonte:{continuar:true,
+    proxima:'https://externo.com/search?start=10'}});
+  const worker=criarWorker('<title>Teste</title>',a.opcoes);
+  const post=(path,body)=>worker.fetch(request(body,{},path),a.env);
+  await post('/api/posicoes',{site:'cliente.com.br'});a.avancar(3001);
+  const rank=await (await post('/api/posicoes',{site:'cliente.com.br',continuar:true})).json();
+  assert.equal(rank.consultas[0].posicao,3);assert.equal(rank.consultas[0].concluida,true);
+  assert.equal(rank.consultas[0].interrompidaPor,'paginacao_inconsistente');
+  assert.equal(rank.cobertura.finalizadas,1);assert.equal(a.provedor.buscas.length,1);
+  const agente=await (await post('/api/agente',{site:'cliente.com.br'})).json();
+  assert.equal(agente.oportunidades[0].posicao,3);
+  assert.match(agente.oportunidades[0].evidencias.find(e=>e.tipo==='google').trecho,/Continuação não confirmada/);
 });
 
 test('mudança editorial de C++ para C# não herda posição da outra consulta ainda atual',async t=>{

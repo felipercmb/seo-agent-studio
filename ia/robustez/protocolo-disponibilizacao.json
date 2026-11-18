@@ -1,0 +1,11 @@
+{
+  "versao": 1,
+  "objetivo": "Decidir se o ajuste selecionado pode ser oferecido no botão opcional de experimentação, sem substituir a versão padrão.",
+  "condicoes": [
+    "Pelo menos três domínios reais novos com dados no teste.",
+    "Nenhuma escolha crítica antes ou depois das barreiras no candidato, nos conjuntos real e sintético.",
+    "Sem aumento de recusas e sem queda na concordância editorial total em cada conjunto, em relação à versão padrão.",
+    "Sem queda de concordância em diagnósticos reais e nos cenários sintéticos de concorrentes, acompanhamento e diretivas."
+  ],
+  "interpretacao": "Passar neste filtro não aprova uso autônomo, não comprova resultados de SEO ou retorno e não substitui revisão independente por especialista. A versão padrão não é alterada."
+}

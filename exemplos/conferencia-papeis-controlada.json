@@ -1,0 +1,69 @@
+{
+  "versao": 1,
+  "quadros": [
+    {
+      "id": "exemplo-controlado",
+      "entrada": {
+        "versao": 1,
+        "tarefa": "relacao",
+        "documento": {
+          "versao": 1,
+          "dominio": "example.com",
+          "fontes": [
+            {
+              "id": "s01",
+              "tipo": "declaracao",
+              "texto": "A secretaria escolar envia as cobranças às famílias pelo sistema.",
+              "contexto": {
+                "paginaId": "pag_7564e35420f1314a4345",
+                "url": "https://example.com/controle",
+                "tituloPagina": "Agenda",
+                "titulos": [
+                  {
+                    "nivel": 2,
+                    "texto": "Agenda"
+                  }
+                ],
+                "campo": "p",
+                "coletadoEm": "2026-11-17T00:00:00Z",
+                "sha256": "84662c4990b7f2a8cb94b11f32767cb61d1e58334182cc34ff14c22bb843681f",
+                "recortado": false,
+                "classePagina": "institucional"
+              }
+            }
+          ],
+          "unidades": [
+            {
+              "id": "u001",
+              "fonte": "s01",
+              "inicio": 0,
+              "fim": 65,
+              "texto": "A secretaria escolar envia as cobranças às famílias pelo sistema."
+            }
+          ],
+          "entradaSha256": "0641e1b78d0547911e5fa9d01a5bba343372d5179527e0a4bd1ae68fe1709b92",
+          "descartes": [],
+          "limite": "Sentença contínua e referência exata não demonstram quem exerce um papel; interpretação permanece pendente."
+        },
+        "unidade": "u001",
+        "oferta": {
+          "nome": "Agenda",
+          "natureza": "software",
+          "papel_site": "disponibiliza"
+        },
+        "quadroProposto": {
+          "estrutura": "verbal",
+          "ator": "A secretaria escolar",
+          "acao": "envia",
+          "objeto": "as cobranças às famílias pelo sistema",
+          "marcadorNominal": null
+        }
+      },
+      "classificacaoAnterior": {
+        "tipoAtor": "fornecedor",
+        "escopo": "implementacao",
+        "negada": false
+      }
+    }
+  ]
+}

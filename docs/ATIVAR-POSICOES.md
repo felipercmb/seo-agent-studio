@@ -14,6 +14,14 @@ O código padrão aceita somente uma conta gratuita compatível, ativa, sem cré
 
 ## 2. Configurar o aplicativo
 
+Para uma instalação local sem `.env`, há uma página de configuração pontual:
+
+```sh
+node scripts/configurar-fonte.mjs
+```
+
+Abra [http://127.0.0.1:8796](http://127.0.0.1:8796), cole a chave no campo local e confirme. O configurador consulta a API de conta da SerpApi, que não consome buscas, e só cria `.env` se o plano gratuito for compatível. O arquivo é privado no computador e fica fora do Git. A chave não aparece no relatório nem no chat. O configurador não substitui um `.env` existente; nesse caso, use a edição manual abaixo. Encerre o configurador com `Ctrl+C` e reinicie o aplicativo.
+
 Na pasta do projeto, copie o exemplo se ainda não existir um `.env`.
 
 macOS ou Linux:

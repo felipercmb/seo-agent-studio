@@ -1,0 +1,77 @@
+{
+  "versao": 3,
+  "congelado_em": "2026-11-15T02:28:48.317923+00:00",
+  "manifesto_sha256": "17ab9cf6c445a0dce432508c320f452b1b021746c3a0ce60993ad2c7e31d2df4",
+  "codigo_sha256": {
+    "v3/contrato_v3.py": "3a379ce1bbd45ecdc3c826a33fd5ecf4e045a5f52548713c4d52ae7db7b3c64f",
+    "v3/decodificar_v3.py": "e4e68cd46dc701f3992218bb3ad8593366e455187244a2f9f7db4a34701e2396",
+    "v3/avaliar_v3.py": "89abb7bd43ad03ba8ff5cc1f2d784669d9b3f01852b86575ef69c4470dc2d5e7",
+    "v2/contrato_v2.py": "26ecf8ad50a06621f8d47d651038236a62783424a9ebfc5c85cc95997eeef6ff",
+    "v2/decodificar.py": "f871b8435e18c22e27c9321e74524dfdec619d85dfabca62d2277380567a75f2"
+  },
+  "adaptador_sha256": "00979f614f60af92b546c4f538a48207cc846e27257ae8d7807b263373e5a2a0",
+  "candidato": {
+    "pasta": "data/ia/v3-candidato-240",
+    "passo": 240,
+    "adaptador_sha256": "00979f614f60af92b546c4f538a48207cc846e27257ae8d7807b263373e5a2a0",
+    "config_adaptador_sha256": "cecd70ffe6e326ccc141b818adc53a6e43c3133b335eafc174685db056f02fb4",
+    "validacao_sha256": "47f31f7216146cd799f4863024b9b872dcc63a995a346d4449bca474fefef861",
+    "falhas_graves": 0,
+    "ambos": 18,
+    "acao": 19,
+    "referencias": 19,
+    "total": 20
+  },
+  "candidatos": [
+    {
+      "pasta": "data/ia/v3-candidato-60",
+      "passo": 60,
+      "adaptador_sha256": "f253bf87e89216fd393e491fbc608cc66f065ab3be876b886efc61afe6ad684e",
+      "config_adaptador_sha256": "cecd70ffe6e326ccc141b818adc53a6e43c3133b335eafc174685db056f02fb4",
+      "validacao_sha256": "6f5e73612925af80bdcc416729690cc17aa741e28f9e47cfb1d82dca3160bb2b",
+      "falhas_graves": 1,
+      "ambos": 17,
+      "acao": 18,
+      "referencias": 19,
+      "total": 20
+    },
+    {
+      "pasta": "data/ia/v3-candidato-120",
+      "passo": 120,
+      "adaptador_sha256": "1be102b838e02c6bbc26432c19026dbb43a94465d4c896c2adb77324687b06d6",
+      "config_adaptador_sha256": "cecd70ffe6e326ccc141b818adc53a6e43c3133b335eafc174685db056f02fb4",
+      "validacao_sha256": "d684aba746f5189302e4ca078eda10e630f74a21cd166095ee8dd38c5769de7c",
+      "falhas_graves": 1,
+      "ambos": 14,
+      "acao": 15,
+      "referencias": 17,
+      "total": 20
+    },
+    {
+      "pasta": "data/ia/v3-candidato-240",
+      "passo": 240,
+      "adaptador_sha256": "00979f614f60af92b546c4f538a48207cc846e27257ae8d7807b263373e5a2a0",
+      "config_adaptador_sha256": "cecd70ffe6e326ccc141b818adc53a6e43c3133b335eafc174685db056f02fb4",
+      "validacao_sha256": "47f31f7216146cd799f4863024b9b872dcc63a995a346d4449bca474fefef861",
+      "falhas_graves": 0,
+      "ambos": 18,
+      "acao": 19,
+      "referencias": 19,
+      "total": 20
+    },
+    {
+      "pasta": "data/ia/v3-candidato-360",
+      "passo": 360,
+      "adaptador_sha256": "1ae50a471a8b089dbe5a17c97bae9bf583e415058c7cd83bd2b86c54e4f1d737",
+      "config_adaptador_sha256": "cecd70ffe6e326ccc141b818adc53a6e43c3133b335eafc174685db056f02fb4",
+      "validacao_sha256": "dce00ab04aaf169f3078669dfdb58d612d92489a9dd89ef57a1fe73b2583ca1a",
+      "falhas_graves": 0,
+      "ambos": 16,
+      "acao": 20,
+      "referencias": 16,
+      "total": 20
+    }
+  ],
+  "aprovado_para_clientes": false,
+  "politica": "Menos falhas graves predefinidas, depois mais acertos conjuntos, ação, referências, menor passo e ordem listada."
+}

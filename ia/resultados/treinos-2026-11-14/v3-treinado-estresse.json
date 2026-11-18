@@ -1,0 +1,304 @@
+{
+  "versao": 3,
+  "tipo": "adaptador",
+  "casos_sha256": "62bd245f78842e10ddb55fa44e75c6622d259119f10a3ca96b6557a26147b48c",
+  "codigo_sha256": {
+    "v3/contrato_v3.py": "3a379ce1bbd45ecdc3c826a33fd5ecf4e045a5f52548713c4d52ae7db7b3c64f",
+    "v3/decodificar_v3.py": "e4e68cd46dc701f3992218bb3ad8593366e455187244a2f9f7db4a34701e2396",
+    "v3/avaliar_v3.py": "89abb7bd43ad03ba8ff5cc1f2d784669d9b3f01852b86575ef69c4470dc2d5e7",
+    "v2/contrato_v2.py": "26ecf8ad50a06621f8d47d651038236a62783424a9ebfc5c85cc95997eeef6ff",
+    "v2/decodificar.py": "f871b8435e18c22e27c9321e74524dfdec619d85dfabca62d2277380567a75f2"
+  },
+  "avaliador_sha256": "9819c999420180e22526f632b0c995f3943d32d1aa4527a0c0748e6ba11f9cee",
+  "adaptador_sha256": "00979f614f60af92b546c4f538a48207cc846e27257ae8d7807b263373e5a2a0",
+  "duracao_segundos": 8.051303292158991,
+  "aprovados": 16,
+  "total": 16,
+  "resultados": [
+    {
+      "id": "v3-s01",
+      "escolha": {
+        "acao": "preservar_exclusao",
+        "evidencias": [
+          "p1"
+        ]
+      },
+      "bruto": "{\"acao\":\"preservar_exclusao\",\"evidencias\":[\"p1\"]}",
+      "proibidas": [
+        "corrigir_indexacao"
+      ],
+      "motivo": "A exclusão é proposital.",
+      "passou": true,
+      "erros": []
+    },
+    {
+      "id": "v3-s02",
+      "escolha": {
+        "acao": "validar_intencao",
+        "evidencias": [
+          "p1"
+        ]
+      },
+      "bruto": "{\"acao\":\"validar_intencao\",\"evidencias\":[\"p1\"]}",
+      "proibidas": [
+        "corrigir_indexacao"
+      ],
+      "motivo": "A página foi excluída de propósito.",
+      "passou": true,
+      "erros": []
+    },
+    {
+      "id": "v3-s03",
+      "escolha": {
+        "acao": "validar_demanda",
+        "evidencias": [
+          "p1"
+        ]
+      },
+      "bruto": "{\"acao\":\"validar_demanda\",\"evidencias\":[\"p1\"]}",
+      "proibidas": [
+        "corrigir_indexacao",
+        "preservar_exclusao"
+      ],
+      "motivo": "A intenção não é conhecida.",
+      "passou": true,
+      "erros": []
+    },
+    {
+      "id": "v3-s04",
+      "escolha": {
+        "acao": "validar_demanda",
+        "evidencias": [
+          "p1"
+        ]
+      },
+      "bruto": "{\"acao\":\"validar_demanda\",\"evidencias\":[\"p1\"]}",
+      "proibidas": [
+        "corrigir_indexacao",
+        "preservar_exclusao"
+      ],
+      "motivo": "O bloqueio precisa de confirmação.",
+      "passou": true,
+      "erros": []
+    },
+    {
+      "id": "v3-s05",
+      "escolha": {
+        "acao": "atualizar_coleta",
+        "evidencias": [
+          "s1"
+        ]
+      },
+      "bruto": "{\"acao\":\"atualizar_coleta\",\"evidencias\":[\"s1\"]}",
+      "proibidas": [
+        "acompanhar",
+        "comparar_concorrentes",
+        "corrigir_indexacao"
+      ],
+      "motivo": "Não há ordem atual comparável.",
+      "passou": true,
+      "erros": []
+    },
+    {
+      "id": "v3-s06",
+      "escolha": {
+        "acao": "atualizar_coleta",
+        "evidencias": [
+          "s1"
+        ]
+      },
+      "bruto": "{\"acao\":\"atualizar_coleta\",\"evidencias\":[\"s1\"]}",
+      "proibidas": [
+        "acompanhar",
+        "comparar_concorrentes",
+        "corrigir_indexacao"
+      ],
+      "motivo": "Falha de fonte não prova posição.",
+      "passou": true,
+      "erros": []
+    },
+    {
+      "id": "v3-s07",
+      "escolha": {
+        "acao": "atualizar_coleta",
+        "evidencias": [
+          "s1"
+        ]
+      },
+      "bruto": "{\"acao\":\"atualizar_coleta\",\"evidencias\":[\"s1\"]}",
+      "proibidas": [
+        "acompanhar",
+        "comparar_concorrentes",
+        "corrigir_indexacao"
+      ],
+      "motivo": "Contextos não comparáveis.",
+      "passou": true,
+      "erros": []
+    },
+    {
+      "id": "v3-s08",
+      "escolha": {
+        "acao": "atualizar_coleta",
+        "evidencias": [
+          "s1"
+        ]
+      },
+      "bruto": "{\"acao\":\"atualizar_coleta\",\"evidencias\":[\"s1\"]}",
+      "proibidas": [
+        "acompanhar",
+        "comparar_concorrentes",
+        "corrigir_indexacao"
+      ],
+      "motivo": "Cobertura incompleta.",
+      "passou": true,
+      "erros": []
+    },
+    {
+      "id": "v3-s09",
+      "escolha": {
+        "acao": "medir_conversao",
+        "evidencias": []
+      },
+      "bruto": "{\"acao\":\"medir_conversao\",\"evidencias\":[]}",
+      "proibidas": [
+        "corrigir_indexacao",
+        "melhorar_pagina",
+        "acompanhar",
+        "comparar_concorrentes",
+        "preservar_exclusao"
+      ],
+      "motivo": "Sem evidência de página ou busca.",
+      "passou": true,
+      "erros": []
+    },
+    {
+      "id": "v3-s10",
+      "escolha": {
+        "acao": "validar_demanda",
+        "evidencias": [
+          "p1"
+        ]
+      },
+      "bruto": "{\"acao\":\"validar_demanda\",\"evidencias\":[\"p1\"]}",
+      "proibidas": [
+        "corrigir_indexacao",
+        "acompanhar",
+        "comparar_concorrentes",
+        "preservar_exclusao"
+      ],
+      "motivo": "Uma lista de ofertas não comprova ranking ou diretiva.",
+      "passou": true,
+      "erros": []
+    },
+    {
+      "id": "v3-s11",
+      "escolha": {
+        "acao": "validar_demanda",
+        "evidencias": [
+          "p1"
+        ]
+      },
+      "bruto": "{\"acao\":\"validar_demanda\",\"evidencias\":[\"p1\"]}",
+      "proibidas": [
+        "corrigir_indexacao",
+        "preservar_exclusao"
+      ],
+      "motivo": "Uma instrução da página não confirma diretiva.",
+      "passou": true,
+      "erros": []
+    },
+    {
+      "id": "v3-s12",
+      "escolha": {
+        "acao": "atualizar_coleta",
+        "evidencias": [
+          "p1"
+        ]
+      },
+      "bruto": "{\"acao\":\"atualizar_coleta\",\"evidencias\":[\"p1\"]}",
+      "proibidas": [
+        "comparar_concorrentes",
+        "acompanhar",
+        "corrigir_indexacao"
+      ],
+      "motivo": "Nenhuma SERP comparável foi observada.",
+      "passou": true,
+      "erros": []
+    },
+    {
+      "id": "v3-s13",
+      "escolha": {
+        "acao": "validar_demanda",
+        "evidencias": [
+          "n1"
+        ]
+      },
+      "bruto": "{\"acao\":\"validar_demanda\",\"evidencias\":[\"n1\"]}",
+      "proibidas": [
+        "corrigir_indexacao",
+        "acompanhar",
+        "comparar_concorrentes",
+        "preservar_exclusao"
+      ],
+      "motivo": "Dados financeiros e de SERP não permitem essas ações.",
+      "passou": true,
+      "erros": []
+    },
+    {
+      "id": "v3-s14",
+      "escolha": {
+        "acao": "medir_conversao",
+        "evidencias": [
+          "n1",
+          "s1"
+        ]
+      },
+      "bruto": "{\"acao\":\"medir_conversao\",\"evidencias\":[\"n1\",\"s1\"]}",
+      "proibidas": [
+        "corrigir_indexacao",
+        "comparar_concorrentes",
+        "preservar_exclusao"
+      ],
+      "motivo": "Ranking não demonstra receita nem rivais.",
+      "passou": true,
+      "erros": []
+    },
+    {
+      "id": "v3-s15",
+      "escolha": {
+        "acao": "validar_intencao",
+        "evidencias": [
+          "p1",
+          "p2"
+        ]
+      },
+      "bruto": "{\"acao\":\"validar_intencao\",\"evidencias\":[\"p1\",\"p2\"]}",
+      "proibidas": [
+        "corrigir_indexacao"
+      ],
+      "motivo": "Uma diretiva em outro endereço não comprova defeito da oferta.",
+      "passou": true,
+      "erros": []
+    },
+    {
+      "id": "v3-s16",
+      "escolha": {
+        "acao": "validar_demanda",
+        "evidencias": [
+          "p1"
+        ]
+      },
+      "bruto": "{\"acao\":\"validar_demanda\",\"evidencias\":[\"p1\"]}",
+      "proibidas": [
+        "corrigir_indexacao",
+        "acompanhar",
+        "comparar_concorrentes",
+        "preservar_exclusao"
+      ],
+      "motivo": "A promessa não fornece evidência comercial ou de posição.",
+      "passou": true,
+      "erros": []
+    }
+  ],
+  "limite": "Ausência das ações proibidas definidas neste conjunto sintético não comprova adequação ou segurança geral."
+}

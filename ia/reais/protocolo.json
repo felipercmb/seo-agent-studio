@@ -1,0 +1,17 @@
+{
+  "versao": 1,
+  "rotulos": "Cheques técnicos fracos, conferidos por código e agente; não revisão de especialista.",
+  "acoes": {
+    "dominios_teste_minimos": 3,
+    "fracao_minima_acao_e_referencias": 0.8,
+    "escolhas_criticas_maximas": 0,
+    "tipos_que_exigem_um_acerto_conjunto": ["serp", "comercial", "demanda", "h1", "noindex"]
+  },
+  "comparacao": {
+    "dominios_teste_minimos": 3,
+    "fracao_minima_pares_corretos": 0.75,
+    "falsas_priorizacoes_maximas": 0,
+    "fracao_minima_acertos_com_achado": 0.5
+  },
+  "interpretacao": "Mesmo que os limiares sejam atingidos, isso só habilita experimento assistido nas tarefas medidas; não aprova uso autônomo, retorno financeiro ou capacidade geral de SEO."
+}

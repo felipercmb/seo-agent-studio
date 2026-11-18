@@ -1,0 +1,8 @@
+{
+  "train": true, "test": false, "seed": 20261120, "fine_tune_type": "lora", "optimizer": "adam",
+  "num_layers": 8, "batch_size": 1, "iters": 120, "learning_rate": 0.000003, "max_seq_length": 1536,
+  "mask_prompt": true, "grad_checkpoint": true, "steps_per_report": 20, "steps_per_eval": 40,
+  "val_batches": 8, "save_every": 40, "trust_remote_code": false, "report_to": null,
+  "resume_adapter_file": "data/ia/robustez/ciclo4-80/adapters.safetensors",
+  "lora_parameters": {"keys": ["self_attn.q_proj", "self_attn.v_proj"], "rank": 8, "scale": 20.0, "dropout": 0.0}
+}

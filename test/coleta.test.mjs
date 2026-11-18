@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict';
+import {createHash} from 'node:crypto';
 import {test} from 'node:test';
 import {coletarSite, criarPoliticaRobots, destinoPermitido, enderecoPublico, selecionarLinks, lerSitemap} from '../src/coleta.mjs';
 
@@ -96,6 +97,20 @@ test('modo busca prioriza uma página comercial e contato; modo social permanece
   const env = ambiente({paginas:{'https://empresa.com.br/':() => html(documento)}});
   const r = await coletarSite('empresa.com.br', {...env, objetivo:'busca'});
   assert.deepEqual(r.paginas.map(p=>p.url), ['https://empresa.com.br/','https://empresa.com.br/servicos','https://empresa.com.br/contato']);
+});
+
+test('âncora vazia não ocupa a vaga de uma página comercial diferente',()=>{
+  const documento='<a href="#">Serviços e produtos</a><a href="/servicos">Serviços</a><a href="/contato">Contato</a>';
+  assert.deepEqual(selecionarLinks(documento,'https://empresa.com.br/','empresa.com.br','busca'),['https://empresa.com.br/servicos','https://empresa.com.br/contato']);
+  assert.equal(destinoPermitido('https://empresa.com.br/#','empresa.com.br').href,'https://empresa.com.br/');
+  assert.equal(destinoPermitido('/#detalhe','empresa.com.br','https://empresa.com.br/'),null);
+});
+
+test('coleta conserva três documentos distintos em vez de buscar a homepage com fragmento outra vez',async()=>{
+  const env=ambiente({paginas:{'https://empresa.com.br/':()=>html('<h1>Serviços</h1><a href="#">Serviços e produtos</a><a href="/servicos">Serviços</a><a href="/contato">Contato</a>')}});
+  const r=await coletarSite('empresa.com.br',{...env,objetivo:'busca'});
+  assert.deepEqual(r.paginas.map(p=>p.url),['https://empresa.com.br/','https://empresa.com.br/servicos','https://empresa.com.br/contato']);
+  assert.ok(env.pedidos.every(p=>!p.url.endsWith('#')));
 });
 
 test('limite opcional de requisições inclui resolução DNS e impede novos acessos', async () => {
@@ -470,4 +485,49 @@ test('X-Robots-Tag nofollow impede BFS mas não muda o modo diagnóstico legado'
   assert.equal(r.paginas.length, 1);
   assert.equal(r.paginas[0].segueLinks, false);
   assert.ok(!env.pedidos.some(p => p.url.endsWith('/produtos/restrito')));
+});
+
+test('captura noindex HTTP com hash próprio e não confunde preview none com nofollow', async () => {
+  const env=ambiente({paginas:{
+    'https://empresa.com.br/':()=>new Response('<title>Empresa</title><a href="/produtos/um">Produto</a>',
+      {headers:{'content-type':'text/html','x-robots-tag':'googlebot: noindex, max-image-preview: none'}}),
+    'https://empresa.com.br/sitemap.xml':()=>xml(mapa([])),
+  }});
+  const r=await coletarSite('empresa.com.br',{...env,objetivo:'descoberta'}),p=r.paginas[0];
+  assert.equal(p.cabecalhoRobots.estado,'noindex');assert.equal(p.cabecalhoRobots.escopo,'googlebot');
+  assert.equal(p.cabecalhoRobots.sha256,createHash('sha256').update('googlebot: noindex, max-image-preview: none').digest('hex'));
+  assert.equal(p.segueLinks,true);assert.ok(env.pedidos.some(x=>x.url.endsWith('/produtos/um')));
+});
+
+test('descoberta preserva páginas de operação e termos comerciais dentro dos primeiros links do site',()=>{
+  const catalogo=Array.from({length:10},(_,i)=>'<a href="/servico-'+i+'/opcao">Serviço '+i+'</a>').join('');
+  const outros='<a href="/privacidade">Privacidade</a><a href="/termos-de-contratacao" rel="nofollow">Não seguir</a>'+
+    '<a href="/como-funciona">Como funciona</a><a href="/static/termos-e-condicoes/#TERMOS">Termos de uso</a>'+
+    '<a href="/login/termos-de-uso#compra">Área restrita</a><a href="https://fora.com/termos-de-uso#compra">Externo</a>';
+  const links=selecionarLinks(catalogo+outros,'https://empresa.com.br/','empresa.com.br','descoberta')
+    .map(u=>new URL(u).pathname);
+  assert.deepEqual(links.slice(0,5),[
+    '/servico-0/opcao','/servico-1/opcao','/como-funciona','/servico-2/opcao','/static/termos-e-condicoes/'
+  ]);
+  assert.ok(!links.some(x=>/privacidade|login|contratacao/.test(x)));
+  assert.equal(links.length,12);
+  assert.deepEqual(selecionarLinks('<a href="/termos-de-uso#compra">Termos</a>',
+    'https://empresa.com.br/','empresa.com.br','diagnostico'),[]);
+});
+
+test('sitemap com declaração de estilo usa documentos e nunca consulta o recurso de apresentação',async()=>{
+  const env=ambiente({robots:()=>txt('User-agent: *\nAllow: /\nSitemap: https://empresa.com.br/indice.xml'),paginas:{
+    'https://empresa.com.br/':()=>html('<title>Empresa</title>'),
+    'https://empresa.com.br/indice.xml':()=>xml('<?xml version="1.0" encoding="UTF-8"?>'+
+      '<?xml-stylesheet type="text/xsl" href="https://empresa.com.br/mapa.xsl"?>'+
+      '<sitemapindex><sitemap><loc>https://empresa.com.br/post-sitemap.xml</loc></sitemap>'+
+      '<sitemap><loc>https://empresa.com.br/page-sitemap.xml</loc></sitemap></sitemapindex>'),
+    'https://empresa.com.br/page-sitemap.xml':()=>xml(mapa(['/servicos/consultoria'])),
+  }});
+  const r=await coletarSite('empresa.com.br',{...env,objetivo:'descoberta'});
+  assert.equal(r.cobertura.sitemapsLidos,2);
+  assert.ok(r.paginas.some(x=>x.url.endsWith('/servicos/consultoria')));
+  assert.ok(!env.pedidos.some(x=>/mapa\.xsl|post-sitemap\.xml/u.test(x.url)));
+  assert.throws(()=>lerSitemap('<urlset><url><loc><?xml-stylesheet href="x"?>https://empresa.com.br/servicos</loc></url></urlset>',
+    'https://empresa.com.br/','empresa.com.br'));
 });

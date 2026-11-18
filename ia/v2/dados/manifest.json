@@ -1,0 +1,72 @@
+{
+  "arquivos": {
+    "casos-test.jsonl": {
+      "bytes": 27040,
+      "sha256": "4044c89f020398b60cf81fbc434bbe5101a299b2e26e969d3c8eac012f55bacf"
+    },
+    "casos-train.jsonl": {
+      "bytes": 316290,
+      "sha256": "7b0f4db4e0978367a129700dc1cd9cce3eff0deddf2e6dcd92f19dc493d4a8a6"
+    },
+    "casos-valid.jsonl": {
+      "bytes": 12418,
+      "sha256": "10edbec40ad6fcec6c95c606c59686d0e75d46b1c86eb377e31e2597674d8842"
+    },
+    "desenvolvimento/train.jsonl": {
+      "bytes": 540562,
+      "sha256": "334fa0a54e4963c1a8d57126e3be350f798442fe0757276a6835a2cbc86b184e"
+    },
+    "desenvolvimento/valid.jsonl": {
+      "bytes": 22042,
+      "sha256": "00d15f88532fcb2367db92eff036546968d10947c597b063be368e2a6e9eed5c"
+    },
+    "holdout/test.jsonl": {
+      "bytes": 46640,
+      "sha256": "1217f8979ea1ca75012f5f7fc820c8148ce73770039a2b5aa93ce6ab6e9c2cad"
+    }
+  },
+  "contagens": {
+    "test": 32,
+    "train": 368,
+    "valid": 16
+  },
+  "familias": {
+    "test": 32,
+    "train": 80,
+    "valid": 16
+  },
+  "origem": "Casos fictícios gerados localmente; nenhum dado de cliente e nenhuma revisão de especialista.",
+  "ressalva": "Treino, validação e teste têm autoria comum e compartilham vocabulário e conceitos; resultados não provam generalização real.",
+  "seed": 20261114,
+  "separacao": "Famílias e setores novos separados por split. Todo o corpus v1, inclusive seu teste anterior conhecido, só entra em treino.",
+  "setores": {
+    "test": [
+      "conserto de relógios",
+      "aulas de cerâmica",
+      "limpeza de piscinas",
+      "instalação de persianas"
+    ],
+    "train": [
+      "aluguel de equipamentos",
+      "reparo de instrumentos",
+      "serviço de jardinagem",
+      "buffet de eventos",
+      "aulas de idiomas",
+      "lavagem de estofados",
+      "fotografia comercial",
+      "marcenaria sob medida",
+      "manutenção de computadores",
+      "pintura residencial",
+      "desenvolvimento de sites",
+      "locação de bicicletas"
+    ],
+    "valid": [
+      "encadernação artesanal",
+      "reparo de barcos",
+      "aluguel de palcos",
+      "costura de uniformes"
+    ]
+  },
+  "teste": "Novo, reservado antes do treino e não usado para escolher configuração ou checkpoint.",
+  "versao": 2
+}

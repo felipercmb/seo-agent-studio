@@ -1,0 +1,43 @@
+{
+  "arquivos": {
+    "casos-test.jsonl": {
+      "bytes": 18721,
+      "sha256": "060d8457bdf2f72b002db5e151fbe5886a5667213bd085ff325c0eadd75d67c8"
+    },
+    "casos-train.jsonl": {
+      "bytes": 470826,
+      "sha256": "776c06ee76eaa020d81a00411a25c2d8843bcb9ae7f89c6693b0a8be4d387c67"
+    },
+    "casos-valid.jsonl": {
+      "bytes": 12453,
+      "sha256": "8c246fd9a0d802458403af90321dfc5c792f85d2f2ad8f5aade08108a9de6aa0"
+    },
+    "desenvolvimento/train.jsonl": {
+      "bytes": 950424,
+      "sha256": "69310b15f7df6f44c8c82ef351ff8d1f168d2f50f5466d335d17ce17aeb7d20d"
+    },
+    "desenvolvimento/valid.jsonl": {
+      "bytes": 29849,
+      "sha256": "caeea12188eeb6bae00721d9c1a8a9970c72e57b1fa8a360ebb15fd8e7fdd56a"
+    },
+    "holdout/test.jsonl": {
+      "bytes": 44855,
+      "sha256": "053a79d05be6190e692490d00292cd064f7de51ba9765a0f6601e7ec59ba8126"
+    }
+  },
+  "contagens": {
+    "test": 30,
+    "train": 590,
+    "valid": 20
+  },
+  "familias": {
+    "test": 30,
+    "train": 175,
+    "valid": 20
+  },
+  "limites": "Mesma autoria, vocabulário e hipóteses editoriais; não mede eficácia ou receita real.",
+  "origem": "Casos fictícios locais sem dados de clientes ou revisão especializada.",
+  "seed": 20261116,
+  "separacao": "Todos os conjuntos e contraprovas v2 já observados foram promovidos ao treino v3. Validação e teste v3 são novas famílias.",
+  "versao": 3
+}

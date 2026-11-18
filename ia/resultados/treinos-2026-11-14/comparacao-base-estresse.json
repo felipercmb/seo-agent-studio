@@ -1,0 +1,266 @@
+{
+  "tipo": "base",
+  "casos_sha256": "3e6f79fd061e8776b91bd25c58452d5a5d10077b078d85fd8de5b61ce7b9da93",
+  "codigo_sha256": {
+    "comparacao/contrato.py": "50c93c0a256b14d7d24d86315d3d6fb038b77e56b3723de3bbca4c2368df0034",
+    "comparacao/avaliar.py": "513850d64c1abf69af7cb7bf8f9d9f534b2acb3d95581c18743d8166cc0168bb",
+    "v2/decodificar.py": "f871b8435e18c22e27c9321e74524dfdec619d85dfabca62d2277380567a75f2"
+  },
+  "avaliador_sha256": "7793b25300dab93979ce0a85c4350adf69cfc4b0e4582c224751a14635c34a52",
+  "adaptador_sha256": null,
+  "duracao_segundos": 8.824800208210945,
+  "metricas": {
+    "acertos": 4,
+    "total": 16,
+    "pares_corretos": 0,
+    "total_pares": 8,
+    "falsas_priorizacoes": 8,
+    "sem_base_total": 8
+  },
+  "resultados": [
+    {
+      "id": "estresse-0-0",
+      "par": "estresse-0",
+      "classe": "priorizar",
+      "esperado": {
+        "escolha": "a"
+      },
+      "saida": {
+        "escolha": "a"
+      },
+      "bruto": "{\"escolha\":\"a\"}",
+      "erro": null,
+      "correto": true,
+      "priorizou_sem_base": false
+    },
+    {
+      "id": "estresse-0-1",
+      "par": "estresse-0",
+      "classe": "priorizar",
+      "esperado": {
+        "escolha": "b"
+      },
+      "saida": {
+        "escolha": "a"
+      },
+      "bruto": "{\"escolha\":\"a\"}",
+      "erro": null,
+      "correto": false,
+      "priorizou_sem_base": false
+    },
+    {
+      "id": "estresse-1-0",
+      "par": "estresse-1",
+      "classe": "priorizar",
+      "esperado": {
+        "escolha": "a"
+      },
+      "saida": {
+        "escolha": "a"
+      },
+      "bruto": "{\"escolha\":\"a\"}",
+      "erro": null,
+      "correto": true,
+      "priorizou_sem_base": false
+    },
+    {
+      "id": "estresse-1-1",
+      "par": "estresse-1",
+      "classe": "priorizar",
+      "esperado": {
+        "escolha": "b"
+      },
+      "saida": {
+        "escolha": "a"
+      },
+      "bruto": "{\"escolha\":\"a\"}",
+      "erro": null,
+      "correto": false,
+      "priorizou_sem_base": false
+    },
+    {
+      "id": "estresse-2-0",
+      "par": "estresse-2",
+      "classe": "priorizar",
+      "esperado": {
+        "escolha": "a"
+      },
+      "saida": {
+        "escolha": "a"
+      },
+      "bruto": "{\"escolha\":\"a\"}",
+      "erro": null,
+      "correto": true,
+      "priorizou_sem_base": false
+    },
+    {
+      "id": "estresse-2-1",
+      "par": "estresse-2",
+      "classe": "priorizar",
+      "esperado": {
+        "escolha": "b"
+      },
+      "saida": {
+        "escolha": "a"
+      },
+      "bruto": "{\"escolha\":\"a\"}",
+      "erro": null,
+      "correto": false,
+      "priorizou_sem_base": false
+    },
+    {
+      "id": "estresse-3-0",
+      "par": "estresse-3",
+      "classe": "priorizar",
+      "esperado": {
+        "escolha": "a"
+      },
+      "saida": {
+        "escolha": "a"
+      },
+      "bruto": "{\"escolha\":\"a\"}",
+      "erro": null,
+      "correto": true,
+      "priorizou_sem_base": false
+    },
+    {
+      "id": "estresse-3-1",
+      "par": "estresse-3",
+      "classe": "priorizar",
+      "esperado": {
+        "escolha": "b"
+      },
+      "saida": {
+        "escolha": "a"
+      },
+      "bruto": "{\"escolha\":\"a\"}",
+      "erro": null,
+      "correto": false,
+      "priorizou_sem_base": false
+    },
+    {
+      "id": "estresse-4-0",
+      "par": "estresse-4",
+      "classe": "insuficiente",
+      "esperado": {
+        "escolha": "insuficiente"
+      },
+      "saida": {
+        "escolha": "a"
+      },
+      "bruto": "{\"escolha\":\"a\"}",
+      "erro": null,
+      "correto": false,
+      "priorizou_sem_base": true
+    },
+    {
+      "id": "estresse-4-1",
+      "par": "estresse-4",
+      "classe": "insuficiente",
+      "esperado": {
+        "escolha": "insuficiente"
+      },
+      "saida": {
+        "escolha": "a"
+      },
+      "bruto": "{\"escolha\":\"a\"}",
+      "erro": null,
+      "correto": false,
+      "priorizou_sem_base": true
+    },
+    {
+      "id": "estresse-5-0",
+      "par": "estresse-5",
+      "classe": "insuficiente",
+      "esperado": {
+        "escolha": "insuficiente"
+      },
+      "saida": {
+        "escolha": "a"
+      },
+      "bruto": "{\"escolha\":\"a\"}",
+      "erro": null,
+      "correto": false,
+      "priorizou_sem_base": true
+    },
+    {
+      "id": "estresse-5-1",
+      "par": "estresse-5",
+      "classe": "insuficiente",
+      "esperado": {
+        "escolha": "insuficiente"
+      },
+      "saida": {
+        "escolha": "a"
+      },
+      "bruto": "{\"escolha\":\"a\"}",
+      "erro": null,
+      "correto": false,
+      "priorizou_sem_base": true
+    },
+    {
+      "id": "estresse-6-0",
+      "par": "estresse-6",
+      "classe": "insuficiente",
+      "esperado": {
+        "escolha": "insuficiente"
+      },
+      "saida": {
+        "escolha": "a"
+      },
+      "bruto": "{\"escolha\":\"a\"}",
+      "erro": null,
+      "correto": false,
+      "priorizou_sem_base": true
+    },
+    {
+      "id": "estresse-6-1",
+      "par": "estresse-6",
+      "classe": "insuficiente",
+      "esperado": {
+        "escolha": "insuficiente"
+      },
+      "saida": {
+        "escolha": "a"
+      },
+      "bruto": "{\"escolha\":\"a\"}",
+      "erro": null,
+      "correto": false,
+      "priorizou_sem_base": true
+    },
+    {
+      "id": "estresse-7-0",
+      "par": "estresse-7",
+      "classe": "insuficiente",
+      "esperado": {
+        "escolha": "insuficiente"
+      },
+      "saida": {
+        "escolha": "a"
+      },
+      "bruto": "{\"escolha\":\"a\"}",
+      "erro": null,
+      "correto": false,
+      "priorizou_sem_base": true
+    },
+    {
+      "id": "estresse-7-1",
+      "par": "estresse-7",
+      "classe": "insuficiente",
+      "esperado": {
+        "escolha": "insuficiente"
+      },
+      "saida": {
+        "escolha": "a"
+      },
+      "bruto": "{\"escolha\":\"a\"}",
+      "erro": null,
+      "correto": false,
+      "priorizou_sem_base": true
+    }
+  ],
+  "limites": [
+    "Casos sintéticos, sem revisão especializada.",
+    "Os alvos são julgamentos editoriais; a métrica não comprova retorno."
+  ]
+}

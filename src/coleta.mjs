@@ -1,5 +1,6 @@
 import {parse} from 'parse5';
 import {normalizarSite} from './consulta.mjs';
+import {metaTemNofollow,cabecalhoPedeNaoSeguir,classificarCabecalhoRobots} from './robots-diretivas.mjs';
 
 const PRODUTO = 'ConsultaVisibilidade';
 const AGENTE = PRODUTO + '/1.0 (diagnostico publico de paginas)';
@@ -81,6 +82,9 @@ export function destinoPermitido(valor, dominio, base) {
   let caminho;
   try { caminho = decodeURIComponent(url.pathname); } catch { return null; }
   if (CAMINHO_SENSIVEL.test(caminho) || /[\u0000-\u001f\\]/.test(caminho)) return null;
+  // An empty fragment is never sent in the HTTP request. Treat / and /# as
+  // one document so navigation placeholders cannot spend another page slot.
+  url.hash = '';
   return url;
 }
 
@@ -172,7 +176,7 @@ function seguirLinks(raiz) {
   while (pilha.length && n++ < 25000) {
     const no = pilha.pop(), a = atributos(no);
     if (no.tagName === 'meta' && /^(?:robots|ConsultaVisibilidade)$/i.test(a.name || '') &&
-        /(?:^|[\s,])(?:nofollow|none)(?:$|[\s,])/i.test(a.content || '')) return false;
+        metaTemNofollow(a.content)) return false;
     if (!['script', 'style', 'template'].includes(no.tagName)) pilha.push(...(no.childNodes || []));
   }
   return true;
@@ -193,6 +197,25 @@ function diversificarLinks(links) {
   return saida;
 }
 
+const ROTA_OPERACAO=/(?:^|\/)(?:como-funciona|how-it-works|sobre(?:-nos)?|quem-somos|about(?:-us)?)(?:\/|$)/u;
+const ROTA_PRECOS=/(?:^|\/)(?:planos(?:-precos|-e-precos)?|precos|tarifas|pricing)(?:\/|$)/u;
+const ROTA_TERMOS_COMERCIAIS=/(?:^|\/)(?:termos(?:-de-(?:uso|contratacao)|-uso|-comerciais|-e-condicoes)|terms-of-(?:use|service)|politica-de-compra)(?:\/|$)/u;
+function classeDaRotaDeNegocio(url){
+  const caminho=decodeURIComponent(url.pathname).normalize('NFD').replace(/\p{M}/gu,'').toLowerCase();
+  if(ROTA_TERMOS_COMERCIAIS.test(caminho))return 'termos_comerciais';
+  if(ROTA_OPERACAO.test(caminho))return 'como_funciona';
+  if(ROTA_PRECOS.test(caminho))return 'planos_e_precos';
+  return null;
+}
+function preservarRotasDeNegocio(links){
+  const ordenados=diversificarLinks(links);
+  for(const [classe,posicao] of [['como_funciona',2],['planos_e_precos',3],['termos_comerciais',4]]){
+    const i=ordenados.findIndex(l=>l.classe===classe);
+    if(i>posicao)ordenados.splice(posicao,0,...ordenados.splice(i,1));
+  }
+  return ordenados.slice(0,200).map(l=>l.url);
+}
+
 export function selecionarLinks(html, base, dominio, objetivo = 'diagnostico') {
   const raiz = parse(html), pilha = [raiz], vistos = new Set([new URL(base).href]);
   if (objetivo === 'descoberta' && !seguirLinks(raiz)) return [];
@@ -202,22 +225,28 @@ export function selecionarLinks(html, base, dominio, objetivo = 'diagnostico') {
     const no = pilha.pop(), a = atributos(no);
     if ('hidden' in a || a['aria-hidden'] === 'true' || /(?:display\s*:\s*none|visibility\s*:\s*hidden)/i.test(a.style || '')) continue;
     if (no.tagName === 'a' && a.href && !('download' in a) && !/(?:^|\s)nofollow(?:\s|$)/i.test(a.rel || '')) {
-      const url = destinoPermitido(a.href, dominio, base);
+      let url = destinoPermitido(a.href, dominio, base);
+      if(!url&&objetivo==='descoberta'&&a.href.includes('#')){
+        const candidata=destinoPermitido(a.href.split('#',1)[0],dominio,base);
+        if(candidata&&classeDaRotaDeNegocio(candidata)==='termos_comerciais')url=candidata;
+      }
       if (url && !vistos.has(url.href) && !RECURSO.test(url.pathname)) {
         vistos.add(url.href);
         const pistas = (decodeURIComponent(url.pathname) + ' ' + textoNo(no)).normalize('NFD').replace(/\p{M}/gu, '').toLowerCase();
+        const classe=objetivo==='descoberta'?classeDaRotaDeNegocio(url):null;
         const peso = objetivo === 'descoberta'
-          ? /(?:privacidade|privacy|termos-de-uso|terms|cookies)/.test(pistas) ? 0 : /servic|soluco|produt|catalog|oferta|imoveis|apartament|empreendimento|artista|shows?|contrata/.test(pistas) ? 4 : /contato|contact/.test(pistas) ? 2 : 1
+          ? classe==='termos_comerciais'?1:classe?2:
+            /(?:privacidade|privacy|termos-de-uso|terms|cookies)/.test(pistas) ? 0 : /servic|soluco|produt|catalog|oferta|imoveis|apartament|empreendimento|artista|shows?|contrata/.test(pistas) ? 4 : /contato|contact/.test(pistas) ? 2 : 1
           : objetivo === 'busca'
           ? /servic|soluco|produt|catalog|oferta|imoveis|apartament|empreendimento/.test(pistas) ? 3 : /contato|contact|fale\s*conosco|atendimento/.test(pistas) ? 2 : /sobre|quem\s*somos|about/.test(pistas) ? 1 : 0
           : /contato|contact|fale\s*conosco|atendimento/.test(pistas) ? 3 : /sobre|quem\s*somos|about/.test(pistas) ? 2 : /servic|soluco/.test(pistas) ? 1 : 0;
-        if (peso) links.push({url: url.href, peso, ordem: links.length});
+        if (peso) links.push({url: url.href, peso, ordem: links.length, classe});
       }
     }
     if (!['script', 'style', 'template'].includes(no.tagName)) pilha.push(...(no.childNodes || []).slice().reverse());
   }
   const ordenados = links.sort((a, b) => b.peso - a.peso || a.ordem - b.ordem);
-  if (objetivo === 'descoberta') return diversificarLinks(ordenados).slice(0, 200).map(l => l.url);
+  if (objetivo === 'descoberta') return preservarRotasDeNegocio(ordenados);
   if (objetivo === 'busca') {
     const escolhidos = [ordenados.find(l => l.peso === 3), ordenados.find(l => l.peso === 2)].filter(Boolean);
     for (const link of ordenados) if (escolhidos.length < 2 && !escolhidos.includes(link)) escolhidos.push(link);
@@ -265,7 +294,10 @@ function textoCorpo(corpo, tipo) {
 // resources, rejects DTDs, and accepts loc only at the documented tree paths.
 export function lerSitemap(texto, base, dominio) {
   if (typeof texto !== 'string' || texto.length > MAX_XML || /<!DOCTYPE|<!ENTITY|<!\[/i.test(texto)) throw falha('O sitemap não é um XML simples permitido.');
-  const fonte = texto.replace(/^\uFEFF/, '').replace(/^\s*<\?xml\s[^?]*\?>/i, '').replace(/<!--[\s\S]*?-->/g, '');
+  const fonte = texto.replace(/^\uFEFF/, '').replace(/^\s*<\?xml\s[^?]*\?>/i, '')
+    .replace(/<!--[\s\S]*?-->/g, '')
+    // Ignore sitemap style declarations without accessing their resources.
+    .replace(/^\s*<\?xml-stylesheet\s+[^?]{1,2048}\?>/i, '');
   const pilha = [], urls = [], tokens = fonte.match(/<[^>]*>|[^<]+/g) || [];
   let raiz = null, terminou = false, local = '', entradas = 0;
   if (tokens.join('') !== fonte) throw falha('O sitemap não tem uma estrutura XML válida.');
@@ -309,6 +341,16 @@ export function lerSitemap(texto, base, dominio) {
   }
   if (!raiz || !terminou || pilha.length) throw falha('O sitemap não tem uma estrutura XML válida.');
   return {tipo: raiz, urls: [...new Set(urls)].slice(0, 200), limitada: entradas > 200};
+}
+
+function ordenarIndicesDeSitemap(urls) {
+  function tipo(url) {
+    const nome = new URL(url).pathname.split('/').at(-1).toLowerCase();
+    if (/^(?:page|pages|pagina|paginas|product|products|produto|produtos|services?|servicos?)[-_]sitemap/u.test(nome)) return 0;
+    if (/^(?:post|author|category|tag|categoria|autor|blog)[-_]sitemap/u.test(nome)) return 2;
+    return 1;
+  }
+  return [...urls].sort((a,b)=>tipo(a)-tipo(b));
 }
 
 export async function coletarSite(valor, opcoes = {}) {
@@ -479,8 +521,9 @@ export async function coletarSite(valor, opcoes = {}) {
           throw falha(modo === 'robots' ? 'Não foi possível confirmar a permissão de leitura em robots.txt.' : modo === 'xml' ? 'O endereço não retornou um sitemap XML que pudesse ser analisado.' : 'O endereço não retornou uma página HTML que pudesse ser analisada.');
         }
         const corpo = await lerCorpo(resposta, modo === 'robots' ? MAX_ROBOTS : modo === 'xml' ? MAX_XML : MAX_HTML, signal);
+        const cabecalho=resposta.headers.get('x-robots-tag');
         return {status: resposta.status, corpo, tipo, url: url.href,
-          segueLinks: !/(?:^|[\s,:])(?:nofollow|none)(?:$|[\s,])/i.test(resposta.headers.get('x-robots-tag') || '')};
+          cabecalhoRobots:classificarCabecalhoRobots(cabecalho), segueLinks:!cabecalhoPedeNaoSeguir(cabecalho)};
       });
       if (!('redireciona' in resultado)) return resultado;
       const proxima = resultado.redireciona && destinoPermitido(resultado.redireciona, dominio, url);
@@ -497,7 +540,12 @@ export async function coletarSite(valor, opcoes = {}) {
       const html = textoCorpo(r.corpo, r.tipo);
       const hash = await crypto.subtle.digest('SHA-256', r.corpo);
       const sha256 = Array.from(new Uint8Array(hash), v => v.toString(16).padStart(2, '0')).join('');
-      paginas.push({url: r.url, html, status: r.status, coletadoEm: dataAtual(), bytes: r.corpo.length, sha256,
+      const cabecalhoRobots={...r.cabecalhoRobots};
+      if(['noindex','sem_noindex'].includes(cabecalhoRobots.estado)){
+        const h=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(cabecalhoRobots.valor));
+        cabecalhoRobots.sha256=Array.from(new Uint8Array(h),v=>v.toString(16).padStart(2,'0')).join('');
+      }
+      paginas.push({url: r.url, html, status: r.status, coletadoEm: dataAtual(), bytes: r.corpo.length, sha256,cabecalhoRobots,
         ...(descoberta ? {segueLinks: r.segueLinks} : {})});
     } catch (erro) {
       falhas.push({url, motivo: erro instanceof FalhaColeta ? erro.message : 'Não foi possível ler esta página agora. O site pode limitar consultas automáticas.'});
@@ -538,7 +586,7 @@ export async function coletarSite(valor, opcoes = {}) {
         const mapa = lerSitemap(textoCorpo(r.corpo, r.tipo), r.url, dominio);
         xmlLidos++;
         limitada ||= mapa.limitada;
-        if (mapa.tipo === 'sitemapindex') mapas.unshift(...mapa.urls);
+        if (mapa.tipo === 'sitemapindex') mapas.unshift(...ordenarIndicesDeSitemap(mapa.urls));
         else enfileirar(mapa.urls);
       } catch (erro) {
         falhas.push({url: endereco, motivo: erro instanceof FalhaColeta ? erro.message : 'Não foi possível ler este sitemap.'});

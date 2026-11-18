@@ -1,0 +1,72 @@
+{
+  "estado": "concluido",
+  "inicio": "2026-11-15T02:09:39.017780+00:00",
+  "modelo": "mlx-community/Qwen2.5-1.5B-Instruct-4bit",
+  "revisao": "8b403126fc14f14cfc99bb4cfa72ecbc129ea677",
+  "plataforma": "macOS-26.5.2-arm64-arm-64bit-Mach-O",
+  "python": "3.14.6",
+  "versoes": {
+    "mlx": "0.32.4",
+    "mlx-lm": "0.32.2",
+    "transformers": "5.23.0",
+    "tokenizers": "0.23.3",
+    "huggingface-hub": "2.4.0"
+  },
+  "dados_manifest_sha256": "92a479a007ebcb5ff14d078090a9f0ddcda467b10be834b51d7724a11cfd364f",
+  "config_fonte_sha256": "95c4488c8c3fd1f1140e02f6509e5dc631f83da47810df648f9348bfcda267d0",
+  "treinador_sha256": "2415e4016b10df02029285264c3ed8e057ce8e7d1439e74043c48516d3a4f433",
+  "dados": {
+    "train": "81c40f771902f2bbc306970ae3aca160e17d34948cf9701a689c32bc43eea637",
+    "valid": "a4f52991555060bb25c52f2638acdf15976361a1590433166e17e366a920ad96"
+  },
+  "tamanhos": {
+    "train": {
+      "casos": 216,
+      "max_tokens": 309
+    },
+    "valid": {
+      "casos": 12,
+      "max_tokens": 307
+    }
+  },
+  "config": {
+    "train": true,
+    "test": false,
+    "seed": 4203,
+    "fine_tune_type": "lora",
+    "optimizer": "adam",
+    "num_layers": 8,
+    "batch_size": 1,
+    "iters": 240,
+    "learning_rate": 5e-05,
+    "max_seq_length": 1024,
+    "mask_prompt": true,
+    "grad_checkpoint": true,
+    "steps_per_report": 20,
+    "steps_per_eval": 60,
+    "val_batches": -1,
+    "save_every": 60,
+    "trust_remote_code": false,
+    "report_to": null,
+    "lora_parameters": {
+      "keys": [
+        "self_attn.q_proj",
+        "self_attn.v_proj"
+      ],
+      "rank": 8,
+      "scale": 20.0,
+      "dropout": 0.0
+    }
+  },
+  "duracao_segundos": 219.4422673326917,
+  "fim": "2026-11-15T02:13:18.476614+00:00",
+  "codigo_saida": 0,
+  "max_rss_bytes": 1083097088,
+  "checkpoints": {
+    "0000060_adapters.safetensors": "72088f5cef3c08673d10a388a0dde7388391c30797480d8e154de40e19402092",
+    "0000120_adapters.safetensors": "1df6806b54a915d2a060550e49525637a10deb339a97a3f1e8b1e25052a13a52",
+    "0000180_adapters.safetensors": "ace8cb28a63fe706b3722dbbdf12ae5aaa1d3ae60c715af54aef89861a470085",
+    "0000240_adapters.safetensors": "c15baa91c586ab07046d85f40c96e1d38bff29b6a3cd88342ee599e32afb0360",
+    "adapters.safetensors": "c15baa91c586ab07046d85f40c96e1d38bff29b6a3cd88342ee599e32afb0360"
+  }
+}

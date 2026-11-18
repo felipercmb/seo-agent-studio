@@ -210,6 +210,29 @@ test('URLs públicas não carregam credenciais nem devolvem a chave', async () =
   }
 });
 
+test('rejeita página inteira quando um resultado usa redirecionamento opaco do Google', async () => {
+  for (const link of [
+    'https://google.com/goto?source=example',
+    'https://www.google.com.br/goto/opaque',
+    'https://www.google.co.uk/url?source=example',
+    'https://google.de/%67oto?source=example',
+    'https://google.com/%2567oto?source=example',
+  ]) {
+    const search = serp();
+    search.organic_results[0].link = link;
+    // The target appears elsewhere, but the competitor list and ranking
+    // cannot be trusted if another result's destination is unknown.
+    await assert.rejects(consultarGoogle(entrada, transporte({search})), codigo('indisponivel'));
+  }
+  for (const link of ['https://www.google.com/about/', 'https://google.com.evil.net/goto',
+    'https://rival.com.br/goto']) {
+    const search = serp(); search.organic_results[0].link = link;
+    const resultado = await consultarGoogle(entrada, transporte({search}));
+    assert.equal(resultado.estado, 'encontrado');
+    assert.equal(resultado.posicao, 3);
+  }
+});
+
 test('erros HTTP são tipados sem refletir corpo e nunca são repetidos', async () => {
   for (const [status, esperado] of [[401, 'configuracao'], [403, 'configuracao'], [402, 'cota'], [429, 'cota'],
     [302, 'indisponivel'], [500, 'indisponivel']]) {

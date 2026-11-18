@@ -1,0 +1,79 @@
+{
+  "congelado_em": "2026-11-15T02:14:35.405223+00:00",
+  "manifesto_sha256": "92a479a007ebcb5ff14d078090a9f0ddcda467b10be834b51d7724a11cfd364f",
+  "codigo_sha256": {
+    "comparacao/contrato.py": "50c93c0a256b14d7d24d86315d3d6fb038b77e56b3723de3bbca4c2368df0034",
+    "comparacao/avaliar.py": "513850d64c1abf69af7cb7bf8f9d9f534b2acb3d95581c18743d8166cc0168bb",
+    "v2/decodificar.py": "f871b8435e18c22e27c9321e74524dfdec619d85dfabca62d2277380567a75f2"
+  },
+  "politica": "Menos falsas priorizações, depois mais pares corretos, acertos, menor passo e ordem listada.",
+  "adaptador_sha256": "c15baa91c586ab07046d85f40c96e1d38bff29b6a3cd88342ee599e32afb0360",
+  "candidato": {
+    "pasta": "data/ia/comparador-240",
+    "passo": 240,
+    "adaptador_sha256": "c15baa91c586ab07046d85f40c96e1d38bff29b6a3cd88342ee599e32afb0360",
+    "validacao_sha256": "bc66e6e8369a40ae8fd29aa4e007df1f08aae8089a98447e660b5a040cb4d69e",
+    "config_adaptador_sha256": "3ab12f420cfc53d5d17fbe3cdbce0384498741004acaeb63e9d3e6cceace2e2c",
+    "acertos": 12,
+    "total": 12,
+    "pares_corretos": 6,
+    "total_pares": 6,
+    "falsas_priorizacoes": 0,
+    "sem_base_total": 4
+  },
+  "candidatos": [
+    {
+      "pasta": "data/ia/comparador-60",
+      "passo": 60,
+      "adaptador_sha256": "72088f5cef3c08673d10a388a0dde7388391c30797480d8e154de40e19402092",
+      "validacao_sha256": "50e2a74c0c313707a205b97d915c2b8b4eeb5164c2e4e3ff1c1c03af937d463b",
+      "config_adaptador_sha256": "3ab12f420cfc53d5d17fbe3cdbce0384498741004acaeb63e9d3e6cceace2e2c",
+      "acertos": 8,
+      "total": 12,
+      "pares_corretos": 2,
+      "total_pares": 6,
+      "falsas_priorizacoes": 0,
+      "sem_base_total": 4
+    },
+    {
+      "pasta": "data/ia/comparador-120",
+      "passo": 120,
+      "adaptador_sha256": "1df6806b54a915d2a060550e49525637a10deb339a97a3f1e8b1e25052a13a52",
+      "validacao_sha256": "ef1f4f3e3e47ffbd63ef2287ac6d2055f916edaa7d7898307fb97e9cbb14fac7",
+      "config_adaptador_sha256": "3ab12f420cfc53d5d17fbe3cdbce0384498741004acaeb63e9d3e6cceace2e2c",
+      "acertos": 9,
+      "total": 12,
+      "pares_corretos": 4,
+      "total_pares": 6,
+      "falsas_priorizacoes": 2,
+      "sem_base_total": 4
+    },
+    {
+      "pasta": "data/ia/comparador-180",
+      "passo": 180,
+      "adaptador_sha256": "ace8cb28a63fe706b3722dbbdf12ae5aaa1d3ae60c715af54aef89861a470085",
+      "validacao_sha256": "13f3c7aff10852cd4bd9b546f73458e35175b1136249d9bd1ca835bfec7b08bc",
+      "config_adaptador_sha256": "3ab12f420cfc53d5d17fbe3cdbce0384498741004acaeb63e9d3e6cceace2e2c",
+      "acertos": 9,
+      "total": 12,
+      "pares_corretos": 4,
+      "total_pares": 6,
+      "falsas_priorizacoes": 3,
+      "sem_base_total": 4
+    },
+    {
+      "pasta": "data/ia/comparador-240",
+      "passo": 240,
+      "adaptador_sha256": "c15baa91c586ab07046d85f40c96e1d38bff29b6a3cd88342ee599e32afb0360",
+      "validacao_sha256": "bc66e6e8369a40ae8fd29aa4e007df1f08aae8089a98447e660b5a040cb4d69e",
+      "config_adaptador_sha256": "3ab12f420cfc53d5d17fbe3cdbce0384498741004acaeb63e9d3e6cceace2e2c",
+      "acertos": 12,
+      "total": 12,
+      "pares_corretos": 6,
+      "total_pares": 6,
+      "falsas_priorizacoes": 0,
+      "sem_base_total": 4
+    }
+  ],
+  "aprovado_para_clientes": false
+}

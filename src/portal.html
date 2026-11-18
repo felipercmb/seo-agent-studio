@@ -210,13 +210,17 @@ h1{max-width:17ch;font-size:clamp(2.7rem,5.2vw,4.8rem)}
 .oportunidade .evidencia{margin:.65rem 0}
 .agente h3+ul{padding-left:1.3rem}
 .agente-carregando{margin:.7rem 0;color:var(--muted)}
+.ia-local{margin:1.6rem 0;padding:1rem 1.15rem;border-left:3px solid var(--teal);background:var(--pale)}
+.ia-local h3{margin:.2rem 0 .5rem}.ia-local p{margin:.5rem 0}.ia-local ol{padding-left:1.3rem}
+.ia-local li{padding:.55rem 0}.ia-local code{display:block;overflow-wrap:anywhere;font-size:.75rem}
+.ia-acoes{display:flex;flex-wrap:wrap;gap:.5rem;margin:.7rem 0}
 @media(max-width:650px){.agente{padding:1.6rem 0 2rem}.agente-frentes{grid-template-columns:1fr}.agente-filtros button{flex:1 1 8rem}}
 @media print{.agente{padding:1rem 0}.agente-frentes{display:block}.agente-frentes>li{background:white;border:1px solid #aaa;margin:.5rem 0;break-inside:avoid}.agente-filtros,.agente-carregando{display:none!important}.oportunidade{padding:.7rem 0}.oportunidade h3{font-size:13pt}.agente-resumo{font-size:9pt}}
 </style>
 </head>
 <body>
 <a class="pular" href="#busca">Ir para a consulta</a>
-<header class="cabecalho"><div class="moldura"><a class="marca" href="/"><span class="simbolo" aria-hidden="true"><i></i><i></i><i></i></span>Visibilidade Aberta</a><a href="#metodo" class="como" id="abrir-metodo">Sobre os dados</a></div></header>
+<header class="cabecalho"><div class="moldura"><a class="marca" href="/"><span class="simbolo" aria-hidden="true"><i></i><i></i><i></i></span>Visibilidade Aberta</a><!--PROJETO_LOCAL--><a href="#metodo" class="como" id="abrir-metodo">Sobre os dados</a></div></header>
 <main class="moldura">
 <section class="entrada" aria-label="Analisar um site">
 <div><div class="apresentacao"><h1>Como seu site aparece no Google?</h1><p class="lead">Descubra buscas relacionadas ao site e confira posições no Google. Veja a evidência de cada consulta e melhorias para facilitar o atendimento.</p></div>
@@ -251,6 +255,9 @@ let filtroTermos="", paginaTermos=1;
 let pedidoDiagnostico, diagnosticoAtual, dominioDiagnostico, comparacaoAtual, avisoHistorico = "";
 let agenteAtual=null, pedidoAgente=null, dominioAgente=null, timerAgente=null, revisaoAgente=0;
 let filtroAgente='todas', limiteAgente=5;
+const IA_LOCAL_HABILITADA = false;
+const IA_CANDIDATA_HABILITADA = false;
+let pedidoIA=null, relatorioIA=null, erroIA=null, executandoIA=false, revisaoIA=0, modoIA='padrao';
 const CHAVE_HISTORICO = "visibilidade-diagnostico-v1";
 
 function elem(tag, texto, classe) {
@@ -402,7 +409,8 @@ function compararLeituras(anterior, rel) {
   return {data:anterior.coletadoEm,tipo:'comparavel',itens};
 }
 
-function rotuloVerificacao(estado) {
+function rotuloVerificacao(estado, id='') {
+  if(estado==='verificado' && id==='diretiva-noindex-http')return 'Verificado no cabeçalho HTTP';
   return ({atencao:'Observação automática', verificado:'Verificado no HTML', manual:'Conferência manual', indisponivel:'Sem evidência suficiente'})[estado] || 'Conferência manual';
 }
 
@@ -411,6 +419,8 @@ function evidenciaDaAcao(v, rel) {
   const pagina = rel.paginas.find(p => p.url === v.evidencia?.url);
   bloco.append(elem('strong',v.estado === 'manual' ? 'Como conferir' : 'Evidência desta leitura'));
   if (v.evidencia?.trecho) bloco.append(elem('p',v.evidencia.trecho));
+  if (typeof v.evidencia?.valorCabecalho==='string') bloco.append(elem('code','X-Robots-Tag: '+v.evidencia.valorCabecalho));
+  if (typeof v.evidencia?.sha256Cabecalho==='string') bloco.append(elem('code','SHA-256 do cabeçalho: '+v.evidencia.sha256Cabecalho));
   if (v.evidencia?.url) bloco.append(link(v.evidencia.url,v.evidencia.url,true));
   bloco.append(elem('p','Leitura de ' + dataHora(pagina?.coletadoEm || rel.coletadoEm),'info'));
   return bloco;
@@ -477,7 +487,7 @@ function exibirDiagnostico(rel, imprimindo = false) {
     const lista = elem('ol',null,'etapas');
     for (const v of rel.acoes) {
       const item = elem('li',null,'etapa'), conteudo = elem('div');
-      conteudo.append(elem('span',rotuloVerificacao(v.estado),'etiqueta' + (v.estado === 'manual' ? ' manual' : '')),elem('h3',v.titulo));
+      conteudo.append(elem('span',rotuloVerificacao(v.estado,v.id),'etiqueta' + (v.estado === 'manual' ? ' manual' : '')),elem('h3',v.titulo));
       if (v.orientacao) conteudo.append(elem('p',v.orientacao));
       if (v.esforco) conteudo.append(elem('p','Esforço estimado: ' + v.esforco + '.','info'));
       conteudo.append(evidenciaDaAcao(v,rel));
@@ -500,8 +510,9 @@ function exibirDiagnostico(rel, imprimindo = false) {
   const lista = elem('ul',null,'verificacoes');
   for (const v of rel.verificacoes) {
     const item = elem('li');
-    item.append(elem('strong',v.titulo),elem('p',rotuloVerificacao(v.estado),'info'));
+    item.append(elem('strong',v.titulo),elem('p',rotuloVerificacao(v.estado,v.id),'info'));
     if (v.evidencia?.trecho) item.append(elem('p',v.evidencia.trecho));
+    if (typeof v.evidencia?.valorCabecalho==='string') item.append(elem('code','X-Robots-Tag: '+v.evidencia.valorCabecalho));
     if (v.evidencia?.url) item.append(link('Página observada',v.evidencia.url,true));
     lista.append(item);
   }
@@ -649,9 +660,143 @@ function filtrarOportunidades(oportunidades, filtro='todas', limite=5) {
 
 function cancelarAgente() {
   revisaoAgente++;
+  cancelarIA();
   if(timerAgente)clearTimeout(timerAgente);timerAgente=null;
   const anterior=pedidoAgente;pedidoAgente=null;if(anterior)anterior.abort();
   painelAgente.removeAttribute('aria-busy');
+}
+
+function cancelarIA() {
+  revisaoIA++;
+  const anterior=pedidoIA;pedidoIA=null;if(anterior)anterior.abort();
+  relatorioIA=null;erroIA=null;executandoIA=false;modoIA='padrao';
+}
+
+function validarRelatorioIA(rel,site) {
+  if(!rel || rel.versao!==1 || rel.estado!=='experimental' || rel.dominio!==site ||
+      !Array.isArray(rel.resultados) || !rel.resultados.length || rel.resultados.length>3 ||
+      !rel.resultados.every(r=>r && ['revisao_necessaria','recusada'].includes(r.estado) &&
+        (r.estado==='recusada' || typeof r.orientacao_padrao==='string' && typeof r.limite_padrao==='string' && Array.isArray(r.evidencias_citadas)))) {
+    throw new Error('A resposta da IA chegou incompleta.');
+  }
+  return rel;
+}
+
+async function analisarIA(site,candidata=false) {
+  if(!agenteAtual || site!==dominioAgente || pedidoIA)return;
+  const controle=new AbortController(),revisao=revisaoIA;pedidoIA=controle;executandoIA=true;erroIA=null;relatorioIA=null;modoIA=candidata?'candidata':'padrao';redesenharAgente();
+  let expirou=false;const timer=setTimeout(()=>{expirou=true;controle.abort();},185000);
+  try {
+    const resposta=await fetch(candidata?'/api/ia-candidata':'/api/ia',{method:'POST',signal:controle.signal,headers:{'Content-Type':'application/json',Accept:'application/json'},body:JSON.stringify({site})});
+    const rel=await resposta.json();if(!resposta.ok)throw new Error('A IA local não conseguiu concluir a análise.');
+    validarRelatorioIA(rel,site);
+    if(pedidoIA!==controle || site!==dominioAgente || revisao!==revisaoIA || controle.signal.aborted)return;
+    relatorioIA=rel;
+  } catch {
+    if(pedidoIA!==controle || site!==dominioAgente || revisao!==revisaoIA || controle.signal.aborted&&!expirou)return;
+    erroIA='A IA local não conseguiu concluir a análise. Verifique a instalação e tente novamente; o diagnóstico por regras continua disponível.';
+  } finally {
+    clearTimeout(timer);
+    if(pedidoIA===controle){pedidoIA=null;executandoIA=false;redesenharAgente();}
+  }
+}
+
+function detalheDiagnosticoIA(resultado,e) {
+  if(!['melhorar_pagina','confirmar_publicacao'].includes(resultado?.escolha_ia?.acao) ||
+     e?.id!=='d1' || e.tipo!=='pagina' || e.atual!==true || !/^[a-f0-9]{64}$/.test(e.sha256_pagina||''))return null;
+  const normal=v=>typeof v==='string'?v.replace(/[\p{Cc}\p{Cf}]/gu,' ').replace(/\s+/g,' ').trim().slice(0,160):'';
+  const data=v=>typeof v==='string'?Date.parse(v):NaN;
+  const itens=(Array.isArray(agenteAtual?.melhorias)?agenteAtual.melhorias:[]).filter(m=>
+    m?.paginaAlvo===e.pagina && m.sha256Pagina===e.sha256_pagina && normal(m.evidencia)===e.descricao &&
+    Number.isFinite(data(m.coletadoEm)) && data(m.coletadoEm)===data(e.observado_em));
+  return itens.length===1?itens[0]:null;
+}
+
+function termoDaEvidenciaIA(resultado,e) {
+  if(resultado?.escolha_ia?.acao!=='validar_demanda' || e?.id!=='p1' || e.tipo!=='pagina' || e.atual!==true ||
+     !/^[a-f0-9]{64}$/.test(e.sha256_pagina||''))return null;
+  const normal=v=>typeof v==='string'?v.replace(/[\p{Cc}\p{Cf}]/gu,' ').replace(/\s+/g,' ').trim().slice(0,160):'';
+  const termos=new Set();
+  for(const o of (Array.isArray(agenteAtual?.oportunidades)?agenteAtual.oportunidades:[])){
+    if(typeof o?.termo!=='string' || o.paginaAlvo!==e.pagina)continue;
+    if((Array.isArray(o.evidencias)?o.evidencias:[]).some(v=>v?.tipo==='site' && v.url===e.pagina &&
+      v.sha256===e.sha256_pagina && normal(v.trecho)===e.descricao && Number.isFinite(Date.parse(v.coletadoEm)) &&
+      Date.parse(v.coletadoEm)===Date.parse(e.observado_em)))termos.add(o.termo);
+  }
+  return termos.size===1?[...termos][0]:null;
+}
+
+function exibirIA(site) {
+  const bloco=elem('section',null,'ia-local');bloco.append(elem('h3','Análise com IA local'),
+    elem('p','Experimento: revisa até três contextos deste relatório no seu computador. Os testes ainda não demonstram confiabilidade para decisões sem revisão humana. Confira as sugestões e as evidências antes de agir.'));
+  const acoes=elem('div',null,'ia-acoes'),botao=elem('button',executandoIA&&modoIA==='padrao'?'Analisando…':'Analisar com IA','secundario');
+  botao.type='button';botao.disabled=executandoIA;botao.addEventListener('click',()=>analisarIA(site));acoes.append(botao);
+  if(typeof IA_CANDIDATA_HABILITADA!=='undefined' && IA_CANDIDATA_HABILITADA){
+    const candidata=elem('button',executandoIA&&modoIA==='candidata'?'Analisando…':'Experimentar novo ajuste','secundario');
+    candidata.type='button';candidata.disabled=executandoIA;candidata.addEventListener('click',()=>analisarIA(site,true));acoes.append(candidata);
+    bloco.append(acoes,elem('p','O novo ajuste não atingiu todos os critérios do teste e está disponível apenas para experimentação.','info'));
+  }else bloco.append(acoes);
+  if(executandoIA){const estado=elem('p','A análise pode levar alguns minutos. Nenhuma nova busca no Google é iniciada.','info');estado.setAttribute('role','status');bloco.append(estado);}
+  if(erroIA){const estado=elem('p',erroIA,'falha-diag');estado.setAttribute('role','alert');bloco.append(estado);}
+  if(relatorioIA){
+    if(modoIA==='candidata')bloco.append(elem('p','Resultado do novo ajuste em avaliação; ele não atingiu todos os critérios do teste.','nota-diagnostico'));
+    bloco.append(elem('p','As indicações usam textos padronizados e mostram quando a escolha veio de uma regra ou da IA. A revisão humana continua necessária.','info'));
+    const lista=elem('ol');
+    for(const resultado of relatorioIA.resultados){const item=elem('li');
+      if(resultado.estado==='recusada'){
+        item.append(elem('strong','Sugestão bloqueada para revisão'),elem('p','A escolha não passou pelas verificações locais. Use as evidências do diagnóstico para investigar.'));
+        for(const motivo of (Array.isArray(resultado.motivos_aplicabilidade)?resultado.motivos_aplicabilidade:[]).slice(0,4))if(typeof motivo==='string')item.append(elem('p',motivo,'info'));
+      }else{
+        item.append(elem('small',resultado.origem==='regra'?'Escolha por regra verificada':'Escolha da IA'),elem('p',resultado.orientacao_padrao),elem('p',resultado.limite_padrao,'info'));
+        if(resultado.ajustada_por_regra===true && typeof resultado.aviso==='string')item.append(elem('p',resultado.aviso,'info'));
+        for(const e of resultado.evidencias_citadas.slice(0,3)){if(!e || typeof e!=='object')continue;
+          const detalhe=elem('div',null,'evidencia');
+          detalhe.append(elem('strong',e.tipo==='pagina'?'Página observada':e.tipo==='serp'?'Consulta de busca':'Informação do negócio'));
+          if(typeof e.descricao==='string')detalhe.append(elem('p',e.descricao));
+          const termo=termoDaEvidenciaIA(resultado,e);
+          if(termo)detalhe.append(elem('p','Termo para investigar: '+termo));
+          const diagnostico=detalheDiagnosticoIA(resultado,e);
+          if(diagnostico){
+            detalhe.append(elem('strong','Como conferir este ponto'));
+            if(typeof diagnostico.orientacao==='string')detalhe.append(elem('p',diagnostico.orientacao));
+            const passos=(Array.isArray(diagnostico.passos)?diagnostico.passos:[]).filter(p=>typeof p==='string').slice(0,3);
+            if(passos.length){const lista=elem('ol');for(const passo of passos)lista.append(elem('li',passo));detalhe.append(lista);}
+          }
+          if(e.tipo==='serp' && typeof e.termo==='string')detalhe.append(elem('p','Busca: '+e.termo));
+          if(e.tipo==='serp' && e.atual===true && Number.isInteger(e.posicao) && e.posicao>=1 && e.posicao<=100){
+            detalhe.append(elem('p','Posição observada: '+e.posicao));
+            for(const rival of (Array.isArray(e.concorrentes)?e.concorrentes:[]).slice(0,2)){
+              if(!rival || !Number.isInteger(rival.posicao) || rival.posicao<1 || rival.posicao>=e.posicao || typeof rival.pagina!=='string')continue;
+              let dominio;try{const u=new URL(rival.pagina);if(!['http:','https:'].includes(u.protocol)||u.username||u.password)continue;dominio=u.hostname;}catch{continue;}
+              const linha=elem('p','Resultado anterior, posição '+rival.posicao+': ');linha.append(link(dominio,rival.pagina,true));detalhe.append(linha);
+            }
+            for(const fonte of (Array.isArray(e.fontes_serp)?e.fontes_serp:[]).slice(0,5)){
+              if(!fonte || typeof fonte.id!=='string' || !/^[a-zA-Z0-9_-]{8,128}$/.test(fonte.id) ||
+                typeof fonte.sha256!=='string' || !/^[a-f0-9]{64}$/.test(fonte.sha256))continue;
+              detalhe.append(elem('p','Captura '+fonte.id+(fonte.descricao?' — '+fonte.descricao:'')+'.','info'),elem('code','SHA-256 da captura: '+fonte.sha256));
+            }
+          }
+          if(e.tipo==='serp' && e.atual===false && e.estado_fonte==='nao_observado_recorte'){
+            for(const fonte of (Array.isArray(e.recorte_serp)?e.recorte_serp:[]).slice(0,5)){
+              if(!fonte || typeof fonte.id!=='string' || !/^[a-zA-Z0-9_-]{8,128}$/.test(fonte.id) ||
+                typeof fonte.sha256!=='string' || !/^[a-f0-9]{64}$/.test(fonte.sha256) ||
+                typeof fonte.observado_em!=='string' || !Number.isFinite(Date.parse(fonte.observado_em)))continue;
+              detalhe.append(elem('p','Página examinada: captura '+fonte.id+' — '+dataHora(fonte.observado_em)+'.','info'),
+                elem('code','SHA-256 da captura: '+fonte.sha256));
+            }
+          }
+          if(typeof e.pagina==='string')detalhe.append(link('Abrir página de origem',e.pagina,true));
+          if(typeof e.observado_em==='string')detalhe.append(elem('p','Observado em '+dataHora(e.observado_em)+'.','info'));
+          if(typeof e.sha256_pagina==='string' && /^[a-f0-9]{64}$/.test(e.sha256_pagina))detalhe.append(elem('code','SHA-256: '+e.sha256_pagina));
+          if(typeof e.valor_cabecalho==='string')detalhe.append(elem('code','X-Robots-Tag: '+e.valor_cabecalho));
+          if(typeof e.sha256_cabecalho==='string' && /^[a-f0-9]{64}$/.test(e.sha256_cabecalho))detalhe.append(elem('code','SHA-256 do cabeçalho: '+e.sha256_cabecalho));
+          item.append(detalhe);
+        }
+        if(!resultado.evidencias_citadas.length)item.append(elem('p','Esta orientação não cita uma evidência específica.','info'));
+      }lista.append(item);
+    }bloco.append(lista);
+  }
+  return bloco;
 }
 
 function reiniciarAgente() {
@@ -759,6 +904,7 @@ function exibirAgente(rel, imprimindo=false) {
   const resumo=elem('div',null,'agente-resumo');
   for(const decisao of ['priorizar','desenvolver','proteger','investigar'])resumo.append(elem('p',rotuloDecisaoAgente(decisao)+': '+rel.resumo[decisao]));
   frag.append(resumo,elem('p',rel.resumo.termosAnalisados+' termos analisados; '+rel.resumo.posicoesAtuais+' com posição válida nesta análise.','info'));
+  if(!imprimindo && typeof IA_LOCAL_HABILITADA!=='undefined' && IA_LOCAL_HABILITADA && rel.estado!=='sem_dados')frag.append(exibirIA(rel.dominio));
   if(rel.frentes.length){
     const frentes=elem('section',null,'bloco');frentes.append(elem('h3','Frentes de trabalho por página'),elem('p','Cada frente resume o primeiro trabalho sugerido para uma página. As decisões dos outros termos podem diferir; quantidade de termos não mede demanda ou retorno.','nota-diagnostico'));
     const lista=elem('ul',null,'agente-frentes');
@@ -856,7 +1002,7 @@ function mensagemAndamento(codigo) {
 
 function rotuloCandidato(candidato) {
   if(typeof candidato.rotulo === 'string' && candidato.rotulo.trim()) return candidato.rotulo.trim();
-  const rotulos={marca:'Marca',servico:'Serviço',local:'Busca local',produto:'Produto',entidade:'Nome identificado no conteúdo',relacionada:'Busca relacionada do Google'};
+  const rotulos={marca:'Marca',servico:'Serviço',local:'Busca local',produto:'Produto',entidade:'Nome identificado no conteúdo',atendimento:'Atendimento ou contato',tema:'Tema do site — a confirmar',institucional:'Institucional ou slogan',relacionada:'Busca relacionada do Google'};
   return Object.hasOwn(rotulos,candidato.tipo) ? rotulos[candidato.tipo] : 'Termo relacionado';
 }
 

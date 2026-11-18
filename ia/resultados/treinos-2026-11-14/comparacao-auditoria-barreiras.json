@@ -1,0 +1,108 @@
+{
+  "fonte_sha256": "0d6a1cf13fda680bfbbb23a1d8886788a2976bafeca47e9dcbc4734eb33485bc",
+  "casos_sha256": "3e6f79fd061e8776b91bd25c58452d5a5d10077b078d85fd8de5b61ce7b9da93",
+  "integracao_sha256": "fd721523049c65ccf402f766b6443e802018c0d7e64b247a5405dae8c9d4fce0",
+  "pares_com_erros": 3,
+  "erros_inconclusivos": 3,
+  "resultados": [
+    {
+      "par": "estresse-0",
+      "decisao": {
+        "escolha": "a"
+      },
+      "decisao_inversa": {
+        "escolha": "insuficiente"
+      },
+      "ambos_corretos": false,
+      "estado": "inconclusiva",
+      "motivo": "A escolha mudou ao inverter a ordem dos contextos."
+    },
+    {
+      "par": "estresse-1",
+      "decisao": {
+        "escolha": "a"
+      },
+      "decisao_inversa": {
+        "escolha": "b"
+      },
+      "ambos_corretos": true,
+      "estado": "revisao_necessaria",
+      "escolha": "a",
+      "motivo": "A IA sugeriu investigar este contexto primeiro; confira as evidências e a alternativa."
+    },
+    {
+      "par": "estresse-2",
+      "decisao": {
+        "escolha": "a"
+      },
+      "decisao_inversa": {
+        "escolha": "insuficiente"
+      },
+      "ambos_corretos": false,
+      "estado": "inconclusiva",
+      "motivo": "A escolha mudou ao inverter a ordem dos contextos."
+    },
+    {
+      "par": "estresse-3",
+      "decisao": {
+        "escolha": "a"
+      },
+      "decisao_inversa": {
+        "escolha": "b"
+      },
+      "ambos_corretos": true,
+      "estado": "revisao_necessaria",
+      "escolha": "a",
+      "motivo": "A IA sugeriu investigar este contexto primeiro; confira as evidências e a alternativa."
+    },
+    {
+      "par": "estresse-4",
+      "decisao": {
+        "escolha": "insuficiente"
+      },
+      "decisao_inversa": {
+        "escolha": "insuficiente"
+      },
+      "ambos_corretos": true,
+      "estado": "inconclusiva",
+      "motivo": "O modelo considerou as evidências insuficientes para escolher."
+    },
+    {
+      "par": "estresse-5",
+      "decisao": {
+        "escolha": "insuficiente"
+      },
+      "decisao_inversa": {
+        "escolha": "insuficiente"
+      },
+      "ambos_corretos": true,
+      "estado": "inconclusiva",
+      "motivo": "O modelo considerou as evidências insuficientes para escolher."
+    },
+    {
+      "par": "estresse-6",
+      "decisao": {
+        "escolha": "a"
+      },
+      "decisao_inversa": {
+        "escolha": "insuficiente"
+      },
+      "ambos_corretos": false,
+      "estado": "inconclusiva",
+      "motivo": "A escolha mudou ao inverter a ordem dos contextos."
+    },
+    {
+      "par": "estresse-7",
+      "decisao": {
+        "escolha": "insuficiente"
+      },
+      "decisao_inversa": {
+        "escolha": "insuficiente"
+      },
+      "ambos_corretos": true,
+      "estado": "inconclusiva",
+      "motivo": "O modelo considerou as evidências insuficientes para escolher."
+    }
+  ],
+  "limite": "Verifica apenas decisões deste conjunto; consistência não prova correção geral."
+}

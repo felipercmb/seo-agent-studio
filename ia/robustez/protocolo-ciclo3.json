@@ -1,0 +1,8 @@
+{
+  "versao": 1,
+  "escopo": "Comparação do sistema híbrido: regras identificadas como regras, modelo local identificado como IA e barreiras de aplicação.",
+  "sem_dados": "Contextos sem evidências são registrados como não encaminhados ao modelo pela interface, e ficam fora dos acertos e recusas da IA.",
+  "selecao": "Usar somente validação real já observada e contraprovas sintéticas de validação. Exigir zero escolhas críticas antes e após barreiras; não diminuir concordância nos diagnósticos reais, nem nos cenários sintéticos de concorrência ou acompanhamento; não aumentar recusas. Entre elegíveis, preferir maior concordância real, depois sintética, depois menos recusas; empate mantém a versão anterior.",
+  "teste": "Somente após seleção congelada, comparar a versão anterior e a selecionada em novos domínios e novas contraprovas sintéticas. Manter casos sem leitura nos denominadores de cobertura, e não em acertos do modelo.",
+  "limites": "Rótulos editoriais fracos e contraprovas fictícias não demonstram resultado real, nem aprovam uso autônomo. Conclusões comerciais exigem dados de negócio e revisão independente."
+}

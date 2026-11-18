@@ -1,4 +1,4 @@
-# Visibilidade Aberta
+# SEO Agent Studio
 
 An optional **local AI training pilot** fine-tunes Qwen2.5-1.5B with QLoRA and can review up to three contexts from a local report. Once a compatible environment, model and locally selected adapter are present, the experimental option appears in the interface. Experiments include synthetic cases and public website captures with weak technical labels, not independent expert review. Training currently targets Apple Silicon Macs. Outputs require human review; the benchmark does not establish SEO or revenue gains. See the [training guide (Portuguese)](docs/TREINAR-IA.md).
 
@@ -6,7 +6,7 @@ The first run passed all mechanical criteria on only **3 of 16 reserved cases** 
 
 A [second local experiment (Portuguese)](docs/EXPERIMENTOS-IA-V2.md) adds cautionary scenarios, constrained decision output, and an experimental comparison of opportunities. It does not estimate financial returns.
 
-[![Testes](https://github.com/felipercmb/visibilidade-aberta/actions/workflows/ci.yml/badge.svg)](https://github.com/felipercmb/visibilidade-aberta/actions/workflows/ci.yml)
+[![Testes](https://github.com/felipercmb/seo-agent-studio/actions/workflows/ci.yml/badge.svg)](https://github.com/felipercmb/seo-agent-studio/actions/workflows/ci.yml)
 
 An open-source, local application for discovering search terms from a website, checking Google results and identifying practical accessibility and contact improvements.
 
@@ -16,13 +16,13 @@ An open-source, local application for discovering search terms from a website, c
 
 ## Run locally
 
-Download the [r4.3.4 local ZIP](https://github.com/felipercmb/visibilidade-aberta/releases/tag/r4.3.4) and follow the [quick start guide](COMECE-AQUI.md), in Portuguese.
+Download the [r4.3.4 local ZIP](https://github.com/felipercmb/seo-agent-studio/releases/tag/r4.3.4) and follow the [quick start guide](COMECE-AQUI.md), in Portuguese.
 
 Install [Node.js](https://nodejs.org/) **22, starting at 22.13, or 24 LTS**, and Git. Other major versions are not part of the declared compatibility range.
 
 ```sh
-git clone https://github.com/felipercmb/visibilidade-aberta.git
-cd visibilidade-aberta
+git clone https://github.com/felipercmb/seo-agent-studio.git
+cd seo-agent-studio
 npm ci
 npm start
 ```

@@ -5,11 +5,13 @@ import {PassThrough} from 'node:stream';
 import {mkdtemp,rm,readFile,writeFile,readdir,mkdir} from 'node:fs/promises';
 import {tmpdir} from 'node:os';
 import {join} from 'node:path';
+import {fileURLToPath} from 'node:url';
 import {createHash,randomUUID} from 'node:crypto';
 import {criarEntendimentoLocal} from '../lib/entendimento-local.mjs';
 import {prepararJornadas} from '../ia/negocio/jornadas/preparar.mjs';
 
 const D='cliente.com.br',SHA=x=>createHash('sha256').update(x).digest('hex');
+const raiz=fileURLToPath(new URL('../',import.meta.url));
 const ordenar=x=>Array.isArray(x)?x.map(ordenar):x&&typeof x==='object'?Object.fromEntries(Object.keys(x).sort().map(k=>[k,ordenar(x[k])])):x;
 const digest=x=>SHA(JSON.stringify(ordenar(x))),instante=()=>new Date(Date.now()-60000).toISOString();
 const coleta=()=>({dominio:D,coletadoEm:instante(),paginas:[{url:'https://'+D+'/',html:'<h1>Assessoria</h1>'}],falhas:[]});
@@ -86,7 +88,10 @@ test('IDs e domínio restringem consultas e comandos não entram pelo pedido',as
 test('iniciar retorna antes do filho terminar, fixa comando/env e envia apenas snapshot salvo',async t=>{
   const a=await ambiente(t),r=await a.servico.registrar(coleta()),j=await a.servico.iniciar({dominio:D,capturaId:r.capturaId});
   assert.equal(j.estado,'em_execucao');assert.equal(a.servico.ocupado(),true);assert.equal(a.chamadas.length,1);
-  const c=a.chamadas[0];await c.filho.recebeu;assert.match(c.comando,/\.venv-ia\/bin\/python$/);assert.equal(c.args.length,1);assert.match(c.args[0],/ia\/negocio\/jornadas\/executar\.py$/);
+  const c=a.chamadas[0];
+  await c.filho.recebeu;
+  assert.equal(c.comando,join(raiz,'.venv-ia','bin','python'));
+  assert.deepEqual(c.args,[join(raiz,'ia','negocio','jornadas','executar.py')]);
   assert.equal(c.opcoes.shell,false);assert.deepEqual(c.opcoes.stdio,['pipe','pipe','pipe']);
   assert.equal(c.opcoes.env.HF_HUB_OFFLINE,'1');assert.equal(c.opcoes.env.TRANSFORMERS_OFFLINE,'1');assert.equal(c.opcoes.env.HF_HUB_DISABLE_IMPLICIT_TOKEN,'1');
   assert.equal(c.filho.entrada.maxOfertas,1);assert.deepEqual(c.filho.entrada.base,r.base);assert.equal(c.filho.entrada.fontesReserva[0].id,'origem_01');
@@ -113,7 +118,8 @@ test('leitor de proposições fixa o script, confere código e preserva versão 
   a=await ambiente(t,{preparar,comportamento,motor:'proposicoes'});
   const c=await a.servico.registrar({...coleta(),dominio:'example.com'}),j=await a.servico.iniciar({dominio:'example.com',capturaId:c.capturaId}),r=await terminado(a.servico,j);
   assert.equal(r.estado,'concluido');assert.equal(r.motor,'proposicoes');assert.equal(r.resultado.versao,3);assert.equal(r.resultado.inferenciasExecutadas,0);
-  assert.match(a.chamadas[0].args[0],/proposicoes\/executar\.py$/);assert.equal(a.chamadas[0].opcoes.env.HF_HUB_OFFLINE,'1');
+  assert.equal(a.chamadas[0].args[0],join(raiz,'ia','negocio','proposicoes','executar.py'));
+  assert.equal(a.chamadas[0].opcoes.env.HF_HUB_OFFLINE,'1');
   const reaberto=criarEntendimentoLocal({dataDir:a.dataDir,preparar,motor:'proposicoes',iniciar:()=>{throw Error('Não executar.');}});
   assert.deepEqual(await reaberto.consultar({dominio:'example.com',id:j.id}),r);await reaberto.fechar();
   const legado=criarEntendimentoLocal({dataDir:a.dataDir,preparar});await rejeita(()=>legado.consultar({dominio:'example.com',id:j.id}),404);await legado.fechar();

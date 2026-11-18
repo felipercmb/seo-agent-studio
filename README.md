@@ -10,7 +10,7 @@ Descubra termos relacionados a um site, confira resultados do Google e encontre 
 
 ## Executar
 
-Baixe o [ZIP da revisão r4.3.3](https://github.com/felipercmb/visibilidade-aberta/releases/tag/r4.3.3), extraia o arquivo e siga [Comece aqui](COMECE-AQUI.md).
+Baixe o [ZIP da revisão r4.3.4](https://github.com/felipercmb/visibilidade-aberta/releases/tag/r4.3.4), extraia o arquivo e siga [Comece aqui](COMECE-AQUI.md).
 O pacote contém as dependências fixadas no arquivo de lock e funciona sem instalação pelo npm.
 Para montá-lo a partir desta pasta de trabalho, use `python3 scripts/empacotar-local.py --saida dist/visibilidade-aberta-local.zip` com as dependências presentes no cache do npm.
 

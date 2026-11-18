@@ -34,7 +34,7 @@ test('pacote mantém todos os contextos e evidências e oculta os alvos automát
 test('pacote é compatível com o validador Python existente quando Python está instalado',async t=>{
   const a=await ambiente(t),r=await prepararRevisaoModular(a.opcoes);
   const script="import sys;from pathlib import Path;sys.path.insert(0,str(Path.cwd()/'ia/robustez'));from revisar import verificar_arquivos,arquivos_da_captura;c,r=verificar_arquivos(Path(sys.argv[1]),Path(sys.argv[2]));assert len(c)==2;assert all(len(arquivos_da_captura(x))==1 for x in c.values());print('compatível')";
-  const p=spawnSync('python3',['-c',script,r.dados,r.avaliacao],{encoding:'utf8'});
+  const p=spawnSync('python3',['-X','utf8','-c',script,r.dados,r.avaliacao],{encoding:'utf8'});
   if(p.error?.code==='ENOENT'){t.skip('Python3 não está instalado; verificações Node do pacote continuam nos demais testes.');return;}
   assert.equal(p.status,0,p.stderr);assert.match(p.stdout,/compatível/);
 });

@@ -16,7 +16,7 @@ An open-source, local application for discovering search terms from a website, c
 
 ## Run locally
 
-Download the [r4.3.3 local ZIP](https://github.com/felipercmb/visibilidade-aberta/releases/tag/r4.3.3) and follow the [quick start guide](COMECE-AQUI.md), in Portuguese.
+Download the [r4.3.4 local ZIP](https://github.com/felipercmb/visibilidade-aberta/releases/tag/r4.3.4) and follow the [quick start guide](COMECE-AQUI.md), in Portuguese.
 
 Install [Node.js](https://nodejs.org/) **22, starting at 22.13, or 24 LTS**, and Git. Other major versions are not part of the declared compatibility range.
 
